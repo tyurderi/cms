@@ -6,7 +6,7 @@ module.exports = {
     index: path.resolve(__dirname, '../backend/index.html'),
     assetsRoot: path.resolve(__dirname, '../backend'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/js/vue/backend/',
     productionSourceMap: true,
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
