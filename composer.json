@@ -1,0 +1,10 @@
+{
+    "require": {
+        "favez/favez": "^1.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "CMS\\": "src/"
+        }
+    }
+}

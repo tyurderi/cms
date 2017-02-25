@@ -18,7 +18,12 @@ module.exports = {
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+        '/api': {
+            target: 'http://local.dev/js/vue/',
+            changeOrigin: true
+        }
+    },
     cssSourceMap: false
   }
 }

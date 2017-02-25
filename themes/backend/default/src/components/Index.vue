@@ -11,9 +11,16 @@ export default {
     {
         let me = this;
 
-        setTimeout(function() {
-            me.$emit('updateView', 'login');
-        }, 500);
+        $.get('/api/user/status', (response) => {
+            if (response.success === true)
+            {
+                // me.$emit('updateView', 'main');
+            }
+            else
+            {
+                me.$emit('updateView', 'login');
+            }
+        });
     }
 }
 </script>
