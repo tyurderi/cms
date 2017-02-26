@@ -1,4 +1,4 @@
-var path = require('path')
+let path = require('path');
 
 module.exports = {
   build: {
@@ -19,11 +19,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/api': {
-            target: 'http://local.dev/js/vue/',
-            changeOrigin: true
-        }
+      '/api': {
+        target: 'http://local.dev/js/vue/',
+        changeOrigin: true
+      }
     },
     cssSourceMap: false
   }
-}
+};

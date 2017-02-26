@@ -4,5 +4,5 @@ dist/
 npm-debug.log
 vendor/
 .idea/
-backend/
+/backend/
 !backend/.gitkeep
