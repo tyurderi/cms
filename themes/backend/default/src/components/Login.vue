@@ -1,14 +1,16 @@
 <template>
-    <div class="login">
-        <form method="post" v-on:submit.prevent="submit">
-            <label for="email">email:</label>
-            <input type="email" v-model="email" placeholder="email" />
+    <div class="login-container">
+        <div class="login">
+            <form method="post" v-on:submit.prevent="submit">
+                <label for="email">email:</label>
+                <input type="email" v-model="email" placeholder="email" />
 
-            <label for="password">password:</label>
-            <input type="password" v-model="password" placeholder="password" />
+                <label for="password">password:</label>
+                <input type="password" v-model="password" placeholder="password" />
 
-            <button type="submit">submit</button>
-        </form>
+                <button type="submit">submit</button>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -32,6 +34,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+img {
+    width: 300px;
+    margin: 0 auto;
+    display: block;
+}
 div.login {
     background: #fff;
     padding: 10px;

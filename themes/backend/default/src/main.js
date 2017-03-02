@@ -1,17 +1,16 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import jQuery from 'jquery';
-import path from 'path';
+import Http from 'vue-resource';
 
-window.$ = window.jQuery = jQuery;
-window.$.url = (url) => {
-  return path.join(process.env.BASE_PATH, url);
-};
+Vue.use(Http);
 
 new Vue({
     el: '#app',
     router,
     template: '<App/>',
-    components: { App }
+    components: { App },
+    http: {
+        root: process.env.BASE_PATH
+    }
 });

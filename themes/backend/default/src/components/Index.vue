@@ -11,7 +11,7 @@ export default {
     {
         let me = this;
 
-        $.get($.url('/api/user/status'), (response) => {
+        me.$http.get('api/user/status').then((response) => {
             if (response.success === true)
             {
                 // me.$emit('updateView', 'main');
