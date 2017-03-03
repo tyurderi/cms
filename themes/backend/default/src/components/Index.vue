@@ -12,7 +12,7 @@ export default {
         let me = this;
 
         me.$http.get('api/user/status').then((response) => {
-            if (response.success === true)
+            if (response.body.success === true)
             {
                 // me.$emit('updateView', 'main');
             }

@@ -8,6 +8,10 @@ import Http from 'vue-resource';
 
 Vue.use(Http);
 
+import Checkbox from '@/components/input/Checkbox';
+
+Vue.component(Checkbox.name, Checkbox);
+
 new Vue({
     el: '#app',
     router,

@@ -14,11 +14,9 @@ import Login from '@/components/Login';
 
 export default {
     name: 'app',
-    data() {
-        return {
-            mainView: 'index'
-        }
-    },
+    data: () => ({
+        mainView: 'index'
+    }),
     components: {
         Index,
         Login

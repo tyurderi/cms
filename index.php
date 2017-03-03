@@ -22,9 +22,9 @@ $app = Favez\Mvc\App::instance([
         ],
         'database' => [
             'host' => 'localhost',
-            'shem' => 'test',
+            'shem' => 'vuex_cms',
             'user' => 'root',
-            'pass' => ''
+            'pass' => 'vagrant'
         ],
         'app' => [
             'path'       => __DIR__ . '/',
@@ -36,6 +36,8 @@ $app = Favez\Mvc\App::instance([
         'displayErrorDetails' => true
     ]
 ]);
+
+$app::di()->registerShared('auth', function() { return new \CMS\Components\Auth(); });
 
 $app->any('/api/[{controller}[/{action}]]', 'api:{controller}:{action}');
 

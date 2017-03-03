@@ -9,6 +9,8 @@
                 <input type="password" v-model="password" placeholder="password" />
 
                 <button type="submit">submit</button>
+
+                <checkbox v-model="keepLogin" label="Keep login for 30 days" name="keep_login" />
             </form>
         </div>
     </div>
@@ -17,17 +19,25 @@
 <script>
 export default {
     name: 'login',
-    data()
-    {
-        return {
-            email: '',
-            password: ''
-        }
-    },
+    data: () => ({
+        email: '',
+        password: '',
+        keepLogin: false
+    }),
     methods: {
         submit()
         {
-            console.log('login');
+            let me = this;
+
+            me.$http.post('api/user/login', {
+                email: me.email,
+                password: me.password,
+                keepLogin: me.keepLogin
+            }).then((response) => {
+                console.log(response);
+            }, (error) => {
+                console.log(error);
+            });
         }
     }
 }
@@ -43,7 +53,7 @@ div.login {
     background: #fff;
     padding: 10px;
     width: 300px;
-    height: 117px;
+    height: 130px;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
     margin: auto;
