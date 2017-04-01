@@ -39,7 +39,10 @@ $app    = Favez\Mvc\App::instance([
 
 $app->setLoader($loader);
 $app::di()->registerShared('auth', function() { return new \CMS\Components\Auth(); });
+$app::di()->registerShared('plugins', function() { return new \CMS\Components\Plugin\Manager(); });
 
 $app->any('/api/[{controller}[/{action}]]', 'api:{controller}:{action}');
+
+$app::plugins()->execute();
 
 return $app;

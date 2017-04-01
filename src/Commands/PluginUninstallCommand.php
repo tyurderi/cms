@@ -21,9 +21,8 @@ class PluginUninstallCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = new Manager();
-        $name    = trim($input->getArgument('name'));
-        $result  = $manager->uninstall($name);
+        $name   = trim($input->getArgument('name'));
+        $result = self::plugins()->uninstall($name);
 
         if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
         {

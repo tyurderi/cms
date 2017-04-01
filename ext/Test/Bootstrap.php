@@ -17,7 +17,7 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
 
     public function execute()
     {
-        echo 'Hello World';
+
     }
 
 }

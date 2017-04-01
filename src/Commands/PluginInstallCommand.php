@@ -21,9 +21,8 @@ class PluginInstallCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = new Manager();
-        $name    = trim($input->getArgument('name'));
-        $result  = $manager->install($name);
+        $name   = trim($input->getArgument('name'));
+        $result = self::plugins()->install($name);
 
         if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
         {
