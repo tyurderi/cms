@@ -10,9 +10,9 @@ class Manager
     use Injectable;
 
     /**
-     * Hols the instance of every plugin.
+     * Holds the instance of every plugin.
      *
-     * @var array
+     * @var Instance[]
      */
     private $instances;
 
@@ -41,24 +41,21 @@ class Manager
             }
 
             $name  = $file->getBasename();
-            $model = Plugin::repository()->findOneBy(['name' => $name]);
+            $model = $this->getModel($name);
 
             if (!($model instanceof Plugin))
             {
                 $model = new Plugin();
-                $model->active  = false;
+                $model->active  = 0;
                 $model->name    = $name;
                 $model->label   = $name;
                 $model->created = date('Y-m-d H:i:s');
                 $model->changed = date('Y-m-d H:i:s');
             }
 
-            $instance = $this->loadInstance($name);
-            $instance->setModel($model);
+            $plugins[] = $this->loadInstance($name, $model);
 
             $model->save();
-
-            $plugins[] = $instance;
         }
 
         return $plugins;
@@ -68,18 +65,26 @@ class Manager
      * Creates and returns a plugin instance.
      *
      * @param string $name
+     * @param Plugin $model
      * @return Instance
      */
-    public function loadInstance($name)
+    public function loadInstance($name, $model = null)
     {
         if (!isset($this->instances[$name]))
         {
             $className = $this->getClassName($name);
             $path      = $this->getPluginDirectory() . $name . '/';
 
-            self::app()->loader()->addPsr4($name . '\\', $path);
+            self::app()->loader()->setPsr4($name . '\\', $path);
 
-            $this->instances[$name] = new Instance(new $className(), $path);
+            $instance = new Instance(new $className(), $path);
+
+            if ($model instanceof Plugin)
+            {
+                $instance->setModel($model);
+            }
+
+            $this->instances[$name] = $instance;
         }
 
         return $this->instances[$name];
@@ -100,6 +105,82 @@ class Manager
         }
 
         return $directory;
+    }
+
+    public function execute()
+    {
+        $plugins = Plugin::repository()->findBy(['active' => true]);
+
+        /** @var Plugin $plugin */
+        foreach ($plugins as $plugin)
+        {
+            $instance = $this->loadInstance($plugin->name, $plugin);
+            $instance->getInstance()->execute();
+        }
+    }
+
+    public function install($name)
+    {
+        try
+        {
+            $model    = $this->getModel($name);
+            $instance = $this->loadInstance($name, $model);
+
+            self::events()->publish('core.plugin.pre_install', ['name' => $name]);
+
+            $result = $instance->getInstance()->install();
+
+            self::events()->publish('core.plugin.post_install', ['name' => $name]);
+
+            if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
+            {
+                $instance->getModel()->active = true;
+                $instance->getModel()->save();
+            }
+
+            return $result;
+        }
+        catch (\Exception $ex)
+        {
+            return [
+                'success' => false,
+                'message' => $ex->getMessage(),
+            ];
+        }
+    }
+
+    public function uninstall($name)
+    {
+        try
+        {
+            self::events()->publish('core.plugin.pre_uninstall', ['name' => $name]);
+
+            $model    = $this->getModel($name);
+            $instance = $this->loadInstance($name, $model);
+            $result   = $instance->getInstance()->uninstall();
+
+            self::events()->publish('core.plugin.post_uninstall', ['name' => $name]);
+
+            if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
+            {
+                $instance->getModel()->active = false;
+                $instance->getModel()->save();
+            }
+
+            return $result;
+        }
+        catch (\Exception $ex)
+        {
+            return [
+                'success' => false,
+                'message' => $ex->getMessage(),
+            ];
+        }
+    }
+
+    public function getModel($name)
+    {
+        return Plugin::repository()->findOneBy(['name' => $name]);
     }
 
 }

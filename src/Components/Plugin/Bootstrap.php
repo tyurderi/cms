@@ -2,7 +2,7 @@
 
 namespace CMS\Components\Plugin;
 
-class Bootstrap
+abstract class Bootstrap
 {
 
     /**
@@ -29,5 +29,17 @@ class Bootstrap
     {
         return $this->instance->getInfo();
     }
+
+    public function install()
+    {
+        return true;
+    }
+
+    public function uninstall()
+    {
+        return true;
+    }
+
+    abstract public function execute();
 
 }
