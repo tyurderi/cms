@@ -3,7 +3,6 @@
 namespace CMS\Commands;
 
 use CMS\Components\Command;
-use CMS\Components\Plugin\Manager;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
