@@ -1,6 +1,7 @@
 {
     "require": {
-        "favez/favez": "^1.12"
+        "favez/favez": "^1.12",
+        "symfony/console": "^3.2"
     },
     "autoload": {
         "psr-4": {

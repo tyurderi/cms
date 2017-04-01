@@ -2,6 +2,7 @@ DROP DATABASE IF EXISTS vuex_cms;
 CREATE DATABASE vuex_cms;
 USE vuex_cms;
 
+/** USER ACCOUNT STUFF **/
 CREATE TABLE `user` (
   `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `email` VARCHAR(255) NOT NULL,
@@ -29,4 +30,19 @@ CREATE TABLE `user_session` (
   `userID` INT(11) NOT NULL,
   `hash` VARCHAR(32) NOT NULL,
   `expires` DATETIME
+);
+
+/** PLUGIN SYSTEM STUFF **/
+CREATE TABLE `plugin` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `active` TINYINT(11) NOT NULL DEFAULT 0,
+  `name` VARCHAR(255) NOT NULL,
+  `label` VARCHAR(255) NOT NULL,
+  `description` VARCHAR(255),
+  `version` VARCHAR(32),
+  `author` VARCHAR(255),
+  `email` VARCHAR(255),
+  `website` VARCHAR(255),
+  `changed` TIMESTAMP DEFAULT 0,
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

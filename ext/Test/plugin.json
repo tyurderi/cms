@@ -1,0 +1,8 @@
+{
+  "label": "Test",
+  "description": "This is a simple test plugin.",
+  "version": "1.0.0",
+  "author": "tyurderi",
+  "website": "http://yurderi.de",
+  "email": "tyurderi@yahoo.de"
+}
