@@ -3,11 +3,10 @@
 namespace CMS\Components\Plugin;
 
 use CMS\Models\Plugin\Plugin;
-use Favez\Mvc\DI\Injectable;
+use Favez\Mvc\App;
 
 class Manager
 {
-    use Injectable;
 
     /**
      * Holds the instance of every plugin.
@@ -90,7 +89,7 @@ class Manager
             $className = $this->getClassName($name);
             $path      = $this->getPluginDirectory($namespace) . $name . '/';
 
-            self::app()->loader()->setPsr4($name . '\\', $path);
+            App::app()->loader()->setPsr4($name . '\\', $path);
 
             $instance = new Instance(new $className(), $path);
 
@@ -112,7 +111,7 @@ class Manager
 
     public function getPluginDirectory($namespace)
     {
-        $directory = self::config('app.path') . self::config('plugin.path') . $namespace. '/';
+        $directory = App::app()->config('app.path') . App::app()->config('plugin.path') . $namespace. '/';
 
         if (!is_dir($directory))
         {
@@ -141,11 +140,11 @@ class Manager
             $model    = $this->getModel($name);
             $instance = $this->loadInstance($model->namespace, $name, $model);
 
-            self::events()->publish('core.plugin.pre_install', ['name' => $name]);
+            App::events()->publish('core.plugin.pre_install', ['name' => $name]);
 
             $result = $instance->getInstance()->install();
 
-            self::events()->publish('core.plugin.post_install', ['name' => $name]);
+            App::events()->publish('core.plugin.post_install', ['name' => $name]);
 
             if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
             {
@@ -168,13 +167,13 @@ class Manager
     {
         try
         {
-            self::events()->publish('core.plugin.pre_uninstall', ['name' => $name]);
+            App::events()->publish('core.plugin.pre_uninstall', ['name' => $name]);
 
             $model    = $this->getModel($name);
             $instance = $this->loadInstance($model->namespace, $name, $model);
             $result   = $instance->getInstance()->uninstall();
 
-            self::events()->publish('core.plugin.post_uninstall', ['name' => $name]);
+            App::events()->publish('core.plugin.post_uninstall', ['name' => $name]);
 
             if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
             {
@@ -196,6 +195,27 @@ class Manager
     public function getModel($name)
     {
         return Plugin::repository()->findOneBy(['name' => $name]);
+    }
+
+    /**
+     * Returns the plugin bootstrap by name.
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return Bootstrap
+     */
+    public function __call($name, $arguments = [])
+    {
+        if (!isset($this->instances[$name]))
+        {
+            $plugin   = $this->getModel($name);
+            $instance = $this->loadInstance($plugin->namespace, $plugin->name, $plugin);
+
+            return $instance->getInstance();
+        }
+
+        return $this->instances[$name]->getInstance();
     }
 
 }
