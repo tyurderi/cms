@@ -3,7 +3,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$app     = require_once __DIR__ . '/src/Application.php';
+require_once __DIR__ . '/src/Application.php';
+
+$app     = new \CMS\Application();
 $console = new \Symfony\Component\Console\Application('CMS Console Commands', '1.0.0');
 
 $console->addCommands([
