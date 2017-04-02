@@ -36,6 +36,7 @@ CREATE TABLE `user_session` (
 CREATE TABLE `plugin` (
   `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `active` TINYINT(11) NOT NULL DEFAULT 0,
+  `namespace` VARCHAR(32) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `label` VARCHAR(255) NOT NULL,
   `description` VARCHAR(255),

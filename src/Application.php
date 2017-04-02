@@ -30,7 +30,7 @@ class Application
 
     protected function registerServices(Container $container)
     {
-        $container->registerShared('auth', function() { return new \CMS\Components\Auth(); });
+        $container->registerShared('auth',    function() { return new \CMS\Components\Auth();           });
         $container->registerShared('plugins', function() { return new \CMS\Components\Plugin\Manager(); });
     }
 

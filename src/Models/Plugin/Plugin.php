@@ -11,6 +11,8 @@ class Plugin extends Entity
 
     public $active;
 
+    public $namespace;
+
     public $name;
 
     public $label;
