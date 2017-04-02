@@ -57,7 +57,7 @@ class Manager
                 if (!($model instanceof Plugin))
                 {
                     $model = new Plugin();
-                    $model->active    = 0;
+                    $model->active    = false;
                     $model->namespace = $namespace;
                     $model->name      = $name;
                     $model->label     = $name;

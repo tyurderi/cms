@@ -45,5 +45,6 @@ CREATE TABLE `plugin` (
   `email` VARCHAR(255),
   `website` VARCHAR(255),
   `changed` TIMESTAMP DEFAULT 0,
-  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `name` (`name`)
 );
