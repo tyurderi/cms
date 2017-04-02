@@ -2,6 +2,7 @@
 
 namespace CMS;
 
+use CMS\Components\Plugin\Manager;
 use Favez\Mvc\App;
 use Favez\Mvc\DI\Container;
 
@@ -18,9 +19,8 @@ class Application
         $this->app->setLoader($loader);
 
         $this->registerServices($this->app->di());
+        $this->executePlugins($this->app->plugins());
         $this->registerRoutes($this->app);
-
-        $this->app->plugins()->execute();
     }
 
     public function run()
@@ -32,6 +32,11 @@ class Application
     {
         $container->registerShared('auth',    function() { return new \CMS\Components\Auth();           });
         $container->registerShared('plugins', function() { return new \CMS\Components\Plugin\Manager(); });
+    }
+
+    protected function executePlugins(Manager $pluginManager)
+    {
+        $pluginManager->execute();
     }
 
     protected function registerRoutes(App $app)
