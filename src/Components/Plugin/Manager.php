@@ -2,6 +2,7 @@
 
 namespace CMS\Components\Plugin;
 
+use CMS\Models\Plugin\Dependency;
 use CMS\Models\Plugin\Plugin;
 use Exception;
 use Favez\Mvc\DI\Injectable;
@@ -112,6 +113,22 @@ class Manager
                 }
 
                 $model->save();
+
+                // Update plugin dependencies
+                foreach ($info->getRequires() as $name => $version)
+                {
+                    $dependency = Dependency::repository()->findOneBy(['pluginID' => $model->id, 'name' => $name]);
+
+                    if (!($dependency instanceof Dependency))
+                    {
+                        $dependency = new Dependency();
+                        $dependency->pluginID = $model->id;
+                        $dependency->name     = $name;
+                    }
+
+                    $dependency->version = $version;
+                    $dependency->save();
+                }
             }
         }
 

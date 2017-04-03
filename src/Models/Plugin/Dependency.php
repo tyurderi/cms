@@ -13,6 +13,8 @@ class Dependency extends Entity
 
     public $name;
 
+    public $version;
+
     public static function getSource()
     {
         return 'plugin_dependency';
