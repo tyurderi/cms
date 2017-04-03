@@ -151,7 +151,7 @@ class Manager
     
             self::events()->publish('core.plugin.post_install', ['instance' => $instance]);
 
-            if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
+            if (isSuccess($result))
             {
                 $instance->getModel()->active = true;
                 $instance->getModel()->save();
@@ -181,7 +181,7 @@ class Manager
     
             self::events()->publish('core.plugin.post_uninstall', ['instance' => $instance]);
 
-            if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
+            if (isSuccess($result))
             {
                 $instance->getModel()->active = false;
                 $instance->getModel()->save();

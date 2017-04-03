@@ -23,7 +23,7 @@ class PluginInstallCommand extends Command
         $name   = trim($input->getArgument('name'));
         $result = self::plugins()->install($name);
 
-        if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
+        if (isSuccess($result))
         {
             $output->writeln('The plugin were installed successfully.');
         }
