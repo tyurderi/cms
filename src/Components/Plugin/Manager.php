@@ -264,9 +264,9 @@ class Manager
                 throw new Exception('Plugin already uninstalled.');
             }
 
-            if ($this->hasDependencies($name))
+            if ($dependencies = $this->getDependencies($name))
             {
-                throw new Exception('Cannot uninstall because of unresolved dependencies.');
+                throw new Exception('Unable to uninstall because of the following depended plugins: ' . implode(', ', $dependencies));
             }
     
             self::events()->publish('core.plugin.pre_uninstall', ['instance' => $instance]);
@@ -292,14 +292,14 @@ class Manager
         }
     }
 
-    public function hasDependencies($name)
+    public function getDependencies($name)
     {
         return App::db()->from('plugin')
-            ->select('true')
+            ->select(null)->select('plugin.name')
             ->leftJoin('plugin_dependency ON plugin_dependency.pluginID = plugin.id')
             ->where('plugin.active = 1')
             ->where('plugin_dependency.name = ?', $name)
-            ->fetch();
+            ->fetchPairs(0, 'plugin.name');
     }
 
     /**
