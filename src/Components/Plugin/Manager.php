@@ -262,6 +262,11 @@ class Manager
             {
                 throw new Exception('Plugin already uninstalled.');
             }
+
+            if (Dependency::repository()->findOneBy(['name' => $name]) instanceof Dependency)
+            {
+                throw new Exception('Cannot uninstall because of unresolved dependencies');
+            }
     
             self::events()->publish('core.plugin.pre_uninstall', ['instance' => $instance]);
             
