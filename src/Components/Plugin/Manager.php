@@ -4,7 +4,6 @@ namespace CMS\Components\Plugin;
 
 use CMS\Models\Plugin\Plugin;
 use Exception;
-use Favez\Mvc\App;
 use Favez\Mvc\DI\Injectable;
 
 class Manager
@@ -32,10 +31,41 @@ class Manager
     }
 
     /**
-     * Load all plugins from directory and save them to database.
+     * @return Instance[]
      */
-    public function load()
+    public function list()
     {
+        $plugins   = Plugin::repository()->findAll();
+        $instances = [];
+
+        /** @var Plugin $plugin */
+        foreach ($plugins as $plugin)
+        {
+            $instances[] = $this->loadInstance($plugin->namespace, $plugin->name, $plugin);
+        }
+
+        return $instances;
+    }
+
+    /**
+     * Synchronize plugins from database with filesystem and the other way around.
+     */
+    public function synchronize()
+    {
+        // Loop through all plugins in database and disable a plugin when it does not exists in filesystem.
+        $plugins = Plugin::repository()->findAll();
+
+        /** @var Plugin $plugin */
+        foreach ($plugins as $plugin)
+        {
+            if (!$this->exists($plugin->namespace, $plugin->name))
+            {
+                $plugin->active = false;
+                $plugin->save();
+            }
+        }
+
+        // Loop through all plugins in filesystem and write/update it in database.
         $plugins = [];
 
         foreach ($this->namespaces as $namespace)
@@ -62,18 +92,49 @@ class Manager
                     $model->active    = 0;
                     $model->namespace = $namespace;
                     $model->name      = $name;
-                    $model->label     = $name;
                     $model->created   = date('Y-m-d H:i:s');
                     $model->changed   = date('Y-m-d H:i:s');
                 }
 
-                $plugins[] = $this->loadInstance($namespace, $name, $model);
+                $instance = $this->loadInstance($model->namespace, $model->name, $model);
+                $info     = $instance->getInfo();
+
+                $model->label       = $info->getLabel();
+                $model->description = $info->getDescription();
+                $model->author      = $info->getAuthor();
+                $model->website     = $info->getWebsite();
+                $model->email       = $info->getEmail();
+
+                // Do not update the model version every time for future updates.
+                if (empty($model->version))
+                {
+                    $model->version = $info->getVersion();
+                }
 
                 $model->save();
             }
         }
 
         return $plugins;
+    }
+
+    /**
+     * Checks whether the plugin exists on filesystem or not.
+     *
+     * @param string $namespace
+     * @param string $name
+     * @param string $className
+     * @param string $path
+     * @return bool
+     */
+    public function exists($namespace, $name, &$className = null, &$path = null)
+    {
+        $className = $this->getClassName($name);
+        $path      = $this->getPluginDirectory($namespace) . $name . '/';
+
+        self::app()->loader()->setPsr4($name . '\\', $path);
+
+        return class_exists($className);
     }
 
     /**
@@ -89,10 +150,10 @@ class Manager
     {
         if (!isset($this->instances[$name]))
         {
-            $className = $this->getClassName($name);
-            $path      = $this->getPluginDirectory($namespace) . $name . '/';
-
-            self::app()->loader()->setPsr4($name . '\\', $path);
+            if (!$this->exists($namespace, $name, $className, $path))
+            {
+                throw new Exception('Trying to access unknown plugin: ' . $name);
+            }
 
             $instance = new Instance(new $className(), $path);
 

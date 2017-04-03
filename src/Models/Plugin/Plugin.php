@@ -36,4 +36,10 @@ class Plugin extends Entity
         return 'plugin';
     }
 
+    public function initialize()
+    {
+        $this->hasMany(Dependency::class, 'pluginID', 'id')
+            ->setName('dependencies');
+    }
+
 }

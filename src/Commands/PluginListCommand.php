@@ -21,9 +21,11 @@ class PluginListCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $manager = new Manager();
-        $plugins = $manager->load();
 
-        $table = new Table($output);
+        $manager->synchronize();
+
+        $plugins = $manager->list();
+        $table   = new Table($output);
         $table->setHeaders(['Name', 'Label', 'Version', 'Created', 'Updated', 'Active/Installed']);
 
         /** @var Instance $plugin */

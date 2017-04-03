@@ -48,3 +48,9 @@ CREATE TABLE `plugin` (
   `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `name` (`name`)
 );
+
+CREATE TABLE `plugin_dependency` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `pluginID` INT(11) NOT NULL,
+  `name` VARCHAR(32) NOT NULL
+);
