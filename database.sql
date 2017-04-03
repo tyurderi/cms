@@ -9,7 +9,7 @@ CREATE TABLE `user` (
   `passwordHash` VARCHAR(255) NOT NULL,
   `firstname` VARCHAR(32) NOT NULL,
   `lastname` VARCHAR(32) NOT NULL,
-  `changed` TIMESTAMP DEFAULT '1970-01-01 00:00:01',
+  `changed` TIMESTAMP DEFAULT 0,
   `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `groupID` INT(11) NOT NULL
 );

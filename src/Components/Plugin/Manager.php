@@ -140,11 +140,11 @@ class Manager
             $model    = $this->getModel($name);
             $instance = $this->loadInstance($model->namespace, $name, $model);
 
-            App::events()->publish('core.plugin.pre_install', ['name' => $name]);
+            App::events()->publish('core.plugin.pre_install', ['instance' => $instance]);
 
             $result = $instance->getInstance()->install();
 
-            App::events()->publish('core.plugin.post_install', ['name' => $name]);
+            App::events()->publish('core.plugin.post_install', ['instance' => $instance]);
 
             if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
             {
@@ -167,13 +167,14 @@ class Manager
     {
         try
         {
-            App::events()->publish('core.plugin.pre_uninstall', ['name' => $name]);
-
             $model    = $this->getModel($name);
             $instance = $this->loadInstance($model->namespace, $name, $model);
-            $result   = $instance->getInstance()->uninstall();
+            
+            App::events()->publish('core.plugin.pre_uninstall', ['instance' => $instance]);
+            
+            $result = $instance->getInstance()->uninstall();
 
-            App::events()->publish('core.plugin.post_uninstall', ['name' => $name]);
+            App::events()->publish('core.plugin.post_uninstall', ['instance' => $instance]);
 
             if ($result === true || is_array($result) && isset($result['success']) && $result['success'] === true)
             {
