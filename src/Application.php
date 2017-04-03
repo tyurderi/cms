@@ -21,6 +21,9 @@ class Application
         $this->registerServices($this->app->di());
         $this->executePlugins($this->app->plugins());
         $this->registerRoutes($this->app);
+
+        $pdo = $this->app->db()->pdo();
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
     public function run()

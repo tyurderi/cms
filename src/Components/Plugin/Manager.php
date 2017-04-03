@@ -59,7 +59,7 @@ class Manager
                 if (!($model instanceof Plugin))
                 {
                     $model = new Plugin();
-                    $model->active    = false;
+                    $model->active    = 0;
                     $model->namespace = $namespace;
                     $model->name      = $name;
                     $model->label     = $name;
@@ -142,7 +142,12 @@ class Manager
         {
             $model    = $this->getModel($name);
             $instance = $this->loadInstance($model->namespace, $name, $model);
-            
+
+            if ((int) $model->active === 1)
+            {
+                throw new Exception('Plugin already installed!');
+            }
+
             $this->checkRequirements($instance);
 
             self::events()->publish('core.plugin.pre_install', ['instance' => $instance]);
@@ -153,7 +158,7 @@ class Manager
 
             if (isSuccess($result))
             {
-                $instance->getModel()->active = true;
+                $instance->getModel()->active = 1;
                 $instance->getModel()->save();
             }
 
@@ -174,6 +179,11 @@ class Manager
         {
             $model    = $this->getModel($name);
             $instance = $this->loadInstance($model->namespace, $name, $model);
+
+            if ((int) $model->active === 0)
+            {
+                throw new Exception('Plugin already uninstalled.');
+            }
     
             self::events()->publish('core.plugin.pre_uninstall', ['instance' => $instance]);
             
@@ -183,7 +193,7 @@ class Manager
 
             if (isSuccess($result))
             {
-                $instance->getModel()->active = false;
+                $instance->getModel()->active = 0;
                 $instance->getModel()->save();
             }
 
@@ -198,6 +208,10 @@ class Manager
         }
     }
 
+    /**
+     * @param $name
+     * @return \Favez\ORM\EntityInterface|Plugin
+     */
     public function getModel($name)
     {
         return Plugin::repository()->findOneBy(['name' => $name]);
