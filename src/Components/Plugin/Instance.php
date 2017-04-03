@@ -99,6 +99,12 @@ class Instance
     public function setModel($model)
     {
         $this->model = $model;
+    
+        $this->model->version     = $this->info->getVersion();
+        $this->model->author      = $this->info->getAuthor();
+        $this->model->description = $this->info->getDescription();
+        $this->model->email       = $this->info->getEmail();
+        $this->model->website     = $this->info->getWebsite();
     }
 
     protected function loadInfo()

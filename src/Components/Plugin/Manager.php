@@ -3,6 +3,7 @@
 namespace CMS\Components\Plugin;
 
 use CMS\Models\Plugin\Plugin;
+use Exception;
 use Favez\Mvc\App;
 
 class Manager
@@ -139,6 +140,8 @@ class Manager
         {
             $model    = $this->getModel($name);
             $instance = $this->loadInstance($model->namespace, $name, $model);
+            
+            $this->checkRequirements($instance);
 
             App::events()->publish('core.plugin.pre_install', ['instance' => $instance]);
 
@@ -217,6 +220,36 @@ class Manager
         }
 
         return $this->instances[$name]->getInstance();
+    }
+    
+    /**
+     * Checks whether the requirements of the plugin are met or not.
+     *
+     * @param \CMS\Components\Plugin\Instance $instance
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function checkRequirements(Instance $instance)
+    {
+        $requires = $instance->getInfo()->getRequires();
+        
+        foreach ($requires as $name => $version)
+        {
+            $plugin = Plugin::repository()->findOneBy(['name' => $name, 'active' => true]);
+            
+            if (!($plugin instanceof Plugin))
+            {
+                throw new Exception('Required plugin not found or installed: ' . $name);
+            }
+            
+            if (!version_compare($version, $plugin->version, '<='))
+            {
+                throw new Exception(sprintf('Required plugin version (%s) does not match! (%s)', $version, $plugin->version));
+            }
+        }
+        
+        return true;
     }
 
 }

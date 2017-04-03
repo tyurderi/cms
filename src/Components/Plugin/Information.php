@@ -34,6 +34,11 @@ class Information
      * @var string
      */
     private $version;
+    
+    /**
+     * @var array
+     */
+    private $requires;
 
     public function __construct($filename)
     {
@@ -51,6 +56,7 @@ class Information
         $this->website     = $data['website'];
         $this->email       = $data['email'];
         $this->version     = $data['version'];
+        $this->requires    = $data['requires'];
     }
 
     public function getLabel()
@@ -81,6 +87,11 @@ class Information
     public function getVersion()
     {
         return $this->version;
+    }
+    
+    public function getRequires()
+    {
+        return $this->requires;
     }
 
 }
