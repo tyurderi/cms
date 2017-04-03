@@ -5,6 +5,7 @@ namespace CMS\Components\Plugin;
 use CMS\Models\Plugin\Dependency;
 use CMS\Models\Plugin\Plugin;
 use Exception;
+use Favez\Mvc\App;
 use Favez\Mvc\DI\Injectable;
 
 class Manager
@@ -263,9 +264,9 @@ class Manager
                 throw new Exception('Plugin already uninstalled.');
             }
 
-            if (Dependency::repository()->findOneBy(['name' => $name]) instanceof Dependency)
+            if ($this->hasDependencies($name))
             {
-                throw new Exception('Cannot uninstall because of unresolved dependencies');
+                throw new Exception('Cannot uninstall because of unresolved dependencies.');
             }
     
             self::events()->publish('core.plugin.pre_uninstall', ['instance' => $instance]);
@@ -289,6 +290,16 @@ class Manager
                 'message' => $ex->getMessage(),
             ];
         }
+    }
+
+    public function hasDependencies($name)
+    {
+        return App::db()->from('plugin')
+            ->select('true')
+            ->leftJoin('plugin_dependency ON plugin_dependency.pluginID = plugin.id')
+            ->where('plugin.active = 1')
+            ->where('plugin_dependency.name = ?', $name)
+            ->fetch();
     }
 
     /**
