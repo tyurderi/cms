@@ -2,6 +2,7 @@
 
 namespace CMS\Components\Plugin;
 
+use BackendMenu\Models\BackendMenu;
 use Favez\Mvc\App;
 
 abstract class Bootstrap
@@ -81,6 +82,21 @@ abstract class Bootstrap
         }
 
         App::events()->subscribe($eventName, $handler);
+    }
+    
+    /**
+     * Method to create a backend menu entry.
+     *
+     * @requires BackendMenu
+     * @param    array $data
+     */
+    protected function createMenu($data)
+    {
+        $menu = new BackendMenu();
+        $menu->set($data);
+        
+        $menu->pluginID = $this->instance->getModel()->id;
+        $menu->save();
     }
 
 }

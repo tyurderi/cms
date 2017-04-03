@@ -15,9 +15,9 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         $manager = new CapsuleManager();
         $manager->schema()->create('backend_menu', function(Blueprint $table) {
             $table->increments('id')->unique();
-            $table->integer('parentID')->notNull();
-            $table->string('label')->notNull()->length(128);
-            $table->integer('pluginID');
+            $table->integer('parentID')->nullable();
+            $table->string('label')->length(128);
+            $table->integer('pluginID')->nullable();
         });
 
         return true;
