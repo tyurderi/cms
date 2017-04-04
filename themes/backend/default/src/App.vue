@@ -9,17 +9,19 @@
 <script>
 import '@/assets/less/all.less';
 
-import Index from '@/components/Index';
+import MainLoader from '@/components/MainLoader';
 import Login from '@/components/Login';
+import Index from '@/components/Index';
 
 export default {
     name: 'app',
     data: () => ({
-        mainView: 'index'
+        mainView: 'mainLoader'
     }),
     components: {
-        Index,
-        Login
+        MainLoader,
+        Login,
+        Index
     },
     methods: {
         updateView(viewName)

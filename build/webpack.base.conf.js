@@ -7,6 +7,10 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+var alias = {
+  '@BackendMenu': 'ext/system/BackendMenu/Views/backend/src/'
+};
+
 module.exports = {
   entry: {
     app: './themes/backend/default/src/main.js'
@@ -55,4 +59,11 @@ module.exports = {
       }
     ]
   }
+};
+
+for (let key in alias)
+{
+    module.exports.resolve.alias[key] = resolve(alias[key]);
+
+    console.log('Registered custom alias: %s to %s', key, module.exports.resolve.alias[key]);
 }

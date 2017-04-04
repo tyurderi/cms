@@ -12,7 +12,7 @@ import Checkbox from '@/components/input/Checkbox';
 
 Vue.component(Checkbox.name, Checkbox);
 
-new Vue({
+window.app = new Vue({
     el: '#app',
     router,
     store,
