@@ -247,13 +247,14 @@ class Manager
         try
         {
             $model    = $this->getModel($name);
-            $instance = $this->loadInstance($model->namespace, $name, $model);
+            $instance = $this->loadInstance($model->namespace, $model->name, $model);
 
             if ((int) $model->active === 1)
             {
                 throw new Exception('Plugin already installed!');
             }
 
+            // Check if the required plugins within the required version are installed. Throws an exception if not.
             $this->checkRequirements($instance);
 
             self::events()->publish('core.plugin.pre_install', ['instance' => $instance]);
@@ -264,8 +265,8 @@ class Manager
 
             if (isSuccess($result))
             {
-                $instance->getModel()->active = 1;
-                $instance->getModel()->save();
+                $model->active = 1;
+                $model->save();
             }
 
             return $result;
@@ -291,7 +292,7 @@ class Manager
         try
         {
             $model    = $this->getModel($name);
-            $instance = $this->loadInstance($model->namespace, $name, $model);
+            $instance = $this->loadInstance($model->namespace, $model->name, $model);
 
             if ((int) $model->active === 0)
             {
@@ -311,8 +312,8 @@ class Manager
 
             if (isSuccess($result))
             {
-                $instance->getModel()->active = 0;
-                $instance->getModel()->save();
+                $model->active = 0;
+                $model->save();
             }
 
             return $result;
