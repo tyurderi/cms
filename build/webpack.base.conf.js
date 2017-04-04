@@ -60,6 +60,11 @@ let path            = require('path'),
 
     for (let key in response.alias)
     {
+        if (!response.alias.hasOwnProperty(key))
+        {
+            continue;
+        }
+
         configuration.resolve.alias[key] = resolve(response.alias[key]);
 
         console.log('Registered custom alias: %s to %s', key, configuration.resolve.alias[key]);
