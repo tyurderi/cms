@@ -25,11 +25,19 @@ class Manager
      * @var string[]
      */
     private $namespaces;
+    
+    /**
+     * The plugin dependency manager.
+     *
+     * @var \CMS\Components\Plugin\DependencyManager
+     */
+    private $dependencyManager;
 
     public function __construct()
     {
-        $this->instances  = [];
-        $this->namespaces = ['custom', 'system'];
+        $this->instances         = [];
+        $this->namespaces        = ['custom', 'system'];
+        $this->dependencyManager = new DependencyManager();
     }
 
     /**
@@ -115,21 +123,7 @@ class Manager
 
                 $model->save();
 
-                // Update plugin dependencies
-                foreach ($info->getRequires() as $name => $version)
-                {
-                    $dependency = Dependency::repository()->findOneBy(['pluginID' => $model->id, 'name' => $name]);
-
-                    if (!($dependency instanceof Dependency))
-                    {
-                        $dependency = new Dependency();
-                        $dependency->pluginID = $model->id;
-                        $dependency->name     = $name;
-                    }
-
-                    $dependency->version = $version;
-                    $dependency->save();
-                }
+                $this->dependencyManager->update($instance);
             }
         }
 
@@ -255,7 +249,7 @@ class Manager
             }
 
             // Check if the required plugins within the required version are installed. Throws an exception if not.
-            $this->checkRequirements($instance);
+            $this->dependencyManager->checkRequirements($instance);
 
             self::events()->publish('core.plugin.pre_install', ['instance' => $instance]);
 
@@ -299,7 +293,7 @@ class Manager
                 throw new Exception('Plugin already uninstalled.');
             }
 
-            if ($dependencies = $this->getDependencies($name))
+            if ($dependencies = $this->dependencyManager->getDependencies($name))
             {
                 throw new Exception('Unable to uninstall because of the following depended plugins: ' . implode(', ', $dependencies));
             }
@@ -326,26 +320,11 @@ class Manager
             ];
         }
     }
-    
-    /**
-     * Load the depended and enabled plugins for the given plugin name.
-     *
-     * @param string $name
-     *
-     * @return array
-     */
-    public function getDependencies($name)
-    {
-        return App::db()->from('plugin p')
-            ->select(null)->select('p.name')
-            ->leftJoin('plugin_dependency pd ON pd.pluginID = p.id')
-            ->where('p.active = 1')
-            ->where('pd.name = ?', $name)
-            ->fetchPairs(0, 'p.name');
-    }
 
     /**
-     * @param $name
+     * Returns the plugin model identified by its unique name.
+     *
+     * @param string $name
      * @return \Favez\ORM\EntityInterface|Plugin
      */
     public function getModel($name)
@@ -364,43 +343,12 @@ class Manager
     {
         if (!isset($this->instances[$name]))
         {
-            $plugin   = $this->getModel($name);
-            $instance = $this->loadInstance($plugin->namespace, $plugin->name, $plugin);
-
-            return $instance->getBootstrap();
+            $model = $this->getModel($name);
+            
+            $this->loadInstance($model->namespace, $model->name, $model);
         }
 
-        return $this->instances[$name]->getInstance();
-    }
-    
-    /**
-     * Checks whether the requirements of the plugin are met or not.
-     *
-     * @param \CMS\Components\Plugin\Instance $instance
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function checkRequirements(Instance $instance)
-    {
-        $requires = $instance->getInfo()->getRequires();
-        
-        foreach ($requires as $name => $version)
-        {
-            $plugin = Plugin::repository()->findOneBy(['name' => $name, 'active' => true]);
-            
-            if (!($plugin instanceof Plugin))
-            {
-                throw new Exception('Required plugin not found or installed: ' . $name);
-            }
-            
-            if (!version_compare($version, $plugin->version, '<='))
-            {
-                throw new Exception(sprintf('Required plugin version (%s) does not match! (%s)', $version, $plugin->version));
-            }
-        }
-        
-        return true;
+        return $this->instances[$name]->getBootstrap();
     }
 
 }
