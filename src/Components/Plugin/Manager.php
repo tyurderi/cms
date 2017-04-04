@@ -224,6 +224,7 @@ class Manager
         /** @var Plugin $plugin */
         foreach ($plugins as $plugin)
         {
+            // If the plugin does not exists in filesystem disable it and do not try to execute it to prevent errors.
             if (!$this->exists($plugin->namespace, $plugin->name))
             {
                 $plugin->active = 0;
