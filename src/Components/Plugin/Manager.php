@@ -187,12 +187,27 @@ class Manager
 
         return $this->instances[$name];
     }
-
+    
+    /**
+     * The preferred plugin bootstrap class name.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
     public function getClassName($name)
     {
         return $name . '\\Bootstrap';
     }
-
+    
+    /**
+     * Returns the actually plugin directory for the given namespace.
+     *
+     * @param string $namespace
+     *
+     * @return string
+     * @throws \Exception Usually when the namespace does not exists.
+     */
     public function getPluginDirectory($namespace)
     {
         $directory = self::config('app.path') . self::config('plugin.path') . $namespace. '/';
@@ -204,7 +219,10 @@ class Manager
 
         return $directory;
     }
-
+    
+    /**
+     * Execute all enabled plugins.
+     */
     public function execute()
     {
         $plugins = Plugin::repository()->findBy(['active' => true]);
@@ -216,7 +234,14 @@ class Manager
             $instance->getBootstrap()->execute();
         }
     }
-
+    
+    /**
+     * Install a plugin by its name.
+     *
+     * @param string $name
+     *
+     * @return array|bool
+     */
     public function install($name)
     {
         try
@@ -253,7 +278,14 @@ class Manager
             ];
         }
     }
-
+    
+    /**
+     * Uninstall a plugin by its name.
+     *
+     * @param string $name
+     *
+     * @return array|bool
+     */
     public function uninstall($name)
     {
         try
@@ -293,7 +325,14 @@ class Manager
             ];
         }
     }
-
+    
+    /**
+     * Load the depended and enabled plugins for the given plugin name.
+     *
+     * @param string $name
+     *
+     * @return array
+     */
     public function getDependencies($name)
     {
         return App::db()->from('plugin p')
