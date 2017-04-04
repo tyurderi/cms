@@ -30,6 +30,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     {
         $this->subscribeEvent('core.plugin.pre_uninstall', [$this, 'onPluginUninstall']);
         $this->subscribeEvent('vue.collector.run', [$this, 'onVueCollectorRun']);
+
+        $this->registerController('Api', 'Menu');
     }
     
     public function onPluginUninstall(Arguments $args)

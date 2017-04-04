@@ -8,7 +8,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     public function install()
     {
         $this->createMenu([
-            'label' => 'Test'
+            'label' => 'Test',
+            'url'   => ''
         ]);
         
         return true;

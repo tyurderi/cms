@@ -54,7 +54,7 @@ class Auth
             $session = new Session();
             $session->userID  = (int) $user->id;
             $session->hash    = $sessionID;
-            $session->expires = time() + 3600;
+            $session->expires = date('Y-m-d H:i:s', time() + 3600);
 
             if ($keepLogin)
             {
