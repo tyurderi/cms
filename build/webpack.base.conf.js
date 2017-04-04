@@ -1,69 +1,69 @@
-var path = require('path')
-var utils = require('./utils')
-var config = require('../config')
-var vueLoaderConfig = require('./vue-loader.conf')
+function resolve(dir) { return path.join(__dirname, '..', dir) }
 
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
-}
-
-var alias = {
-  '@BackendMenu': 'ext/system/BackendMenu/Views/backend/src/'
-};
-
-module.exports = {
-  entry: {
-    app: './themes/backend/default/src/main.js'
-  },
-  output: {
-    path: config.build.assetsRoot,
-    filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
-  },
-  resolve: {
-    extensions: ['.js', '.vue', '.json'],
-    alias: {
-      'vue$': 'vue/dist/vue.common.js',
-      '@': resolve('themes/backend/default/src'),
-    }
-  },
-  module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
+let path            = require('path'),
+    utils           = require('./utils'),
+    config          = require('../config'),
+    vueLoaderConfig = require('./vue-loader.conf'),
+    php_console     = require('./console');
+    configuration   = {
+        entry: {
+          app: './themes/backend/default/src/main.js'
       },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: [resolve('themes/backend/default/src'), resolve('test')]
+        output: {
+          path: config.build.assetsRoot,
+          filename: '[name].js',
+          publicPath: process.env.NODE_ENV === 'production'
+              ? config.build.assetsPublicPath
+              : config.dev.assetsPublicPath
       },
-      {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        resolve: {
+            extensions: ['.js', '.vue', '.json'],
+            alias: {
+                'vue$': 'vue/dist/vue.common.js',
+                '@': resolve('themes/backend/default/src'),
+            }
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.vue$/,
+                    loader: 'vue-loader',
+                    options: vueLoaderConfig
+                },
+                {
+                    test: /\.js$/,
+                    loader: 'babel-loader',
+                    include: [resolve('themes/backend/default/src'), resolve('test')]
+                },
+                {
+                    test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                    loader: 'url-loader',
+                    query: {
+                        limit: 10000,
+                        name: utils.assetsPath('img/[name].[hash:7].[ext]')
+                    }
+                },
+                {
+                    test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                    loader: 'url-loader',
+                    query: {
+                        limit: 10000,
+                        name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                    }
+                }
+            ]
         }
-      },
-      {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-        }
-      }
-    ]
-  }
-};
+    };
 
-for (let key in alias)
 {
-    module.exports.resolve.alias[key] = resolve(alias[key]);
+    response = php_console('vue:collect');
 
-    console.log('Registered custom alias: %s to %s', key, module.exports.resolve.alias[key]);
+    for (let key in response.alias)
+    {
+        configuration.resolve.alias[key] = resolve(response.alias[key]);
+
+        console.log('Registered custom alias: %s to %s', key, configuration.resolve.alias[key]);
+    }
 }
+
+module.exports = configuration;

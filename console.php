@@ -11,7 +11,9 @@ $console = new \Symfony\Component\Console\Application('CMS Console Commands', '1
 $console->addCommands([
     new \CMS\Commands\PluginListCommand(),
     new \CMS\Commands\PluginInstallCommand(),
-    new \CMS\Commands\PluginUninstallCommand()
+    new \CMS\Commands\PluginUninstallCommand(),
+    
+    new \CMS\Commands\VueCollectCommand()
 ]);
 
 $console->run();

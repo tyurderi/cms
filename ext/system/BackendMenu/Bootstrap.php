@@ -29,6 +29,7 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     public function execute()
     {
         $this->subscribeEvent('core.plugin.pre_uninstall', [$this, 'onPluginUninstall']);
+        $this->subscribeEvent('vue.collector.run', [$this, 'onVueCollectorRun']);
     }
     
     public function onPluginUninstall(Arguments $args)
@@ -38,6 +39,13 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         $pluginID = $instance->getModel()->id;
         
         BackendMenu::repository()->findBy(['pluginID' => $pluginID])->delete();
+    }
+    
+    public function onVueCollectorRun(Arguments $args)
+    {
+        /** @var \CMS\Components\Collector\Vue $collector */
+        $collector = $args->get('collector');
+        $collector->pushAlias('@BackendMenu', $this->getRelativePath() . 'Views/backend/src/');
     }
     
 }

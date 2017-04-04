@@ -12,6 +12,11 @@ abstract class Bootstrap
      * @var Instance
      */
     protected $instance;
+    
+    /**
+     * @var string
+     */
+    protected $relativePath;
 
     final public function __construct()
     {
@@ -26,6 +31,16 @@ abstract class Bootstrap
     public function getPath()
     {
         return $this->instance->getPath();
+    }
+    
+    public function getRelativePath()
+    {
+        if ($this->relativePath === null)
+        {
+            $this->relativePath = substr($this->getPath(), strlen(App::path()));
+        }
+        
+        return $this->relativePath;
     }
 
     public function getInfo()
