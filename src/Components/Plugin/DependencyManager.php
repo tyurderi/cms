@@ -20,7 +20,7 @@ class DependencyManager
         $info  = $instance->getInfo();
         $model = $instance->getModel();
         
-        // Update plugin dependencies
+        // Loop through all local plugin dependencies and update/write it in database.
         foreach ($info->getRequires() as $name => $version)
         {
             $dependency = Dependency::repository()->findOneBy(['pluginID' => $model->id, 'name' => $name]);
@@ -34,6 +34,24 @@ class DependencyManager
         
             $dependency->version = $version;
             $dependency->save();
+        }
+        
+        // Loop through all plugin dependencies in database and remove it when not exists locally.
+        $dependencies = Dependency::repository()->findBy(['pluginID' => $model->id]);
+
+        /** @var Dependency $dependency */
+        foreach ($dependencies as $dependency)
+        {
+            foreach ($info->getRequires() as $name => $version)
+            {
+                if ($name === $dependency->name)
+                {
+                    continue 2;
+                    break;
+                }
+            }
+    
+            $dependency->delete();
         }
     }
     
