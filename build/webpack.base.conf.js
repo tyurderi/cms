@@ -7,15 +7,15 @@ let path            = require('path'),
     php_console     = require('./console');
     configuration   = {
         entry: {
-          app: './themes/backend/default/src/main.js'
-      },
+            app: './themes/backend/default/src/main.js'
+        },
         output: {
-          path: config.build.assetsRoot,
-          filename: '[name].js',
-          publicPath: process.env.NODE_ENV === 'production'
-              ? config.build.assetsPublicPath
-              : config.dev.assetsPublicPath
-      },
+            path: config.build.assetsRoot,
+            filename: '[name].js',
+            publicPath: process.env.NODE_ENV === 'production'
+                ? config.build.assetsPublicPath
+                : config.dev.assetsPublicPath
+        },
         resolve: {
             extensions: ['.js', '.vue', '.json'],
             alias: {
