@@ -53,6 +53,13 @@ class CapsuleManager
         return $this->manager->schema();
     }
     
+    /**
+     * Helper method to create a table for a model.
+     *
+     * @param string|\Favez\Mvc\ORM\Entity $className
+     *
+     * @throws \Exception
+     */
     public function create($className)
     {
         if (!self::models()->isValid($className))
@@ -74,6 +81,14 @@ class CapsuleManager
         );
     }
     
+    /**
+     * Helper method to drop a table for a model.
+     *
+     * @param string|\Favez\Mvc\ORM\Entity $className
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function drop($className)
     {
         if (!self::models()->isValid($className))
