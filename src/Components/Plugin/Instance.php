@@ -10,10 +10,10 @@ class Instance
     const INFO_FILENAME = 'plugin.json';
 
     /**
-     * The actually plugin instance.
+     * The actually plugin bootstrap instance.
      * @var Bootstrap
      */
-    private $instance;
+    private $bootstrap;
 
     /**
      * Hols the information from 'plugin.json'
@@ -36,14 +36,14 @@ class Instance
      */
     private $model;
 
-    public function __construct($instance, $path)
+    public function __construct($bootstrap, $path)
     {
-        $this->instance = $instance;
-        $this->path     = $path;
+        $this->bootstrap = $bootstrap;
+        $this->path      = $path;
 
         $this->loadInfo();
 
-        $this->instance->setInstance($this);
+        $this->bootstrap->setInstance($this);
     }
 
     /**
@@ -61,9 +61,9 @@ class Instance
      *
      * @return Bootstrap
      */
-    public function getInstance()
+    public function getBootstrap()
     {
-        return $this->instance;
+        return $this->bootstrap;
     }
 
     /**

@@ -162,6 +162,7 @@ class Manager
      * @param string $name
      * @param Plugin $model
      *
+     * @throws \Exception
      * @return Instance
      */
     public function loadInstance($namespace, $name, $model = null)
@@ -173,7 +174,8 @@ class Manager
                 throw new Exception('Trying to access unknown plugin: ' . $name);
             }
 
-            $instance = new Instance(new $className(), $path);
+            $bootstrap = new $className();
+            $instance  = new Instance($bootstrap, $path);
 
             if ($model instanceof Plugin)
             {
@@ -211,7 +213,7 @@ class Manager
         foreach ($plugins as $plugin)
         {
             $instance = $this->loadInstance($plugin->namespace, $plugin->name, $plugin);
-            $instance->getInstance()->execute();
+            $instance->getBootstrap()->execute();
         }
     }
 
@@ -231,7 +233,7 @@ class Manager
 
             self::events()->publish('core.plugin.pre_install', ['instance' => $instance]);
 
-            $result = $instance->getInstance()->install();
+            $result = $instance->getBootstrap()->install();
     
             self::events()->publish('core.plugin.post_install', ['instance' => $instance]);
 
@@ -271,7 +273,7 @@ class Manager
     
             self::events()->publish('core.plugin.pre_uninstall', ['instance' => $instance]);
             
-            $result = $instance->getInstance()->uninstall();
+            $result = $instance->getBootstrap()->uninstall();
     
             self::events()->publish('core.plugin.post_uninstall', ['instance' => $instance]);
 
@@ -294,12 +296,12 @@ class Manager
 
     public function getDependencies($name)
     {
-        return App::db()->from('plugin')
-            ->select(null)->select('plugin.name')
-            ->leftJoin('plugin_dependency ON plugin_dependency.pluginID = plugin.id')
-            ->where('plugin.active = 1')
-            ->where('plugin_dependency.name = ?', $name)
-            ->fetchPairs(0, 'plugin.name');
+        return App::db()->from('plugin p')
+            ->select(null)->select('p.name')
+            ->leftJoin('plugin_dependency pd ON pd.pluginID = p.id')
+            ->where('p.active = 1')
+            ->where('pd.name = ?', $name)
+            ->fetchPairs(0, 'p.name');
     }
 
     /**
@@ -325,7 +327,7 @@ class Manager
             $plugin   = $this->getModel($name);
             $instance = $this->loadInstance($plugin->namespace, $plugin->name, $plugin);
 
-            return $instance->getInstance();
+            return $instance->getBootstrap();
         }
 
         return $this->instances[$name]->getInstance();
