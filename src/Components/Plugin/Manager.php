@@ -224,6 +224,13 @@ class Manager
         /** @var Plugin $plugin */
         foreach ($plugins as $plugin)
         {
+            if (!$this->exists($plugin->namespace, $plugin->name))
+            {
+                $plugin->active = 0;
+                $plugin->save();
+                continue;
+            }
+            
             $instance = $this->loadInstance($plugin->namespace, $plugin->name, $plugin);
             $instance->getBootstrap()->execute();
         }
