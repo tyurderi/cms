@@ -13,12 +13,7 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     public function install()
     {
         $manager = new CapsuleManager();
-        $manager->schema()->create('backend_menu', function(Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->integer('parentID')->nullable();
-            $table->string('label')->length(128);
-            $table->integer('pluginID')->nullable();
-        });
+        $manager->create(BackendMenu::class);
 
         return true;
     }
@@ -26,7 +21,7 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     public function uninstall()
     {
         $manager = new CapsuleManager();
-        $manager->schema()->dropIfExists('backend_menu');
+        $manager->drop(BackendMenu::class);
         
         return true;
     }

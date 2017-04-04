@@ -2,8 +2,10 @@
 
 namespace CMS\Components\Database;
 
+use Exception;
 use Favez\Mvc\DI\Injectable;
 use Illuminate\Container\Container;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -49,6 +51,39 @@ class CapsuleManager
     public function schema()
     {
         return $this->manager->schema();
+    }
+    
+    public function create($className)
+    {
+        if (!self::models()->isValid($className))
+        {
+            throw new Exception('Invalid entity.');
+        }
+        
+        if (!method_exists($className, 'createSchema'))
+        {
+            throw new Exception('Entity method "createSchema" does not exist.');
+        }
+        
+        $this->schema()->create(
+            $className::getSource(),
+            function(Blueprint $blueprint) use($className)
+            {
+                return $className::createSchema($blueprint);
+            }
+        );
+    }
+    
+    public function drop($className)
+    {
+        if (!self::models()->isValid($className))
+        {
+            throw new Exception('Invalid entity');
+        }
+        
+        $this->schema()->dropIfExists($className::getSource());
+        
+        return true;
     }
     
 }
