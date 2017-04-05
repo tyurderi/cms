@@ -6,3 +6,4 @@ vendor/
 .idea/
 /backend/
 !backend/.gitkeep
+.vagrant/

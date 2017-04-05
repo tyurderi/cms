@@ -19,7 +19,7 @@ return [
             'host' => 'localhost',
             'shem' => 'vuex_cms',
             'user' => 'root',
-            'pass' => ''
+            'pass' => 'vagrant'
         ],
         'app' => [
             'path'       => __DIR__ . '/',
