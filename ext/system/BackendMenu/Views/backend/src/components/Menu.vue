@@ -7,7 +7,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" v-on:click="logout">
+                <a href="#" v-on:click.prevent="logout">
                     Logout
                 </a>
             </li>
@@ -37,11 +37,9 @@ export default {
                 me.items = response.data.data;
             });
         },
-        logout(e)
+        logout()
         {
             let me = this;
-            
-            e.preventDefault();
             
             me.$http.get('api/user/logout').then(() => {
                 me.$events.emit('updateView', 'login');
