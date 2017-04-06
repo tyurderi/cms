@@ -1,8 +1,10 @@
 <template>
-    <div class="sidebar--menu">
+    <div class="menu">
         <ul>
-            <li v-for="item in menu">
-                {{ item.label }}
+            <li v-for="item in items" :class="{ active: item.active }">
+                <a :href="item.url">
+                    {{ item.label }}
+                </a>
             </li>
         </ul>
     </div>
@@ -12,15 +14,23 @@
 export default {
     name: 'menu',
     data: () => ({
-        menu: []
+        items: []
     }),
     mounted()
     {
         let me = this;
 
-        me.$http.post('api/menu/list').then((response) => {
-            me.menu = response.data.data;
-        });
+        me.load();
+    },
+    methods: {
+        load()
+        {
+            let me = this;
+            
+            me.$http.get('api/menu/list').then((response) => {
+                me.items = response.data.data;
+            });
+        }
     }
 }
 </script>

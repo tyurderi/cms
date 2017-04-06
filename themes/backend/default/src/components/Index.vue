@@ -1,14 +1,14 @@
 <template>
     <div class="main-container">
-        <main-menu></main-menu>
+        <sidebar></sidebar>
     </div>
 </template>
 
 <script>
-import MainMenu from '@BackendMenu/components/Menu';
+import Sidebar from '@BackendMenu/components/Sidebar';
 
 export default {
     name: 'index',
-    components: { MainMenu }
+    components: { Sidebar }
 }
 </script>

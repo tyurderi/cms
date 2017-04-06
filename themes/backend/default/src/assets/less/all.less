@@ -1,6 +1,8 @@
 @import "animations";
 @import "transitions";
 
+@import "_components/sidebar";
+
 * {
   box-sizing: border-box;
 }
@@ -9,10 +11,20 @@ body {
   margin: 0;
   padding: 0;
   font-size: 14px;
-  // background: #efefef;
   background: #e74c3c;
   #app {
     font-family: 'Open Sans', sans-serif;
-
+    .main-container {
+      background: #efefef;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: row;
+    }
   }
 }
