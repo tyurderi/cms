@@ -6,6 +6,11 @@
                     {{ item.label }}
                 </a>
             </li>
+            <li>
+                <a href="#" v-on:click="logout">
+                    Logout
+                </a>
+            </li>
         </ul>
     </div>
 </template>
@@ -30,6 +35,16 @@ export default {
             
             me.$http.get('api/menu/list').then((response) => {
                 me.items = response.data.data;
+            });
+        },
+        logout(e)
+        {
+            let me = this;
+            
+            e.preventDefault();
+            
+            me.$http.get('api/user/logout').then(() => {
+                me.$events.emit('updateView', 'login');
             });
         }
     }

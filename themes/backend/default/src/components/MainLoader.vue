@@ -14,11 +14,11 @@ export default {
         me.$http.get('api/user/status').then((response) => {
             if (response.body.success === true)
             {
-                me.$emit('updateView', 'index');
+                me.$events.emit('updateView', 'index');
             }
             else
             {
-                me.$emit('updateView', 'login');
+                me.$events.emit('updateView', 'login');
             }
         });
     }

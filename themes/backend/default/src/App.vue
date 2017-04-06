@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <transition name="fade">
-            <component :is="mainView" v-on:updateView="updateView"></component>
+            <component :is="mainView"></component>
         </transition>
     </div>
 </template>
@@ -22,6 +22,12 @@ export default {
         MainLoader,
         Login,
         Index
+    },
+    mounted()
+    {
+        let me = this;
+        
+        me.$events.on('updateView', me.updateView.bind(me));
     },
     methods: {
         updateView(viewName)
