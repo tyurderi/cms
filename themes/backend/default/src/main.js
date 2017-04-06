@@ -5,8 +5,10 @@ import router from './router'
 import store from './store';
 
 import Http from 'vue-resource';
+import Events from 'vue-events';
 
 Vue.use(Http);
+Vue.use(Events);
 
 import Checkbox from '@/components/input/Checkbox';
 

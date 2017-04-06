@@ -20,7 +20,8 @@ export default {
     {
         let me = this;
 
-        me.load();
+        me.$events.on('menu.refresh', me.load.bind(me));
+        me.$events.emit('menu.refresh');
     },
     methods: {
         load()
