@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import '../assets/less/_components/sidebar.less';
 import SidebarMenu from './Menu.vue';
 
 export default {
