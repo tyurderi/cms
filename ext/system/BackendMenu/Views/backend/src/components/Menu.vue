@@ -32,16 +32,20 @@ export default {
         load()
         {
             let me = this;
-            
+
+            me.$progress.start();
             me.$http.get('api/menu/list').then((response) => {
+                me.$progress.finish();
                 me.items = response.data.data;
             });
         },
         logout()
         {
             let me = this;
-            
+
+            me.$progress.start();
             me.$http.get('api/user/logout').then(() => {
+                me.$progress.finish();
                 me.$events.emit('updateView', 'login');
             });
         }

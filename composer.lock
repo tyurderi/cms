@@ -106,16 +106,16 @@
         },
         {
             "name": "favez/favez",
-            "version": "1.13",
+            "version": "1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/favez/favez.git",
-                "reference": "beea05832c31590b4216c5920d859b16b2de2d35"
+                "reference": "e40697ff31a544296f7557f11bead57d6d0a7074"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/favez/favez/zipball/beea05832c31590b4216c5920d859b16b2de2d35",
-                "reference": "beea05832c31590b4216c5920d859b16b2de2d35",
+                "url": "https://api.github.com/repos/favez/favez/zipball/e40697ff31a544296f7557f11bead57d6d0a7074",
+                "reference": "e40697ff31a544296f7557f11bead57d6d0a7074",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,10 @@
             "autoload": {
                 "psr-4": {
                     "Favez\\Mvc\\": "src/"
-                }
+                },
+                "files": [
+                    "src/Functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -144,20 +147,20 @@
                 }
             ],
             "description": "Favez PHP Framework",
-            "time": "2017-04-01T20:16:24+00:00"
+            "time": "2017-04-13T06:33:18+00:00"
         },
         {
             "name": "favez/orm",
-            "version": "1.0.6",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/favez/orm.git",
-                "reference": "d196e567af4cfcb5affc3f18b5ba4d4396e1abbd"
+                "reference": "10df06f97d558c92a694ea631d997b43d16fd45d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/favez/orm/zipball/d196e567af4cfcb5affc3f18b5ba4d4396e1abbd",
-                "reference": "d196e567af4cfcb5affc3f18b5ba4d4396e1abbd",
+                "url": "https://api.github.com/repos/favez/orm/zipball/10df06f97d558c92a694ea631d997b43d16fd45d",
+                "reference": "10df06f97d558c92a694ea631d997b43d16fd45d",
                 "shasum": ""
             },
             "require": {
@@ -181,7 +184,7 @@
                 }
             ],
             "description": "Favez ORM Package",
-            "time": "2016-10-06T11:52:15+00:00"
+            "time": "2017-04-13T06:28:01+00:00"
         },
         {
             "name": "illuminate/container",
@@ -925,16 +928,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "28fb243a2b5727774ca309ec2d92da240f1af0dd"
+                "reference": "c30243cc51f726812be3551316b109a2f5deaf8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/28fb243a2b5727774ca309ec2d92da240f1af0dd",
-                "reference": "28fb243a2b5727774ca309ec2d92da240f1af0dd",
+                "url": "https://api.github.com/repos/symfony/console/zipball/c30243cc51f726812be3551316b109a2f5deaf8d",
+                "reference": "c30243cc51f726812be3551316b109a2f5deaf8d",
                 "shasum": ""
             },
             "require": {
@@ -984,20 +987,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-06T19:30:27+00:00"
+            "time": "2017-04-04T14:33:42+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "b90c9f91ad8ac37d9f114e369042d3226b34dc1a"
+                "reference": "56f613406446a4a0a031475cfd0a01751de22659"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/b90c9f91ad8ac37d9f114e369042d3226b34dc1a",
-                "reference": "b90c9f91ad8ac37d9f114e369042d3226b34dc1a",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/56f613406446a4a0a031475cfd0a01751de22659",
+                "reference": "56f613406446a4a0a031475cfd0a01751de22659",
                 "shasum": ""
             },
             "require": {
@@ -1041,7 +1044,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-18T17:28:00+00:00"
+            "time": "2017-03-28T21:38:24+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1104,16 +1107,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "0e1b15ce8fbf3890f4ccdac430ed5e07fdfe0690"
+                "reference": "c740eee70783d2af4d3d6b70d5146f209e6b4d13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/0e1b15ce8fbf3890f4ccdac430ed5e07fdfe0690",
-                "reference": "0e1b15ce8fbf3890f4ccdac430ed5e07fdfe0690",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/c740eee70783d2af4d3d6b70d5146f209e6b4d13",
+                "reference": "c740eee70783d2af4d3d6b70d5146f209e6b4d13",
                 "shasum": ""
             },
             "require": {
@@ -1164,7 +1167,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-04T12:23:14+00:00"
+            "time": "2017-03-21T21:44:32+00:00"
         },
         {
             "name": "tedivm/stash",

@@ -22,20 +22,27 @@ export default {
     data: () => ({
         email: '',
         password: '',
-        keepLogin: false
+        keepLogin: false,
     }),
     methods: {
         submit()
         {
             let me = this;
 
+            me.$progress.start();
+
             me.$http.post('api/user/login', {
                 email: me.email,
                 password: me.password,
                 keepLogin: me.keepLogin
             }).then((response) => {
-                console.log(response);
+                me.$progress.finish();
+                if (response.data.success)
+                {
+                    me.$events.emit('updateView', 'index');
+                }
             }, (error) => {
+                me.$progress.fail();
                 console.log(error);
             });
         }

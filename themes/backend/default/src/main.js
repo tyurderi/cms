@@ -6,9 +6,18 @@ import store from './store';
 
 import Http from 'vue-resource';
 import Events from 'vue-events';
+import VueProgressBar from 'vue-progressbar';
+import CustomProgressBar from '@/components/progressbar';
 
 Vue.use(Http);
 Vue.use(Events);
+Vue.use(VueProgressBar, {
+    color: 'rgba(52, 152, 219,1.0)',
+    failedColor: 'red',
+    height: '2px'
+});
+
+Vue.use(CustomProgressBar);
 
 import Checkbox from '@/components/input/Checkbox';
 

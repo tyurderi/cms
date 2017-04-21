@@ -1,5 +1,7 @@
 <template>
     <div id="app">
+        <vue-progress-bar></vue-progress-bar>
+
         <transition name="fade">
             <component :is="mainView"></component>
         </transition>
