@@ -22,7 +22,7 @@ export default {
     data: () => ({
         email: '',
         password: '',
-        keepLogin: false,
+        keepLogin: false
     }),
     methods: {
         submit()

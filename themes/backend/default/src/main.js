@@ -1,7 +1,9 @@
+import { registerComponents } from './util';
+
 import Vue from 'vue'
 import App from './App'
 
-import router from './router'
+import router from './router.js'
 import store from './store';
 
 import Http from 'vue-resource';
@@ -19,9 +21,15 @@ Vue.use(VueProgressBar, {
 
 Vue.use(CustomProgressBar);
 
-import Checkbox from '@/components/input/Checkbox';
+registerComponents([
+    require('@/components/input/Checkbox'),
+    require('@/components/Modal'),
+    require('@/components/ErrorModal'),
+]);
 
-Vue.component(Checkbox.name, Checkbox);
+// Load plugins
+import './plugins.js';
+import './store/error.js';
 
 window.app = new Vue({
     el: '#app',

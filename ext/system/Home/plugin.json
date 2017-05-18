@@ -1,0 +1,11 @@
+{
+  "label": "Home",
+  "description": "The dashboard or home page.",
+  "version": "1.0.0",
+  "author": "tyurderi",
+  "website": "http://yurderi.de",
+  "email": "tyurderi@yahoo.de",
+  "requires": {
+    "BackendMenu": "1.0.0"
+  }
+}

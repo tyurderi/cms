@@ -23,12 +23,15 @@ class Vue
     
     public function collect()
     {
-        App::events()->publish('vue.collector.run', [ 'collector' => $this ]);
+        App::events()->publish('vue.collector.run', ['collector' => $this]);
     }
     
-    public function pushAlias($alias, $path)
+    public function pushAlias($alias, $relativePath, $absolutePath)
     {
-        $this->alias[$alias] = $path;
+        $this->alias[$alias] = [
+            'relativePath' => $relativePath,
+            'absolutePath' => $absolutePath
+        ];
     }
     
     public function getAlias()

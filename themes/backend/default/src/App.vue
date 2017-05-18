@@ -5,11 +5,15 @@
         <transition name="fade">
             <component :is="mainView"></component>
         </transition>
+        
+        <error-modal></error-modal>
     </div>
 </template>
 
 <script>
 import '@/assets/less/all.less';
+import 'font-awesome/css/font-awesome.min.css';
+import '@/assets/css/base.css';
 
 import MainLoader from '@/components/MainLoader';
 import Login from '@/components/Login';

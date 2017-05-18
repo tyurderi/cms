@@ -18,12 +18,34 @@ class VueCollectCommand extends Command
     
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $collector = new Vue();
-        $collector->collect();
+        $vue = new Vue();
+        $vue->collect();
         
-        $output->writeln(json_encode([
-            'alias' => $collector->getAlias()
-        ]));
+        $this->writeJSON($vue);
+        $this->writeJS($vue);
+        
+        $output->writeln(json_encode(['success' => true]));
+    }
+    
+    protected function writeJSON(Vue $vue)
+    {
+        $filename = self::path() . '/themes/backend/default/src/plugins.json';
+        $data     = json_encode(['alias' => $vue->getAlias()]);
+        
+        file_put_contents($filename, $data);
+    }
+    
+    protected function writeJS(Vue $vue)
+    {
+        $filename         = self::path() . '/themes/backend/default/src/plugins.js';
+        $importStatements = [];
+    
+        foreach ($vue->getAlias() as $alias => $paths)
+        {
+            $importStatements[] = sprintf('import \'%s\';', $alias);
+        }
+    
+        file_put_contents($filename, implode(PHP_EOL, $importStatements));
     }
     
 }

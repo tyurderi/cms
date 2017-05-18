@@ -9,6 +9,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "vue": "^2.1.10",
     "vue-events": "^3.0.1",
     "vue-resource": "^1.2.1",
