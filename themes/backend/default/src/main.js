@@ -13,11 +13,14 @@ Vue.use(Http);
 Vue.use(Events);
 
 registerComponents([
-    require('@/components/input/Checkbox')
+    require('@/components/input/Checkbox'),
+    require('@/components/Modal'),
+    require('@/components/ErrorModal'),
 ]);
 
 // Load plugins
 import './plugins.js';
+import './store/error.js';
 
 window.app = new Vue({
     el: '#app',
