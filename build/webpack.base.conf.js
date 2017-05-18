@@ -56,16 +56,19 @@ let path            = require('path'),
     };
 
 {
-    response = php_console('vue:collect');
+    console.log('Generating plugins.js and plugins.json...');
+    php_console('vue:collect');
 
-    for (let key in response.alias)
+    let plugins = require(resolve('themes/backend/default/src/plugins.json'));
+
+    for (let key in plugins.alias)
     {
-        if (!response.alias.hasOwnProperty(key))
+        if (!plugins.alias.hasOwnProperty(key))
         {
             continue;
         }
 
-        configuration.resolve.alias[key] = resolve(response.alias[key]);
+        configuration.resolve.alias[key] = resolve(plugins.alias[key].relativePath);
 
         console.log('Registered custom alias: %s to %s', key, configuration.resolve.alias[key]);
     }

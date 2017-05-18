@@ -47,7 +47,11 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     {
         /** @var \CMS\Components\Collector\Vue $collector */
         $collector = $args->get('collector');
-        $collector->pushAlias('@BackendMenu', $this->getRelativePath() . 'Views/backend/src/');
+        $collector->pushAlias(
+            '@BackendMenu',
+            $this->getRelativePath() . 'Views/backend/src/',
+            $this->getPath() . 'Views/backend/src/'
+        );
     }
     
 }

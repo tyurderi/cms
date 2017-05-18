@@ -16,11 +16,9 @@ registerComponents([
     require('@/components/input/Checkbox')
 ]);
 
-// Call plugin logic
-import '@Home';
-import '@BackendMenu';
+// Load plugins
+import './plugins.js';
 
-/*
 window.app = new Vue({
     el: '#app',
     router,
@@ -31,4 +29,3 @@ window.app = new Vue({
         root: process.env.BASE_PATH
     }
 });
-*/
