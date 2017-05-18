@@ -49,6 +49,9 @@ export default {
                 .then(
                     response => {
                         this.$emit('accept');
+                        
+                        this.confirm   = false;
+                        this.compiling = false;
                     },
                     response => {
                         this.$store.dispatch('error/push', response);
