@@ -16,27 +16,25 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'menu',
     data: () => ({
-        items: []
+    
     }),
+    computed: {
+        ...mapGetters({
+            items: 'menu/items'
+        })
+    },
     mounted()
     {
         let me = this;
-
-        me.$events.on('menu.refresh', me.load.bind(me));
-        me.$events.emit('menu.refresh');
+        
+        me.$store.dispatch('menu/load');
     },
     methods: {
-        load()
-        {
-            let me = this;
-            
-            me.$http.get('api/menu/list').then((response) => {
-                me.items = response.data.data;
-            });
-        },
         logout()
         {
             let me = this;

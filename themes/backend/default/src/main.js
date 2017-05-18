@@ -1,8 +1,13 @@
+import { registerComponents } from './util';
+
 import Vue from 'vue'
 import App from './App'
 
-import router from './router'
+import router from './routes'
 import store from './store';
+
+// register custom stores here
+import '@BackendMenu/store/menu';
 
 import Http from 'vue-resource';
 import Events from 'vue-events';
@@ -10,9 +15,9 @@ import Events from 'vue-events';
 Vue.use(Http);
 Vue.use(Events);
 
-import Checkbox from '@/components/input/Checkbox';
-
-Vue.component(Checkbox.name, Checkbox);
+registerComponents([
+    require('@/components/input/Checkbox')
+]);
 
 window.app = new Vue({
     el: '#app',
