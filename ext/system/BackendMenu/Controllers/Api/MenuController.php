@@ -4,6 +4,7 @@ namespace CMS\Controllers\Api;
 
 use BackendMenu\Models\BackendMenu;
 use CMS\Components\Controller;
+use Favez\ORM\Entity\Collection;
 
 class MenuController extends Controller
 {
@@ -17,8 +18,10 @@ class MenuController extends Controller
 
     public function load($parentID = null)
     {
-        $items = [];
-        $menus = BackendMenu::repository()->findBy(['parentID' => $parentID]);
+        $items      = [];
+        $repository = BackendMenu::repository();
+        $menus      = $repository->getQuery()->where('parentID', $parentID)->orderBy('position DESC')->fetchAll();
+        $menus      = Collection::create(BackendMenu::class, $menus);
 
         /** @var BackendMenu $menu */
         foreach ($menus as $menu)

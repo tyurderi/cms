@@ -2,9 +2,7 @@
     <div class="menu">
         <ul>
             <li v-for="item in items" :class="{ active: item.active }">
-                <a :href="item.url">
-                    {{ item.label }}
-                </a>
+                <router-link :to="item.url">{{item.label}}</router-link>
             </li>
             <li>
                 <a href="#" v-on:click.prevent="logout">

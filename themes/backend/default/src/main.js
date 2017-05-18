@@ -3,11 +3,8 @@ import { registerComponents } from './util';
 import Vue from 'vue'
 import App from './App'
 
-import router from './routes'
+import router from './router.js'
 import store from './store';
-
-// register custom stores here
-import '@BackendMenu/store/menu';
 
 import Http from 'vue-resource';
 import Events from 'vue-events';
@@ -19,6 +16,11 @@ registerComponents([
     require('@/components/input/Checkbox')
 ]);
 
+// Call plugin logic
+import '@Home';
+import '@BackendMenu';
+
+/*
 window.app = new Vue({
     el: '#app',
     router,
@@ -29,3 +31,4 @@ window.app = new Vue({
         root: process.env.BASE_PATH
     }
 });
+*/

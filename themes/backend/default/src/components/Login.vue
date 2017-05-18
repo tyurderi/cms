@@ -34,7 +34,7 @@ export default {
                 password: me.password,
                 keepLogin: me.keepLogin
             }).then((response) => {
-                console.log(response);
+                me.$events.emit('updateView', 'index');
             }, (error) => {
                 console.log(error);
             });
