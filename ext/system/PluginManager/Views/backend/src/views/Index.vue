@@ -8,26 +8,25 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Namespace</th>
-                <th>Name</th>
                 <th>Label</th>
+                <th>Installed</th>
                 <th>Version</th>
                 <th>Created</th>
                 <th>Changed</th>
-                <th>Enabled</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="(item, key) in items" :key="key">
                 <td>{{item.id}}</td>
-                <td>{{item.namespace}}</td>
-                <td>{{item.name}}</td>
                 <td>{{item.label}}</td>
+                <td>
+                    <i class="fa fa-check" v-if="item.active"></i>
+                    <i class="fa fa-times" v-else></i>
+                </td>
                 <td>{{item.version}}</td>
                 <td>{{item.created}}</td>
                 <td>{{item.changed}}</td>
-                <td>{{item.active ? 'Yes' : 'No'}}</td>
                 <td class="actions">
                     <ul v-if="item.namespace !== 'system'">
                         <li v-if="!item.active">
@@ -43,8 +42,10 @@
         </table>
         
         <plugin-installer :plugin="installingPlugin"
-                            @reject="installingPlugin = null"></plugin-installer>
+                          @accept="acceptInstall"
+                          @reject="installingPlugin = null"></plugin-installer>
         <plugin-uninstaller :plugin="uninstallingPlugin"
+                            @accept="acceptUninstall"
                             @reject="uninstallingPlugin = null"></plugin-uninstaller>
     </div>
 </template>
@@ -78,6 +79,18 @@ export default {
         uninstall(plugin)
         {
             this.uninstallingPlugin = plugin;
+        },
+        acceptInstall()
+        {
+            this.installingPlugin = null;
+            this.$store.dispatch('plugin/load');
+            this.$store.dispatch('menu/load');
+        },
+        acceptUninstall()
+        {
+            this.uninstallingPlugin = null;
+            this.$store.dispatch('plugin/load');
+            this.$store.dispatch('menu/load');
         }
     }
 }

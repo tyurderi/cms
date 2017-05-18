@@ -1,25 +1,35 @@
 <template>
     <div class="plugin-installer" v-if="plugin">
-        <div class="overlay"></div>
-        
-        <div class="popup-container">
-            <div class="popup-inner">
-                <div class="popup">
-                    <div class="confirm" v-if="!confirm">
-                        <span class="label">
-                            {{plugin.label}}
-                        </span>
-                        <span class="question">
-                            Are you sure to install this plugin?
-                        </span>
-                        <div class="buttons">
-                            <button class="confirm" @click.prevent="accept">Yes</button>
-                            <button class="abort" @click.prevent="reject">Abort</button>
-                        </div>
+        <modal mode="fixed" width="300px" height="150px">
+            <div slot="content">
+                <div class="confirm" v-if="!confirm">
+                    <span class="label">
+                        {{plugin.label}}
+                    </span>
+                    <span class="question">
+                        Are you sure to install this plugin?
+                    </span>
+                    <div class="buttons">
+                        <button class="confirm" @click.prevent="accept">Yes</button>
+                        <button class="abort" @click.prevent="reject">Abort</button>
                     </div>
                 </div>
+                <div class="install" v-if="confirm">
+                    <span class="label">
+                        {{plugin.label}}
+                    </span>
+                    <span class="text" v-if="!compiling">
+                        Installing plugin...
+                    </span>
+                    <span class="text" v-else>
+                        Compiling themes...
+                    </span>
+                    <span class="loader-container">
+                        <span class="loader"></span>
+                    </span>
+                </div>
             </div>
-        </div>
+        </modal>
     </div>
 </template>
 
@@ -27,12 +37,23 @@
 export default {
     props: ['plugin'],
     data: () => ({
-        confirm: false
+        confirm: false,
+        compiling: false,
     }),
     methods: {
         accept()
         {
+            this.confirm = true;
 
+            this.$http.post('api/plugin/install', { name: this.plugin.name })
+                .then(
+                    response => {
+                        this.$emit('accept');
+                    },
+                    response => {
+                        this.$store.dispatch('error/push', response);
+                    }
+                );
         },
         reject()
         {
@@ -43,35 +64,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.plugin-installer, .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-.overlay {
-    background: rgba(0, 0, 0, 0.25);
-}
-.popup-container {
-    display: table;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    .popup-inner {
-        display: table-cell;
-        vertical-align: middle;
-        text-align: center;
-        .popup {
-            display: inline-block;
-            text-align: left;
-            width: 300px;
-            height: 150px;
-            background: #fff;
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-        }
-    }
-}
 .confirm {
     .label {
         display: block;
@@ -114,6 +106,38 @@ export default {
             &:hover {
                 background: #ddd;
             }
+        }
+    }
+}
+.install {
+    .label {
+        display: block;
+        height: 60px;
+        padding: 10px;
+        font-size: 28px;
+        line-height: 60px;
+        text-align: center;
+    }
+    .text {
+        display: block;
+        height: 50px;
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+    }
+    .loader-container {
+        width: 100%;
+        height: 40px;
+        display: block;
+        .loader {
+            width: 20px;
+            height: 20px;
+            display: block;
+            border: 2px solid #333;
+            border-radius: 100%;
+            border-left-color: transparent;
+            animation: spin .5s infinite linear;
+            margin: 0 auto;
         }
     }
 }

@@ -44,10 +44,16 @@ export default {
         accept()
         {
             this.confirm = true;
-            
-            setTimeout(() => {
-                this.compiling = true;
-            }, 1000);
+
+            this.$http.post('api/plugin/uninstall', { name: this.plugin.name })
+                .then(
+                    response => {
+                        this.$emit('accept');
+                    },
+                    response => {
+                        this.$store.dispatch('error/push', response);
+                    }
+                );
         },
         reject()
         {
