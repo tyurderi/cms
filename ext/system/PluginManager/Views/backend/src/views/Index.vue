@@ -1,7 +1,6 @@
 <template>
     <div class="plugin-manager">
-        <h1>Plugin Manager</h1>
-        <h2>{{items.length}} plugins available</h2>
+        <h1>{{items.length}} Plugins</h1>
 
         <note text="Be careful when uninstalling system plugins. It can break the entire system." type="warning"></note>
         <note text="When installing backend plugins you probably need to recompile the themes."></note>
@@ -117,7 +116,7 @@ export default {
     }
     table.plugin-list {
         background: #fff;
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
         td.actions {
             ul {
                 list-style: none;

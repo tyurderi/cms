@@ -128,11 +128,9 @@ export default {
         },
         done(response)
         {
-            if (response.body.success)
-            {
-                this.confirm = false;
-            }
-            else
+            this.confirm = false;
+            
+            if(!response.body.success)
             {
                 this.$store.dispatch('error/push', response);
             }

@@ -62,7 +62,7 @@ export default {
 .note {
     background: #3498db;
     color: #fff;
-    margin: 0 0 5px 0;
+    margin: 0 0 10px 0;
     display: flex;
     flex-direction: row;
     &.error {
