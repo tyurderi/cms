@@ -37,8 +37,7 @@ window.app = new Vue({
     router,
     store,
     template: '<App/>',
-    components: { App },
-    http: {
-        root: process.env.BASE_PATH
-    }
+    components: { App }
 });
+
+Vue.http.options.root = process.env.BASE_PATH;
