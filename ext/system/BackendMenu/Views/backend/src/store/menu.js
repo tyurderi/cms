@@ -9,6 +9,8 @@ Store.registerModule('menu', {
     mutations: {
         set(state, payload)
         {
+            payload.forEach(item => item.calls = 0);
+
             state.items = payload;
         }
     },

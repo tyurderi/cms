@@ -1,11 +1,11 @@
 <template>
     <div class="menu">
         <ul>
-            <li v-for="item in items" :class="{ active: item.active }">
-                <router-link :to="item.url">{{item.label}}</router-link>
+            <li v-for="item in items" :class="{ active: isActive(item) }">
+                <router-link :to="item.url" @click="item.calls++">{{item.label}}</router-link>
             </li>
             <li>
-                <a href="#" v-on:click.prevent="logout">
+                <a href="#" @click.prevent="logout">
                     Logout
                 </a>
             </li>
@@ -31,8 +31,18 @@ export default {
         let me = this;
 
         me.$store.dispatch('menu/load');
+        
+        // todo: Fix this workaround
+        this.$router.beforeEach((to, from, next) => {
+            this.$forceUpdate();
+            next();
+        })
     },
     methods: {
+        isActive(item)
+        {
+            return item.url === this.$router.currentRoute.path;
+        },
         logout()
         {
             let me = this;
