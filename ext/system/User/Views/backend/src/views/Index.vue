@@ -23,7 +23,7 @@
                 <td class="actions">
                     <ul>
                         <li>
-                            <a href="#"><i class="fa fa-edit"></i></a>
+                            <a href="#" @click.prevent="edit(user)"><i class="fa fa-edit"></i></a>
                             <a href="#"><i class="fa fa-trash"></i></a>
                         </li>
                     </ul>
@@ -49,6 +49,11 @@ export default {
         this.$store.dispatch('user/load');
     },
     methods: {
+        edit(user)
+        {
+            this.$store.commit('user/setUser', user);
+            this.$router.push('/users/edit');
+        },
         getGroupName(groupID)
         {
             let group = this.groups.find(group => group.id === groupID);

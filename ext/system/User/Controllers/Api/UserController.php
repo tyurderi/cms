@@ -29,6 +29,42 @@ class UserController extends Controller
         return self::json()->success();
     }
     
+    public function saveAction()
+    {
+        $data = self::request()->getParams();
+        $user = User::findByID(self::request()->getParam('id'));
+        
+        if (!($user instanceof User))
+        {
+            $user = new User();
+            $user->created = date('Y-m-d H:i:s');
+        }
+        
+        if (!empty($data['password']))
+        {
+            $user->passwordHash = self::auth()->hash($data['password']);
+        }
+            
+        $user->set([
+            'email'     => $data['email'],
+            'firstname' => $data['firstname'],
+            'lastname'  => $data['lastname'],
+            'groupID'   => $data['groupID'],
+            'changed'   => date('Y-m-d H:i:s')
+        ]);
+        
+        $result = $user->validate();
+        
+        if (isSuccess($result))
+        {
+            $user->save();
+            
+            return $this->json()->success();
+        }
+            
+        return $this->json()->failure($result);
+    }
+    
     public function statusAction()
     {
         if (self::auth()->loggedIn())

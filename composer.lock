@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a25ed0884059c237d3408f025716f681",
+    "content-hash": "aed90146bb1e5e065904f52932f2091a",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1290,6 +1290,39 @@
                 "templating"
             ],
             "time": "2017-04-20T17:39:48+00:00"
+        },
+        {
+            "name": "tyurderi/validator",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tyurderi/validator.git",
+                "reference": "50a3395997e638fefe6d340db3fd4bb132d43cf5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tyurderi/validator/zipball/50a3395997e638fefe6d340db3fd4bb132d43cf5",
+                "reference": "50a3395997e638fefe6d340db3fd4bb132d43cf5",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Validator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "tyurderi",
+                    "email": "tyurderi@yahoo.de"
+                }
+            ],
+            "description": "simple php form validator",
+            "time": "2016-05-31T15:00:05+00:00"
         }
     ],
     "packages-dev": [],

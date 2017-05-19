@@ -5,7 +5,8 @@ Store.registerModule('user', {
     namespaced: true,
     state: {
         items: [],
-        groups: []
+        groups: [],
+        user: {}
     },
     mutations: {
         set(state, payload)
@@ -15,6 +16,10 @@ Store.registerModule('user', {
         setGroups(state, payload)
         {
             state.groups = payload;
+        },
+        setUser(state, payload)
+        {
+            state.user = payload;
         }
     },
     actions: {
@@ -29,6 +34,7 @@ Store.registerModule('user', {
     },
     getters: {
         items:  state => state.items,
-        groups: state => state.groups
+        groups: state => state.groups,
+        user:   state => state.user
     }
 });

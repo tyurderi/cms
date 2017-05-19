@@ -5,6 +5,7 @@ namespace CMS\Components;
 use CMS\Models\User\Session;
 use CMS\Models\User\User;
 use Favez\Mvc\DI\Injectable;
+use const PASSWORD_BCRYPT;
 
 class Auth
 {
@@ -73,6 +74,17 @@ class Auth
         }
 
         return false;
+    }
+    
+    /**
+     * Generates a password hash.
+     *
+     * @param string $password
+     * @return string
+     */
+    public function hash($password)
+    {
+        return password_hash($password, PASSWORD_BCRYPT);
     }
 
     /**
