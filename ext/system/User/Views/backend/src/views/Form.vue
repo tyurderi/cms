@@ -55,6 +55,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import async from 'async';
 
 export default {
     computed: {
@@ -65,7 +66,50 @@ export default {
     },
     mounted()
     {
-        this.user.password = '';
+        let userID = this.$route.params.id;
+        
+        this.$progress.start();
+        
+        async.series([
+            (done) =>
+            {
+                this.$http.post('api/user/listGroups')
+                    .then(
+                        response => {
+                            this.$store.commit('user/setGroups', response.body.data);
+                            done();
+                        },
+                        response => {
+                            this.$store.dispatch('error/push', response);
+                            done(true);
+                        }
+                    )
+            },
+            (done) =>
+            {
+                this.$http.post('api/user/get', { id: userID })
+                    .then(
+                        response => {
+                            this.$store.commit('user/setUser', response.body.data);
+                            this.user.password = '';
+                            done();
+                        },
+                        response => {
+                            this.$store.dispatch('error/push', response);
+                            done(true);
+                        }
+                    );
+            }
+        ], (error, results) => {
+            if (error)
+            {
+                this.$progress.fail();
+            }
+            else
+            {
+                this.$progress.finish();
+            }
+        });
     },
     methods: {
         submit()

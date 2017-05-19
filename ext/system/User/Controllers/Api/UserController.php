@@ -10,6 +10,21 @@ use Favez\ORM\Entity\Paginator;
 class UserController extends Controller
 {
     
+    public function getAction()
+    {
+        $userID = self::request()->getParam('id');
+        $user   = User::findByID($userID);
+        
+        if ($user instanceof User)
+        {
+            return $this->json()->success([
+                'data' => $user->get()
+            ]);
+        }
+        
+        return $this->json()->failure();
+    }
+    
     public function listAction()
     {
         $page      = self::request()->getParam('page', 1);
@@ -27,6 +42,13 @@ class UserController extends Controller
         self::json()->assign('groups', $groups);
         
         return self::json()->success();
+    }
+    
+    public function listGroupsAction()
+    {
+        return self::json()->success([
+            'data' => $groups = self::models()->newBuilder(Group::class)->fetchArrayResult()
+        ]);
     }
     
     public function saveAction()

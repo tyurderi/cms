@@ -8,7 +8,7 @@ Router.addRoutes([
     },
     {
         name: 'user-edit',
-        path: '/users/edit',
+        path: '/users/edit/:id',
         component: require('@User/views/Form')
     }
 ]);
