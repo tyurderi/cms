@@ -109,30 +109,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
-    .plugin-manager {
-        padding: 10px;
-        position: relative;
-        height: 100%;
-    }
-    table.plugin-list {
-        background: #fff;
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-        td.actions {
-            ul {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-                li {
-                    display: inline-block;
-                    margin: 0 5px 0 0;
-                    a {
-                        transition: all 125ms;
-                        &:hover {
-                            color: #c0392b;
-                        }
+.plugin-manager {
+    padding: 10px;
+    position: relative;
+    height: 100%;
+}
+table.plugin-list {
+    background: #fff;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    td.actions {
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            li {
+                display: inline-block;
+                margin: 0 5px 0 0;
+                a {
+                    transition: all 125ms;
+                    &:hover {
+                        color: #c0392b;
                     }
                 }
             }
         }
     }
+}
 </style>
