@@ -34,7 +34,7 @@ class PluginListCommand extends Command
             $table->addRow([
                 $plugin->getName(),
                 $plugin->getInfo()->getLabel(),
-                $plugin->getInfo()->getVersion(),
+                $plugin->getModel()->version,
                 $plugin->getModel()->created,
                 $plugin->getModel()->changed,
                 $plugin->getModel()->active ? 'Yes' : 'No'

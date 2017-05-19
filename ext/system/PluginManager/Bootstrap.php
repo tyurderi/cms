@@ -2,6 +2,7 @@
 
 namespace PluginManager;
 
+use BackendMenu\Models\BackendMenu;
 use Favez\Mvc\Event\Arguments;
 
 class Bootstrap extends \CMS\Components\Plugin\Bootstrap
@@ -13,6 +14,30 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
             'label' => 'PluginManager',
             'url'   => '/pluginManager'
         ]);
+        
+        return true;
+    }
+    
+    public function update($oldVersion)
+    {
+        switch ($oldVersion)
+        {
+            /**
+             * 1. Rename menu entry from 'PluginManager' to 'Plugins'
+             */
+            case '1.0.0': {
+                $menu = BackendMenu::findOneBy([
+                    'label'    => 'PluginManager',
+                    'pluginID' => $this->instance->getModel()->id
+                ]);
+                
+                if ($menu instanceof BackendMenu)
+                {
+                    $menu->label = 'Plugins';
+                    $menu->save();
+                }
+            } break;
+        }
         
         return true;
     }

@@ -39,6 +39,9 @@
                         <li v-if="item.active">
                             <a href="#" @click.prevent="uninstall(item)"><i class="fa fa-minus"></i></a>
                         </li>
+                        <li v-if="item.active && item.needUpdate">
+                            <a href="#" @click.prevent="update(item)"><i class="fa fa-refresh"></i></a>
+                        </li>
                         <li v-if="!item.active">
                             <a href="#" @click.prevent="remove(item)"><i class="fa fa-trash"></i></a>
                         </li>
@@ -82,6 +85,11 @@ export default {
         {
             this.plugin = plugin;
             this.action = 'uninstall';
+        },
+        update(plugin)
+        {
+            this.plugin = plugin;
+            this.action = 'update';
         },
         remove(plugin)
         {

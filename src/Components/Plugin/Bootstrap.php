@@ -57,6 +57,11 @@ abstract class Bootstrap
     {
         return true;
     }
+    
+    public function update($oldVersion)
+    {
+        return true;
+    }
 
     abstract public function execute();
 

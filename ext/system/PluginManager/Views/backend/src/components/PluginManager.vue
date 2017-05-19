@@ -39,7 +39,7 @@ export default {
         'plugin',
         /**
          * What should this manager do?
-         * Available actions are 'install', 'uninstall' or 'remove'
+         * Available actions are 'install', 'uninstall', 'update' or 'remove'
          */
         'action'
     ],
@@ -55,6 +55,8 @@ export default {
                     return 'Are you sure to install this plugin?';
                 case 'uninstall':
                     return 'Are you sure to uninstall this plugin?';
+                case 'update':
+                    return 'Are you sure to update this plugin?';
                 case 'remove':
                     return 'Are you sure to remove this plugin?';
                 default:
@@ -69,6 +71,8 @@ export default {
                     return 'Installing plugin...';
                 case 'uninstall':
                     return 'Uninstalling plugin...';
+                case 'update':
+                    return 'Updating plugin...';
                 case 'remove':
                     return 'Removing plugin...';
                 default:
@@ -101,6 +105,14 @@ export default {
         uninstall()
         {
             this.$http.post('api/plugin/uninstall', { name: this.plugin.name })
+                .then(
+                    response => this.done(response),
+                    response => this.$store.dispatch('error/push', response)
+                );
+        },
+        update()
+        {
+            this.$http.post('api/plugin/update', { name: this.plugin.name })
                 .then(
                     response => this.done(response),
                     response => this.$store.dispatch('error/push', response)

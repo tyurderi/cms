@@ -117,7 +117,8 @@ class Manager
                 $model->email       = $info->getEmail();
 
                 // Do not update the model version every time for future updates.
-                if (empty($model->version))
+                // Update plugin version when plugin is not installed.
+                if (empty($model->version) || $model->active == 0)
                 {
                     $model->version = $info->getVersion();
                 }
@@ -319,6 +320,46 @@ class Manager
                 $model->save();
             }
 
+            return $result;
+        }
+        catch (\Exception $ex)
+        {
+            return [
+                'success' => false,
+                'message' => $ex->getMessage(),
+            ];
+        }
+    }
+    
+    public function update($name)
+    {
+        try
+        {
+            $model    = $this->getModel($name);
+            $instance = $this->loadInstance($model->namespace, $model->name, $model);
+        
+            if ((int) $model->active === 0)
+            {
+                throw new Exception('The plugin must be installed to be updated.');
+            }
+        
+            if (version_compare($model->version, $instance->getInfo()->getVersion(), '>='))
+            {
+                throw new Exception('The installed plugin version is higher than the version on filesystem.');
+            }
+        
+            self::events()->publish('core.plugin.pre_update', ['instance' => $instance]);
+        
+            $result = $instance->getBootstrap()->update($model->version);
+        
+            self::events()->publish('core.plugin.post_update', ['instance' => $instance]);
+        
+            if (isSuccess($result))
+            {
+                $model->version = $instance->getInfo()->getVersion();
+                $model->save();
+            }
+        
             return $result;
         }
         catch (\Exception $ex)
