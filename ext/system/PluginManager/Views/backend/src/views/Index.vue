@@ -1,57 +1,67 @@
 <template>
     <div class="plugin-manager">
-        <h1>{{items.length}} Plugins</h1>
-
-        <note text="Be careful when uninstalling system plugins. It can break the entire system." type="warning"></note>
-        <note text="When installing backend plugins you probably need to recompile the themes."></note>
-        
-        <table class="plugin-list">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Installed</th>
-                <th>Label</th>
-                <th>Version</th>
-                <th>Created</th>
-                <th>Changed</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item, key) in items" :key="key">
-                <td>{{item.id}}</td>
-                <td>
-                    <i class="fa fa-check" v-if="item.active"></i>
-                    <i class="fa fa-times" v-else></i>
-                </td>
-                <td>
-                    <small>{{item.namespace}}</small>
-                    {{item.label}}
-                </td>
-                <td>{{item.version}}</td>
-                <td>{{item.created}}</td>
-                <td>{{item.changed}}</td>
-                <td class="actions">
-                    <ul>
-                        <li v-if="!item.active">
-                            <a href="#" @click.prevent="install(item)"><i class="fa fa-plus"></i></a>
-                        </li>
-                        <li v-if="item.active">
-                            <a href="#" @click.prevent="uninstall(item)"><i class="fa fa-minus"></i></a>
-                        </li>
-                        <li v-if="item.active && item.needUpdate">
-                            <a href="#" @click.prevent="update(item)"><i class="fa fa-refresh"></i></a>
-                        </li>
-                        <li v-if="!item.active">
-                            <a href="#" @click.prevent="remove(item)"><i class="fa fa-trash"></i></a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
-        </table>
-        
-        <plugin-manager :plugin="plugin" :action="action" @done="done"></plugin-manager>
+        <div class="head">
+            <div class="title">
+                {{items.length}} Plugins
+            </div>
+            <ul class="actions">
+                <li><a href="#" @click.prevent="load"><i class="fa fa-refresh"></i></a></li>
+                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                <li><a href="#"><i class="fa fa-filter"></i></a></li>
+            </ul>
+        </div>
+        <div class="body">
+            <note text="Be careful when uninstalling system plugins. It can break the entire system." type="warning"></note>
+            <note text="When installing backend plugins you probably need to recompile the themes."></note>
+            
+            <table class="plugin-list">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Installed</th>
+                    <th>Label</th>
+                    <th>Version</th>
+                    <th>Created</th>
+                    <th>Changed</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, key) in items" :key="key">
+                    <td>{{item.id}}</td>
+                    <td>
+                        <i class="fa fa-check" v-if="item.active"></i>
+                        <i class="fa fa-times" v-else></i>
+                    </td>
+                    <td>
+                        <small>{{item.namespace}}</small>
+                        {{item.label}}
+                    </td>
+                    <td>{{item.version}}</td>
+                    <td>{{item.created}}</td>
+                    <td>{{item.changed}}</td>
+                    <td class="actions">
+                        <ul>
+                            <li v-if="!item.active">
+                                <a href="#" @click.prevent="install(item)"><i class="fa fa-plus"></i></a>
+                            </li>
+                            <li v-if="item.active">
+                                <a href="#" @click.prevent="uninstall(item)"><i class="fa fa-minus"></i></a>
+                            </li>
+                            <li v-if="item.active && item.needUpdate">
+                                <a href="#" @click.prevent="update(item)"><i class="fa fa-refresh"></i></a>
+                            </li>
+                            <li v-if="!item.active">
+                                <a href="#" @click.prevent="remove(item)"><i class="fa fa-trash"></i></a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+            
+            <plugin-manager :plugin="plugin" :action="action" @done="done"></plugin-manager>
+        </div>
     </div>
 </template>
 
@@ -73,9 +83,16 @@ export default {
     }),
     mounted()
     {
-        this.$store.dispatch('plugin/load');
+        this.load();
     },
     methods: {
+        load()
+        {
+            this.$progress.start();
+            this.$store.dispatch('plugin/load', () => {
+                this.$progress.finish();
+            });
+        },
         install(plugin)
         {
             this.plugin = plugin;
@@ -110,7 +127,6 @@ export default {
 
 <style lang="less" scoped>
 .plugin-manager {
-    padding: 10px;
     position: relative;
     height: 100%;
 }

@@ -1,36 +1,47 @@
 <template>
     <div class="user">
-        <h1>{{users.length}} Users</h1>
-        
-        <table class="user-list">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Group</th>
-                <th>Email</th>
-                <th>Created</th>
-                <th>Changed</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(user, key) in users" :key="key">
-                <td>{{user.id}}</td>
-                <td>{{getGroupName(user.groupID)}}</td>
-                <td>{{user.email}}</td>
-                <td>{{user.created}}</td>
-                <td>{{user.changed}}</td>
-                <td class="actions">
-                    <ul>
-                        <li>
-                            <a href="#" @click.prevent="edit(user)"><i class="fa fa-edit"></i></a>
-                            <a href="#"><i class="fa fa-trash"></i></a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="head">
+            <div class="title">
+                {{users.length}} Users
+            </div>
+            <ul class="actions">
+                <li><a href="#" @click.prevent="load"><i class="fa fa-refresh"></i></a></li>
+                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                <li><a href="#"><i class="fa fa-filter"></i></a></li>
+                <li><a href="#"><i class="fa fa-plus"></i></a></li>
+            </ul>
+        </div>
+        <div class="body">
+            <table class="user-list">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Group</th>
+                    <th>Email</th>
+                    <th>Created</th>
+                    <th>Changed</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(user, key) in users" :key="key">
+                    <td>{{user.id}}</td>
+                    <td>{{getGroupName(user.groupID)}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.created}}</td>
+                    <td>{{user.changed}}</td>
+                    <td class="actions">
+                        <ul>
+                            <li>
+                                <a href="#" @click.prevent="edit(user)"><i class="fa fa-edit"></i></a>
+                                <a href="#"><i class="fa fa-trash"></i></a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -46,9 +57,16 @@ export default {
     },
     mounted()
     {
-        this.$store.dispatch('user/load');
+        this.load();
     },
     methods: {
+        load()
+        {
+            this.$progress.start();
+            this.$store.dispatch('user/load', () => {
+                this.$progress.finish();
+            });
+        },
         edit(user)
         {
             this.$store.commit('user/setUser', user);
@@ -66,7 +84,6 @@ export default {
 
 <style lang="less" scoped>
 .user {
-    padding: 10px;
     position: relative;
     height: 100%;
 }

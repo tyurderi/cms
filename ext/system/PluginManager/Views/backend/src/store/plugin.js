@@ -18,6 +18,8 @@ Store.registerModule('plugin', {
             Vue.http.get('api/plugin/list')
                 .then(response => {
                     context.commit('set', response.data.data);
+
+                    payload();
                 });
         }
     },

@@ -29,6 +29,8 @@ Store.registerModule('user', {
                 .then(response => {
                     context.commit('set', response.body.data);
                     context.commit('setGroups', response.body.groups);
+
+                    payload();
                 });
         }
     },
