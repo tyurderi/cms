@@ -73,6 +73,13 @@ export default {
         async.series([
             (done) =>
             {
+                // Do not load groups when they're already loaded
+                if (this.groups.length > 0)
+                {
+                    done();
+                    return;
+                }
+                
                 this.$http.post('api/user/listGroups')
                     .then(
                         response => {
@@ -87,6 +94,13 @@ export default {
             },
             (done) =>
             {
+                // Do not load user when it's already assigned
+                if (this.user.id)
+                {
+                    done();
+                    return;
+                }
+                
                 this.$http.post('api/user/get', { id: userID })
                     .then(
                         response => {
@@ -119,7 +133,7 @@ export default {
             this.$http.post('api/user/save', this.user)
                 .then(
                     response => {
-                        if (!response.body.success)
+                        if (!response.body || !response.body.success)
                         {
                             this.$store.dispatch('error/push', response);
                             this.$progress.fail();

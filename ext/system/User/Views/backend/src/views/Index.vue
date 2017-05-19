@@ -51,6 +51,7 @@ export default {
     methods: {
         edit(user)
         {
+            this.$store.commit('user/setUser', user);
             this.$router.push({ name: 'user-edit', params: { id: user.id } });
         },
         getGroupName(groupID)
