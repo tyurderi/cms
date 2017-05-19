@@ -25,6 +25,7 @@ registerComponents([
     require('@/components/input/Checkbox'),
     require('@/components/Modal'),
     require('@/components/ErrorModal'),
+    require('@/components/Note'),
 ]);
 
 // Load plugins

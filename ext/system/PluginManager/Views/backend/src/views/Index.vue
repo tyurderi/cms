@@ -2,12 +2,15 @@
     <div class="plugin-manager">
         <h1>Plugin Manager</h1>
         <h2>{{items.length}} plugins available</h2>
-        <h4>Note that system plugins can only be changed through command line.</h4>
+
+        <note text="Be careful when uninstalling system plugins. It can break the entire system."></note>
+        <note text="When installing backend plugins you probably need to recompile the themes."></note>
         
         <table class="plugin-list">
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Namespace</th>
                 <th>Label</th>
                 <th>Installed</th>
                 <th>Version</th>
@@ -19,6 +22,7 @@
         <tbody>
             <tr v-for="(item, key) in items" :key="key">
                 <td>{{item.id}}</td>
+                <td>{{item.namespace}}</td>
                 <td>{{item.label}}</td>
                 <td>
                     <i class="fa fa-check" v-if="item.active"></i>
@@ -28,7 +32,7 @@
                 <td>{{item.created}}</td>
                 <td>{{item.changed}}</td>
                 <td class="actions">
-                    <ul v-if="item.namespace !== 'system'">
+                    <ul>
                         <li v-if="!item.active">
                             <a href="#" @click.prevent="install(item)"><i class="fa fa-plus"></i></a>
                         </li>
