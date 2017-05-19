@@ -60,7 +60,7 @@ div.login {
     background: #fff;
     padding: 10px;
     width: 300px;
-    height: 130px;
+    height: 155px;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
     margin: auto;

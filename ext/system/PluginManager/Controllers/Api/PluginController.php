@@ -55,4 +55,14 @@ class PluginController extends Controller
         return $this->json()->success();
     }
     
+    public function removeAction()
+    {
+        $name    = $this->request()->getParam('name');
+        $manager = new Manager();
+    
+        $manager->remove($name);
+        
+        return $this->json()->success();
+    }
+    
 }

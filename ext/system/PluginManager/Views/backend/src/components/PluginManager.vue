@@ -1,5 +1,5 @@
 <template>
-    <div class="plugin-installer" v-if="plugin">
+    <div class="plugin-manager-modal" v-if="plugin">
         <modal mode="fixed" width="300px" height="150px">
             <div slot="content">
                 <div class="confirm" v-if="!confirm">
@@ -7,22 +7,19 @@
                         {{plugin.label}}
                     </span>
                     <span class="question">
-                        Are you sure to install this plugin?
+                        {{questionText}}
                     </span>
                     <div class="buttons">
                         <button class="confirm" @click.prevent="accept">Yes</button>
                         <button class="abort" @click.prevent="reject">Abort</button>
                     </div>
                 </div>
-                <div class="install" v-if="confirm">
+                <div class="progress" v-if="confirm">
                     <span class="label">
                         {{plugin.label}}
                     </span>
-                    <span class="text" v-if="!compiling">
-                        Installing plugin...
-                    </span>
-                    <span class="text" v-else>
-                        Compiling themes...
+                    <span class="text">
+                        {{actionText}}
                     </span>
                     <span class="loader-container">
                         <span class="loader"></span>
@@ -35,32 +32,105 @@
 
 <script>
 export default {
-    props: ['plugin'],
+    props: [
+        /**
+         * The plugin instance from the store.
+         */
+        'plugin',
+        /**
+         * What should this manager do?
+         * Available actions are 'install', 'uninstall' or 'remove'
+         */
+        'action'
+    ],
     data: () => ({
-        confirm: false,
-        compiling: false,
+        confirm: false
     }),
+    computed: {
+        questionText()
+        {
+            switch (this.action)
+            {
+                case 'install':
+                    return 'Are you sure to install this plugin?';
+                case 'uninstall':
+                    return 'Are you sure to uninstall this plugin?';
+                case 'remove':
+                    return 'Are you sure to remove this plugin?';
+                default:
+                    return 'Oh, I\'ve got an unknown action.';
+            }
+        },
+        actionText()
+        {
+            switch (this.action)
+            {
+                case 'install':
+                    return 'Installing plugin...';
+                case 'uninstall':
+                    return 'Uninstalling plugin...';
+                case 'remove':
+                    return 'Removing plugin...';
+                default:
+                    return 'Oh, I\'ve got an unknown action.';
+            }
+        }
+    },
     methods: {
         accept()
         {
             this.confirm = true;
-
+            
+            if (this.hasOwnProperty(this.action) && typeof this[this.action]  === 'function')
+            {
+                this[this.action]();
+            }
+        },
+        reject()
+        {
+            this.$emit('done');
+        },
+        install()
+        {
             this.$http.post('api/plugin/install', { name: this.plugin.name })
                 .then(
                     response => {
-                        this.$emit('accept');
+                        this.$emit('done');
 
                         this.confirm   = false;
-                        this.compiling = false;
                     },
                     response => {
                         this.$store.dispatch('error/push', response);
                     }
                 );
         },
-        reject()
+        uninstall()
         {
-            this.$emit('reject');
+            this.$http.post('api/plugin/uninstall', { name: this.plugin.name })
+                .then(
+                    response => {
+                        this.$emit('done');
+
+                        this.confirm   = false;
+                    },
+                    response => {
+                        this.$store.dispatch('error/push', response);
+                    }
+                );
+        },
+        remove()
+        {
+            this.$http.post('api/plugin/remove', { name: this.plugin.name })
+                .then(
+                    response => {
+                        this.$emit('done');
+
+                        this.confirm   = false;
+                    },
+                    response => {
+                        this.$store.dispatch('error/push', response);
+                    }
+                );
         }
     }
 }
@@ -112,7 +182,7 @@ export default {
         }
     }
 }
-.install {
+.progress {
     .label {
         display: block;
         height: 60px;

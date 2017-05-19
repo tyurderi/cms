@@ -35,37 +35,34 @@
                         <li v-if="item.active">
                             <a href="#" @click.prevent="uninstall(item)"><i class="fa fa-minus"></i></a>
                         </li>
+                        <li v-if="!item.active">
+                            <a href="#" @click.prevent="remove(item)"><i class="fa fa-trash"></i></a>
+                        </li>
                     </ul>
                 </td>
             </tr>
         </tbody>
         </table>
         
-        <plugin-installer :plugin="installingPlugin"
-                          @accept="acceptInstall"
-                          @reject="installingPlugin = null"></plugin-installer>
-        <plugin-uninstaller :plugin="uninstallingPlugin"
-                            @accept="acceptUninstall"
-                            @reject="uninstallingPlugin = null"></plugin-uninstaller>
+        <plugin-manager :plugin="plugin" :action="action" @done="done"></plugin-manager>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 
-import PluginInstaller from '@PluginManager/components/PluginInstaller';
-import PluginUninstaller from '@PluginManager/components/PluginUninstaller';
+import PluginManager from '@PluginManager/components/PluginManager';
 
 export default {
-    components: { PluginInstaller, PluginUninstaller },
+    components: { PluginManager },
     computed: {
         ...mapGetters({
             items: 'plugin/items'
         })
     },
     data: () => ({
-        installingPlugin: null,
-        uninstallingPlugin: null
+        plugin: null,
+        action: null
     }),
     mounted()
     {
@@ -74,21 +71,24 @@ export default {
     methods: {
         install(plugin)
         {
-            this.installingPlugin = plugin;
+            this.plugin = plugin;
+            this.action = 'install';
         },
         uninstall(plugin)
         {
-            this.uninstallingPlugin = plugin;
+            this.plugin = plugin;
+            this.action = 'uninstall';
         },
-        acceptInstall()
+        remove(plugin)
         {
-            this.installingPlugin = null;
-            this.$store.dispatch('plugin/load');
-            this.$store.dispatch('menu/load');
+            this.plugin = plugin;
+            this.action = 'remove';
         },
-        acceptUninstall()
+        done()
         {
-            this.uninstallingPlugin = null;
+            this.plugin = null;
+            this.action = null;
+            
             this.$store.dispatch('plugin/load');
             this.$store.dispatch('menu/load');
         }
@@ -110,6 +110,16 @@ export default {
                 list-style: none;
                 margin: 0;
                 padding: 0;
+                li {
+                    display: inline-block;
+                    margin: 0 5px 0 0;
+                    a {
+                        transition: all 125ms;
+                        &:hover {
+                            color: #c0392b;
+                        }
+                    }
+                }
             }
         }
     }

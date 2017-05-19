@@ -7,6 +7,8 @@ use CMS\Models\Plugin\Plugin;
 use Exception;
 use Favez\Mvc\App;
 use Favez\Mvc\DI\Injectable;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class Manager
 {
@@ -70,8 +72,7 @@ class Manager
         {
             if (!$this->exists($plugin->namespace, $plugin->name))
             {
-                $plugin->active = false;
-                $plugin->save();
+                $plugin->delete();
             }
         }
 
@@ -357,6 +358,52 @@ class Manager
         }
 
         return $this->instances[$name]->getBootstrap();
+    }
+    
+    /**
+     * Removes a plugin from filesystem.
+     *
+     * @param string $name
+     * @return array|boolean
+     */
+    public function remove($name)
+    {
+        try
+        {
+            $model    = $this->getModel($name);
+            $instance = $this->loadInstance($model->namespace, $model->name, $model);
+            $files    = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($instance->getPath(), RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST
+            );
+            
+            /**
+             * @var string       $name
+             * @var \SplFileInfo $file
+             */
+            foreach ($files as $name => $file)
+            {
+                if ($file->isFile())
+                {
+                    unlink($name);
+                }
+                else if($file->isDir())
+                {
+                    rmdir($name);
+                }
+            }
+            
+            rmdir($instance->getPath());
+            
+            return true;
+        }
+        catch (\Exception $ex)
+        {
+            return [
+                'success' => false,
+                'message' => $ex->getMessage(),
+            ];
+        }
     }
 
 }
