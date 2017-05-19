@@ -1,6 +1,17 @@
 <template>
-    <div class="note" :class="typeClass">
-        {{text}}
+    <div class="note" :class="typeClass" v-if="!closed">
+        <div class="icon">
+            <i class="fa fa-times" v-if="type === 'error'"></i>
+            <i class="fa fa-check" v-if="type === 'success'"></i>
+            <i class="fa fa-exclamation-triangle" v-if="type === 'warning'"></i>
+            <i class="fa fa-info-circle" v-if="type === 'info' || !type"></i>
+        </div>
+        <div class="text">
+            {{text}}
+        </div>
+        <div class="close" @click="close">
+            <i class="fa fa-times"></i>
+        </div>
     </div>
 </template>
 
@@ -19,6 +30,9 @@ export default {
          */
         'type'
     ],
+    data: () => ({
+        closed: false
+    }),
     computed: {
         typeClass()
         {
@@ -34,6 +48,12 @@ export default {
                     return 'info';
             }
         }
+    },
+    methods: {
+        close()
+        {
+            this.closed = true;
+        }
     }
 }
 </script>
@@ -42,8 +62,9 @@ export default {
 .note {
     background: #3498db;
     color: #fff;
-    padding: 10px;
     margin: 0 0 5px 0;
+    display: flex;
+    flex-direction: row;
     &.error {
         background: #e74c3c;
     }
@@ -52,6 +73,27 @@ export default {
     }
     &.success {
         background: #2ecc71;
+    }
+    .icon {
+        width: 40px;
+        height: 42px;
+        text-align: center;
+        line-height: 42px;
+    }
+    .text {
+        flex: 1;
+        padding: 10px;
+    }
+    .close {
+        cursor: pointer;
+        width: 40px;
+        height: 42px;
+        text-align: center;
+        line-height: 42px;
+        background: rgba(0, 0, 0, 0.05);
+        &:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
     }
 }
 </style>
