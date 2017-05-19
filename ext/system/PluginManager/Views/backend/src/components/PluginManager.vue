@@ -94,43 +94,38 @@ export default {
         {
             this.$http.post('api/plugin/install', { name: this.plugin.name })
                 .then(
-                    response => {
-                        this.$emit('done');
-
-                        this.confirm   = false;
-                    },
-                    response => {
-                        this.$store.dispatch('error/push', response);
-                    }
+                    response => this.done(response),
+                    response => this.$store.dispatch('error/push', response)
                 );
         },
         uninstall()
         {
             this.$http.post('api/plugin/uninstall', { name: this.plugin.name })
                 .then(
-                    response => {
-                        this.$emit('done');
-
-                        this.confirm   = false;
-                    },
-                    response => {
-                        this.$store.dispatch('error/push', response);
-                    }
+                    response => this.done(response),
+                    response => this.$store.dispatch('error/push', response)
                 );
         },
         remove()
         {
             this.$http.post('api/plugin/remove', { name: this.plugin.name })
                 .then(
-                    response => {
-                        this.$emit('done');
-
-                        this.confirm   = false;
-                    },
-                    response => {
-                        this.$store.dispatch('error/push', response);
-                    }
+                    response => this.done(response),
+                    response => this.$store.dispatch('error/push', response)
                 );
+        },
+        done(response)
+        {
+            if (response.body.success)
+            {
+                this.confirm = false;
+            }
+            else
+            {
+                this.$store.dispatch('error/push', response);
+            }
+
+            this.$emit('done');
         }
     }
 }

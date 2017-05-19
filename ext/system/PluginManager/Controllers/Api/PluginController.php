@@ -4,6 +4,7 @@ namespace CMS\Controllers\Api;
 
 use CMS\Components\Controller;
 use CMS\Components\Plugin\Manager;
+use Exception;
 
 class PluginController extends Controller
 {
@@ -39,8 +40,12 @@ class PluginController extends Controller
     {
         $name    = $this->request()->getParam('name');
         $manager = new Manager();
+        $result  = $manager->install($name);
         
-        $manager->install($name);
+        if (!isSuccess($result))
+        {
+            return $this->json()->assign($result)->failure();
+        }
         
         return $this->json()->success();
     }
@@ -49,8 +54,12 @@ class PluginController extends Controller
     {
         $name    = $this->request()->getParam('name');
         $manager = new Manager();
+        $result  = $manager->uninstall($name);
     
-        $manager->uninstall($name);
+        if (!isSuccess($result))
+        {
+            return $this->json()->assign($result)->failure();
+        }
     
         return $this->json()->success();
     }
@@ -59,8 +68,12 @@ class PluginController extends Controller
     {
         $name    = $this->request()->getParam('name');
         $manager = new Manager();
+        $result  = $manager->remove($name);
     
-        $manager->remove($name);
+        if (!isSuccess($result))
+        {
+            return $this->json()->assign($result)->failure();
+        }
         
         return $this->json()->success();
     }
