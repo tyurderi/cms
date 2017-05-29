@@ -2,13 +2,13 @@
     <div class="menu">
         <ul>
             <li v-for="item in items" :class="{ active: isActive(item) }">
-                <router-link :to="item.url" @click="item.calls++">
+                <router-link :to="item.url" @click="item.calls++" v-tooltip.right="item.label">
                     <span class="icon fa" :class="[ 'fa-' + (item.icon ? item.icon : 'question') ]"></span>
                     {{item.label}}
                 </router-link>
             </li>
             <li>
-                <a href="#" @click.prevent="logout">
+                <a href="#" @click.prevent="logout" v-tooltip.right="'Logout'">
                     <span class="icon fa fa-sign-out"></span>
                     Logout
                 </a>
