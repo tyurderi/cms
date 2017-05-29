@@ -1,54 +1,63 @@
 <template>
     <div class="user-form">
-        <h1>Edit user</h1>
-        
-        <div class="form-container">
-            <form @submit.prevent="submit">
-                <div class="form-item">
-                    <label for="id">
-                        ID
-                    </label>
-                    <input type="text" id="id" :value="user.id" readonly />
-                </div>
-                <div class="form-item">
-                    <label for="email">
-                        Email
-                    </label>
-                    <input type="email" id="email" v-model="user.email" />
-                </div>
-                <div class="form-item">
-                    <label for="password">
-                        Password
-                    </label>
-                    <input type="password" id="password" v-model="user.password" />
-                </div>
-                <div class="form-item">
-                    <label for="firstname">
-                        Firstname
-                    </label>
-                    <input type="text" id="firstname" v-model="user.firstname" />
-                </div>
-                <div class="form-item">
-                    <label for="lastname">
-                        Lastname
-                    </label>
-                    <input type="text" id="lastname" v-model="user.lastname" />
-                </div>
-                <div class="form-item">
-                    <label for="group">
-                        Group
-                    </label>
-                    <select id="group" v-model="user.groupID">
-                        <option value="-1">Please select</option>
-                        <template v-for="(group, key) in groups">
-                            <option :value="group.id" :key="key">{{group.label}}</option>
-                        </template>
-                    </select>
-                </div>
-                <div class="form-buttons">
-                    <button type="submit" class="button">Save</button>
-                </div>
-            </form>
+        <div class="head">
+            <div class="title">
+                Edit user
+            </div>
+            <ul class="actions">
+                <li>
+                    <a href="#">
+                        <button class="fa fa-check" form="user"></button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="body">
+            <div class="form-container">
+                <form @submit.prevent="submit" id="user">
+                    <div class="form-item">
+                        <label for="id">
+                            ID
+                        </label>
+                        <input type="text" id="id" :value="user.id" readonly />
+                    </div>
+                    <div class="form-item">
+                        <label for="email">
+                            Email
+                        </label>
+                        <input type="email" id="email" v-model="user.email" />
+                    </div>
+                    <div class="form-item">
+                        <label for="password">
+                            Password
+                        </label>
+                        <input type="password" id="password" v-model="user.password" />
+                    </div>
+                    <div class="form-item">
+                        <label for="firstname">
+                            Firstname
+                        </label>
+                        <input type="text" id="firstname" v-model="user.firstname" />
+                    </div>
+                    <div class="form-item">
+                        <label for="lastname">
+                            Lastname
+                        </label>
+                        <input type="text" id="lastname" v-model="user.lastname" />
+                    </div>
+                    <div class="form-item">
+                        <label for="group">
+                            Group
+                        </label>
+                        <select id="group" v-model="user.groupID">
+                            <option value="-1">Please select</option>
+                            <template v-for="(group, key) in groups">
+                                <option :value="group.id" :key="key">{{group.label}}</option>
+                            </template>
+                        </select>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </template>
@@ -155,7 +164,8 @@ export default {
 
 <style lang="less" scoped>
 .user-form {
-    padding: 10px;
+    position: relative;
+    height: 100%;
     .form-container {
         padding: 10px;
         background: #fff;
@@ -164,6 +174,9 @@ export default {
             margin: 0 0 10px 0;
             display: flex;
             flex-direction: row;
+            &:last-child {
+                margin: 0;
+            }
             label {
                 width: 100px;
                 display: inline-block;
