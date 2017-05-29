@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import '../assets/less/_components/sidebar.less';
 import SidebarMenu from './Menu.vue';
 
@@ -31,6 +32,32 @@ export default {
         opacity: 1,
         headerWidth: 190
     }),
+    mounted()
+    {
+        let me = this;
+        
+        me.menuOpen   = localStorage.getItem('cms.backend_menu.menu_open') === 'true';
+        me.tweenState = {
+            visible: {
+                sidebarWidth: 230,
+                opacity: 1,
+                headerWidth: 190
+            },
+            hidden: {
+                sidebarWidth: 40,
+                opacity: 0,
+                headerWidth: 0
+            }
+        };
+        
+        me.updateTween(me.tweenState[me.menuOpen ? 'visible' : 'hidden']);
+    },
+    watch: {
+        menuOpen(value)
+        {
+            localStorage.setItem('cms.backend_menu.menu_open', value);
+        }
+    },
     methods: {
         toggleMenu()
         {
@@ -39,16 +66,11 @@ export default {
             if (this.menuOpen)
             {
                 this.$tweening({
-                    start: { sidebarWidth: 230, opacity: 1, headerWidth: 190 },
-                    end:   { sidebarWidth: 40,  opacity: 0, headerWidth: 0 },
+                    start: _.clone(me.tweenState['visible']),
+                    end:   me.tweenState['hidden'],
                     within: 125,
                     via: this.$tweening.Easing.Linear.None,
-                    tween(v)
-                    {
-                        me.sidebarWidth = v.sidebarWidth;
-                        me.opacity      = v.opacity;
-                        me.headerWidth  = v.headerWidth;
-                    }
+                    tween: me.updateTween
                 });
                 
                 this.menuOpen = false;
@@ -56,20 +78,23 @@ export default {
             else
             {
                 this.$tweening({
-                    start: { sidebarWidth: 40,  opacity: 0, headerWidth: 0 },
-                    end:   { sidebarWidth: 230, opacity: 1, headerWidth: 190 },
+                    start: _.clone(me.tweenState['hidden']),
+                    end:   me.tweenState['visible'],
                     within: 125,
                     via: this.$tweening.Easing.Linear.None,
-                    tween(v)
-                    {
-                        me.sidebarWidth = v.sidebarWidth;
-                        me.opacity      = v.opacity;
-                        me.headerWidth  = v.headerWidth;
-                    }
+                    tween: me.updateTween
                 });
 
                 this.menuOpen = true;
             }
+        },
+        updateTween(v)
+        {
+            let me = this;
+
+            me.sidebarWidth = v.sidebarWidth;
+            me.opacity      = v.opacity;
+            me.headerWidth  = v.headerWidth;
         }
     }
 }
