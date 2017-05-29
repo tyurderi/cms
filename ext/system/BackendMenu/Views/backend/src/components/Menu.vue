@@ -45,7 +45,10 @@ export default {
     methods: {
         isActive(item)
         {
-            return item.url === this.$router.currentRoute.path;
+            let equals = item.url === this.$router.currentRoute.path,
+                starts = this.$router.currentRoute.path.indexOf(item.url) === 0;
+
+            return equals || (starts && item.url.length > 1);
         },
         logout()
         {
