@@ -18,6 +18,21 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         return true;
     }
     
+    public function update($version)
+    {
+        switch ($version)
+        {
+            case '1.0.0':
+                $manager = new CapsuleManager();
+                $manager->schema()->table(BackendMenu::getSource(), function(Blueprint $table) {
+                    $table->addColumn('string', 'icon', ['length' => 128]);
+                });
+            break;
+        }
+        
+        return true;
+    }
+    
     public function uninstall()
     {
         $manager = new CapsuleManager();

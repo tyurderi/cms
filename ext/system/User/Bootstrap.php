@@ -11,7 +11,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     {
         $this->createMenu([
             'label' => 'Users',
-            'url'   => '/users'
+            'url'   => '/users',
+            'icon'  => 'users'
         ]);
         
         return true;

@@ -20,6 +20,8 @@ class BackendMenu extends Entity
     
     public $pluginID;
     
+    public $icon;
+    
     public static function getSource()
     {
         return 'backend_menu';
@@ -33,6 +35,7 @@ class BackendMenu extends Entity
         $table->string('label')->length(128);
         $table->string('url')->length(255);
         $table->integer('pluginID')->nullable();
+        $table->string('icon')->length(128);
     }
     
 }

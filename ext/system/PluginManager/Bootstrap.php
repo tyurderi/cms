@@ -12,7 +12,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     {
         $this->createMenu([
             'label' => 'PluginManager',
-            'url'   => '/pluginManager'
+            'url'   => '/pluginManager',
+            'icon'  => 'puzzle-piece'
         ]);
         
         return true;

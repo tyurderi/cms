@@ -1,23 +1,22 @@
 <template>
-    <div class="sidebar" :class="{ closed: !menuOpen }" ref="sidebar">
+    <div class="sidebar" :style="{ width: sidebarWidth + 'px' }">
         <div class="sidebar-header">
-            <div class="header" v-if="menuOpen">
-                vuex cms
+            <div class="header" :style="{ width: headerWidth + 'px', opacity: opacity }">
+                <span>vuex cms</span>
             </div>
-            <div class="menu-toggle" @click="menuOpen=!menuOpen">
+            <div class="menu-toggle" @click="toggleMenu">
                 <i class="fa fa-arrow-left" v-if="menuOpen"></i>
                 <i class="fa fa-bars" v-else></i>
             </div>
         </div>
         
-        <div ref="menu">
+        <div>
             <sidebar-menu ref="menu"></sidebar-menu>
         </div>
     </div>
 </template>
 
 <script>
-import velocity from 'velocity-animate';
 import '../assets/less/_components/sidebar.less';
 import SidebarMenu from './Menu.vue';
 
@@ -27,13 +26,50 @@ export default {
         SidebarMenu
     },
     data: () => ({
-        menuOpen: true
+        menuOpen: true,
+        sidebarWidth: 230,
+        opacity: 1,
+        headerWidth: 190
     }),
-    watch: {
-        menuOpen(open)
+    methods: {
+        toggleMenu()
         {
-            velocity(this.$refs.sidebar, { width: open ? 230 : 40 }, { duration: 250 });
-            velocity(this.$refs.menu, { opacity: open ? 1 : 0 }, { duration: 250 });
+            let me = this;
+
+            if (this.menuOpen)
+            {
+                this.$tweening({
+                    start: { sidebarWidth: 230, opacity: 1, headerWidth: 190 },
+                    end:   { sidebarWidth: 40,  opacity: 0, headerWidth: 0 },
+                    within: 125,
+                    via: this.$tweening.Easing.Linear.None,
+                    tween(v)
+                    {
+                        me.sidebarWidth = v.sidebarWidth;
+                        me.opacity      = v.opacity;
+                        me.headerWidth  = v.headerWidth;
+                    }
+                });
+                
+                this.menuOpen = false;
+            }
+            else
+            {
+                this.$tweening({
+                    start: { sidebarWidth: 40,  opacity: 0, headerWidth: 0 },
+                    end:   { sidebarWidth: 230, opacity: 1, headerWidth: 190 },
+                    within: 125,
+                    via: this.$tweening.Easing.Linear.None,
+                    tween(v)
+                    {
+                        me.sidebarWidth = v.sidebarWidth;
+                        me.opacity      = v.opacity;
+                        me.headerWidth  = v.headerWidth;
+                    }
+                });
+
+                this.menuOpen = true;
+            }
         }
     }
 }
@@ -48,9 +84,13 @@ export default {
     .header {
         flex: 1;
         line-height: 40px;
-        padding: 0 10px;
         word-break: keep-all;
         white-space: nowrap;
+        overflow: hidden;
+        span {
+            display: block;
+            padding: 0 10px;
+        }
     }
     .menu-toggle {
         width: 40px;

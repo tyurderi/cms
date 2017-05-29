@@ -12,7 +12,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         $this->createMenu([
             'label'    => 'Dashboard',
             'url'      => '/',
-            'position' => -1
+            'position' => -1,
+            'icon'     => 'home'
         ]);
         
         return true;

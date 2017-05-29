@@ -10,6 +10,7 @@ import Http from 'vue-resource';
 import Events from 'vue-events';
 import VueProgressBar from 'vue-progressbar';
 import CustomProgressBar from '@/components/progressbar';
+import VueTweening from 'vue-tweening'
 
 Vue.use(Http);
 Vue.use(Events);
@@ -20,6 +21,7 @@ Vue.use(VueProgressBar, {
 });
 
 Vue.use(CustomProgressBar);
+Vue.use(VueTweening);
 
 registerComponents([
     require('@/components/input/Checkbox'),

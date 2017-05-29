@@ -1,19 +1,30 @@
 .menu {
+  overflow: hidden;
   ul {
     list-style: none;
     margin: 10px 0 0 0;
     padding: 0;
     li {
       position: relative;
+      word-break: keep-all;
+      white-space: nowrap;
+      overflow: hidden;
       &.active, &:hover {
         background: #e74c3c;
+      }
+      span {
+        float: left;
+        color: #fff;
+        width: 40px;
+        height: 35px;
+        text-align: center;
+        line-height: 35px;
       }
       a {
         color: #fff;
         text-decoration: none;
         height: 35px;
         line-height: 35px;
-        padding: 0 15px;
         display: block;
       }
     }

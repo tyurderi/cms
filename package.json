@@ -11,12 +11,15 @@
   "dependencies": {
     "async": "^2.4.0",
     "font-awesome": "^4.7.0",
+    "tween.js": "^16.6.0",
+    "tweenjs": "0.0.0",
     "velocity-animate": "^1.5.0",
     "vue": "^2.1.10",
     "vue-events": "^3.0.1",
     "vue-progressbar": "^0.7.2",
     "vue-resource": "^1.2.1",
     "vue-router": "^2.2.0",
+    "vue-tweening": "0.0.2",
     "vue2-loading-bar": "0.0.1",
     "vuex": "^2.2.1"
   },

@@ -2,10 +2,14 @@
     <div class="menu">
         <ul>
             <li v-for="item in items" :class="{ active: isActive(item) }">
-                <router-link :to="item.url" @click="item.calls++">{{item.label}}</router-link>
+                <router-link :to="item.url" @click="item.calls++">
+                    <span class="icon fa" :class="[ 'fa-' + (item.icon ? item.icon : 'question') ]"></span>
+                    {{item.label}}
+                </router-link>
             </li>
             <li>
                 <a href="#" @click.prevent="logout">
+                    <span class="icon fa fa-sign-out"></span>
                     Logout
                 </a>
             </li>
