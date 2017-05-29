@@ -19,7 +19,7 @@ Store.registerModule('plugin', {
                 .then(response => {
                     context.commit('set', response.data.data);
 
-                    payload();
+                    (payload || function() {})();
                 });
         }
     },

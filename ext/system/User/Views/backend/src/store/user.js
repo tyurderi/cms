@@ -30,7 +30,7 @@ Store.registerModule('user', {
                     context.commit('set', response.body.data);
                     context.commit('setGroups', response.body.groups);
 
-                    payload();
+                    (payload || function() {})();
                 });
         }
     },
