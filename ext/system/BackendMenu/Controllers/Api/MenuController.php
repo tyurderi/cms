@@ -28,6 +28,7 @@ class MenuController extends Controller
         {
             $item             = $menu->get();
             $item['children'] = $this->load($menu->id);
+            $item['active']   = false;
 
             $items[] = $item;
         }

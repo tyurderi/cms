@@ -9,10 +9,24 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     
     public function install()
     {
-        $this->createMenu([
+        $menu = $this->createMenu([
             'label' => 'Users',
             'url'   => '/users',
-            'icon'  => 'users'
+            'icon'  => 'user'
+        ]);
+    
+        $this->createMenu([
+            'label'    => 'Groups',
+            'url'      => '/users/groups',
+            'icon'     => 'users',
+            'parentID' => $menu->id,
+        ]);
+    
+        $this->createMenu([
+            'label'    => 'Permissions',
+            'url'      => '/users/permissions',
+            'icon'     => 'file-text',
+            'parentID' => $menu->id,
         ]);
         
         return true;
@@ -23,6 +37,7 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         $this->subscribeEvent('vue.collector.run', [$this, 'onVueCollectorRun']);
         
         $this->registerController('Api', 'User');
+        $this->registerController('Api', 'Group');
     }
     
     public function onVueCollectorRun(Arguments $args)

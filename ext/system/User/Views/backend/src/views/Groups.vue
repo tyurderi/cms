@@ -2,7 +2,7 @@
     <div class="user">
         <div class="head">
             <div class="title">
-                {{users.length}} Users
+                {{groups.length}} Groups
             </div>
             <ul class="actions">
                 <li><a href="#" @click.prevent="load"><i class="fa fa-refresh"></i></a></li>
@@ -16,24 +16,18 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Group</th>
-                    <th>Email</th>
-                    <th>Created</th>
-                    <th>Changed</th>
+                    <th>Name</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(user, key) in users" :key="key">
-                    <td>{{user.id}}</td>
-                    <td>{{getGroupName(user.groupID)}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.created}}</td>
-                    <td>{{user.changed}}</td>
+                <tr v-for="(item, key) in groups" :key="key">
+                    <td>{{item.id}}</td>
+                    <td>{{item.label}}</td>
                     <td class="actions">
                         <ul>
                             <li>
-                                <a href="#" @click.prevent="edit(user)"><i class="fa fa-edit"></i></a>
+                                <a href="#" @click.prevent="edit(item)"><i class="fa fa-edit"></i></a>
                                 <a href="#"><i class="fa fa-trash"></i></a>
                             </li>
                         </ul>
@@ -47,12 +41,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import async from 'async';
 
 export default {
     computed: {
         ...mapGetters({
-            users: 'user/items',
             groups: 'group/items'
         })
     },
@@ -64,24 +56,9 @@ export default {
         load()
         {
             this.$progress.start();
-            
-            async.series([
-                done => this.$store.dispatch('user/load', done),
-                done => this.$store.dispatch('group/load', done)
-            ], (response, error) => {
+            this.$store.dispatch('group/load', () => {
                 this.$progress.finish();
             });
-        },
-        edit(user)
-        {
-            this.$store.commit('user/setItem', user);
-            this.$router.push({ name: 'user-edit', params: { id: user.id } });
-        },
-        getGroupName(groupID)
-        {
-            let group = this.groups.find(group => group.id === groupID);
-            
-            return group ? group.label : 'Unknown';
         }
     }
 }

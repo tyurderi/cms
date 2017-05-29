@@ -109,6 +109,7 @@ abstract class Bootstrap
      *
      * @requires BackendMenu
      * @param    array $data
+     * @return BackendMenu
      */
     protected function createMenu($data)
     {
@@ -117,6 +118,8 @@ abstract class Bootstrap
         
         $menu->pluginID = $this->instance->getModel()->id;
         $menu->save();
+        
+        return $menu;
     }
 
 }

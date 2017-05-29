@@ -2,10 +2,11 @@
     <div class="menu">
         <ul>
             <li v-for="item in items" :class="{ active: isActive(item) }">
-                <router-link :to="item.url" @click="item.calls++" v-tooltip.right="item.label">
+                <router-link :to="item.url" v-tooltip.right="item.label">
                     <span class="icon fa" :class="[ 'fa-' + (item.icon ? item.icon : 'question') ]"></span>
                     {{item.label}}
                 </router-link>
+                <menu-tree v-if="item.children.length > 0 && isActive(item)" :parent="item" :level="1"></menu-tree>
             </li>
             <li>
                 <a href="#" @click.prevent="logout" v-tooltip.right="'Logout'">
@@ -19,9 +20,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import MenuTree from '@BackendMenu/components/MenuTree';
 
 export default {
     name: 'menu',
+    components: {
+        MenuTree
+    },
     data: () => ({
 
     }),

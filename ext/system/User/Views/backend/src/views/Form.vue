@@ -69,8 +69,8 @@ import async from 'async';
 export default {
     computed: {
         ...mapGetters({
-            user: 'user/user',
-            groups: 'user/groups'
+            user: 'user/item',
+            groups: 'group/items'
         })
     },
     mounted()
@@ -89,10 +89,10 @@ export default {
                     return;
                 }
                 
-                this.$http.post('api/user/listGroups')
+                this.$http.post('api/group/list')
                     .then(
                         response => {
-                            this.$store.commit('user/setGroups', response.body.data);
+                            this.$store.commit('group/set', response.body.data);
                             done();
                         },
                         response => {
@@ -113,7 +113,7 @@ export default {
                 this.$http.post('api/user/get', { id: userID })
                     .then(
                         response => {
-                            this.$store.commit('user/setUser', response.body.data);
+                            this.$store.commit('user/setItem', response.body.data);
                             this.user.password = '';
                             done();
                         },

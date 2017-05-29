@@ -1,3 +1,9 @@
+@base: #c0392b;
+@base-lighter: ligthen(@base, 10);
+@base-light: lighten(@base, 5);
+@base-dark: darken(@base, 5);
+@base-darker: darken(@base, 10);
+
 .menu {
   overflow: hidden;
   ul {
@@ -10,7 +16,7 @@
       white-space: nowrap;
       overflow: hidden;
       &.active, &:hover {
-        background: #e74c3c;
+        background: @base-light;
       }
       span {
         float: left;
@@ -26,6 +32,25 @@
         height: 35px;
         line-height: 35px;
         display: block;
+      }
+      ul {
+        background: #fff;
+        margin: 0;
+        li {
+          border-bottom: 1px solid #eee;
+          &:last-child {
+            border-bottom: none;
+          }
+          &:hover, &.active {
+            background: inherit;
+            span, a {
+              color: @base-darker;
+            }
+          }
+          span, a {
+            color: #333;
+          }
+        }
       }
     }
   }

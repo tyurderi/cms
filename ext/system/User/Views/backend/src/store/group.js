@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Store from '@/store';
 
-Store.registerModule('user', {
+Store.registerModule('group', {
     namespaced: true,
     state: {
         items: [],
@@ -20,7 +20,7 @@ Store.registerModule('user', {
     actions: {
         load(context, payload)
         {
-            Vue.http.get('api/user/list')
+            Vue.http.get('api/group/list')
                 .then(response => {
                     context.commit('set', response.body.data);
 

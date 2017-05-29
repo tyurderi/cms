@@ -37,19 +37,9 @@ class UserController extends Controller
             'page'    => $page
         ]);
         
-        $groups = self::models()->newBuilder(Group::class)->fetchArrayResult();
-        
         self::json()->assign($paginator->paginate());
-        self::json()->assign('groups', $groups);
         
         return self::json()->success();
-    }
-    
-    public function listGroupsAction()
-    {
-        return self::json()->success([
-            'data' => $groups = self::models()->newBuilder(Group::class)->fetchArrayResult()
-        ]);
     }
     
     public function saveAction()
