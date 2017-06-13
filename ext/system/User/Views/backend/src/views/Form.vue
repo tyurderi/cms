@@ -2,7 +2,12 @@
     <div class="user-form">
         <div class="head">
             <div class="title">
-                Edit user
+                <span v-if="$route.params.id === 'new'">
+                    Create user
+                </span>
+                <span v-else>
+                    Edit user
+                </span>
             </div>
             <ul class="actions">
                 <li>
@@ -13,9 +18,9 @@
             </ul>
         </div>
         <div class="body">
-            <div class="form-container">
+            <div class="form-container" v-if="user">
                 <form @submit.prevent="submit" id="user">
-                    <div class="form-item">
+                    <div class="form-item" v-if="user.id !== 'new'">
                         <label for="id">
                             ID
                         </label>
@@ -69,9 +74,11 @@ import async from 'async';
 export default {
     computed: {
         ...mapGetters({
-            user: 'user/item',
             groups: 'group/items'
-        })
+        }),
+        user() {
+            return this.$store.getters['user/items'].find(user => user.id === this.$route.params.id)
+        }
     },
     mounted()
     {
@@ -103,8 +110,25 @@ export default {
             },
             (done) =>
             {
+                if (this.$route.params.id === 'new')
+                {
+                    this.$store.commit('user/set', [
+                        {
+                            id: 'new',
+                            email: '',
+                            password: '',
+                            firstname: '',
+                            lastname: '',
+                            groupID: -1
+                        }
+                    ]);
+                    
+                    done();
+                    return;
+                }
+                
                 // Do not load user when it's already assigned
-                if (this.user.id)
+                if (this.user && this.user.id && userID === this.user.id)
                 {
                     done();
                     return;
@@ -113,7 +137,13 @@ export default {
                 this.$http.post('api/user/get', { id: userID })
                     .then(
                         response => {
-                            this.$store.commit('user/setItem', response.body.data);
+                            if (!response.body.success)
+                            {
+                                done(true);
+                                return;
+                            }
+                            
+                            this.$store.commit('user/set', [response.body.data]);
                             this.user.password = '';
                             done();
                         },
@@ -149,6 +179,7 @@ export default {
                         }
                         else
                         {
+                            this.$router.push({ name: 'user-edit', params: { id: response.body.id } });
                             this.$progress.finish();
                         }
                     },

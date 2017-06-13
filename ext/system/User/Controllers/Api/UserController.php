@@ -72,7 +72,7 @@ class UserController extends Controller
         {
             $user->save();
             
-            return $this->json()->success();
+            return $this->json()->success($user->get());
         }
             
         return $this->json()->failure($result);

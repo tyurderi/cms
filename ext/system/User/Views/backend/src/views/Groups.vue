@@ -15,9 +15,9 @@
             <table class="user-list">
                 <thead>
                 <tr>
-                    <th>ID</th>
+                    <th width="80">ID</th>
                     <th>Name</th>
-                    <th>Actions</th>
+                    <th width="100">Actions</th>
                 </tr>
                 </thead>
                 <tbody>

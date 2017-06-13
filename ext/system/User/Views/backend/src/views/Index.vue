@@ -8,19 +8,19 @@
                 <li><a href="#" @click.prevent="load"><i class="fa fa-refresh"></i></a></li>
                 <li><a href="#"><i class="fa fa-search"></i></a></li>
                 <li><a href="#"><i class="fa fa-filter"></i></a></li>
-                <li><a href="#"><i class="fa fa-plus"></i></a></li>
+                <li><a href="#" @click.prevent="create"><i class="fa fa-plus"></i></a></li>
             </ul>
         </div>
         <div class="body">
             <table class="user-list">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Group</th>
+                    <th width="80">ID</th>
+                    <th width="200">Group</th>
                     <th>Email</th>
-                    <th>Created</th>
-                    <th>Changed</th>
-                    <th>Actions</th>
+                    <th width="200">Created</th>
+                    <th width="200">Changed</th>
+                    <th width="100">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,9 +52,11 @@ import async from 'async';
 export default {
     computed: {
         ...mapGetters({
-            users: 'user/items',
             groups: 'group/items'
-        })
+        }),
+        users() {
+            return this.$store.getters['user/items'].filter(user => user.id !== 'new');
+        }
     },
     mounted()
     {
@@ -72,9 +74,12 @@ export default {
                 this.$progress.finish();
             });
         },
+        create()
+        {
+            this.$router.push({ name: 'user-edit', params: { id: 'new' } });
+        },
         edit(user)
         {
-            this.$store.commit('user/setItem', user);
             this.$router.push({ name: 'user-edit', params: { id: user.id } });
         },
         getGroupName(groupID)
