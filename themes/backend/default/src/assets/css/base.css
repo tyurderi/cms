@@ -284,7 +284,7 @@ legend {
   padding: 0;
   white-space: normal; }
 
-label,
+/*label,
 button,
 input,
 optgroup,
@@ -391,7 +391,7 @@ button:-moz-focusring,
 [type="button"]:-moz-focusring,
 [type="reset"]:-moz-focusring,
 [type="submit"]:-moz-focusring {
-  outline: 1px dotted ButtonText; }
+  outline: 1px dotted ButtonText; }*/
 
 button[disabled],
 html input[disabled] {

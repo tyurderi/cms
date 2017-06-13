@@ -11,7 +11,7 @@ export default {
     {
         let me = this;
 
-        me.$http.get('api/user/status').then((response) => {
+        me.$http.post('/api/user/status').then((response) => {
             if (response.body.success === true)
             {
                 me.$events.emit('updateView', 'index');
