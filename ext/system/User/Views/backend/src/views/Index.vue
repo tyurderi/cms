@@ -8,7 +8,7 @@
                 <li><a href="#" @click.prevent="load"><i class="fa fa-refresh"></i></a></li>
                 <li><a href="#"><i class="fa fa-search"></i></a></li>
                 <li><a href="#"><i class="fa fa-filter"></i></a></li>
-                <li><a href="#"><i class="fa fa-plus"></i></a></li>
+                <li><a href="#" @click.prevent="create"><i class="fa fa-plus"></i></a></li>
             </ul>
         </div>
         <div class="body">
@@ -52,9 +52,11 @@ import async from 'async';
 export default {
     computed: {
         ...mapGetters({
-            users: 'user/items',
             groups: 'group/items'
-        })
+        }),
+        users() {
+            return this.$store.getters['user/items'].filter(user => user.id !== 'new');
+        }
     },
     mounted()
     {
@@ -71,6 +73,10 @@ export default {
             ], (response, error) => {
                 this.$progress.finish();
             });
+        },
+        create()
+        {
+            this.$router.push({ name: 'user-edit', params: { id: 'new' } });
         },
         edit(user)
         {
