@@ -13,7 +13,7 @@
             </ul>
         </div>
         <div class="body">
-            <div class="form-container">
+            <div class="form-container" v-if="user">
                 <form @submit.prevent="submit" id="user">
                     <div class="form-item">
                         <label for="id">
@@ -69,9 +69,11 @@ import async from 'async';
 export default {
     computed: {
         ...mapGetters({
-            user: 'user/item',
             groups: 'group/items'
-        })
+        }),
+        user() {
+            return this.$store.getters['user/items'].find(user => user.id === this.$route.params.id)
+        }
     },
     mounted()
     {
@@ -104,7 +106,7 @@ export default {
             (done) =>
             {
                 // Do not load user when it's already assigned
-                if (this.user.id)
+                if (this.user && this.user.id)
                 {
                     done();
                     return;
@@ -113,7 +115,7 @@ export default {
                 this.$http.post('api/user/get', { id: userID })
                     .then(
                         response => {
-                            this.$store.commit('user/setItem', response.body.data);
+                            this.$store.commit('user/set', [response.body.data]);
                             this.user.password = '';
                             done();
                         },

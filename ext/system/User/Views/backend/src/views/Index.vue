@@ -15,12 +15,12 @@
             <table class="user-list">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Group</th>
+                    <th width="80">ID</th>
+                    <th width="200">Group</th>
                     <th>Email</th>
-                    <th>Created</th>
-                    <th>Changed</th>
-                    <th>Actions</th>
+                    <th width="200">Created</th>
+                    <th width="200">Changed</th>
+                    <th width="100">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -74,7 +74,6 @@ export default {
         },
         edit(user)
         {
-            this.$store.commit('user/setItem', user);
             this.$router.push({ name: 'user-edit', params: { id: user.id } });
         },
         getGroupName(groupID)
