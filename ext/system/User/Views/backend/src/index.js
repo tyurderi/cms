@@ -4,17 +4,22 @@ Router.addRoutes([
     {
         name: 'users',
         path: '/users',
-        component: require('@User/views/Index')
+        component: require('@User/views/user/Index')
     },
     {
         name: 'user-edit',
         path: '/users/edit/:id',
-        component: require('@User/views/Form')
+        component: require('@User/views/user/Form')
     },
     {
         name: 'users-groups',
         path: '/users/groups',
-        component: require('@User/views/Groups')
+        component: require('@User/views/group/Index')
+    },
+    {
+        name: 'users-groups-edit',
+        path: '/users/groups/edit/:id',
+        component: require('@User/views/group/Form')
     }
 ]);
 

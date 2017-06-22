@@ -1,20 +1,27 @@
 import Vue from 'vue';
 import Store from '@/store';
+import _ from 'lodash';
 
 Store.registerModule('group', {
     namespaced: true,
     state: {
-        items: [],
-        item: {}
+        items: []
     },
     mutations: {
         set(state, payload)
         {
-            state.items = payload;
-        },
-        setItem(state, payload)
-        {
-            state.item = payload;
+            _.each(payload, (item) => {
+                let index = state.items.findIndex(comparingItem => item.id === comparingItem.id);
+
+                if (index === -1)
+                {
+                    state.items.push(item);
+                }
+                else
+                {
+                    state.items[index] = item;
+                }
+            });
         }
     },
     actions: {
@@ -29,7 +36,6 @@ Store.registerModule('group', {
         }
     },
     getters: {
-        items: state => state.items,
-        item:  state => state.item
+        items: state => state.items
     }
 });

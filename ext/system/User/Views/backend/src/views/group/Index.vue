@@ -8,7 +8,7 @@
                 <li><a href="#" @click.prevent="load"><i class="fa fa-refresh"></i></a></li>
                 <li><a href="#"><i class="fa fa-search"></i></a></li>
                 <li><a href="#"><i class="fa fa-filter"></i></a></li>
-                <li><a href="#"><i class="fa fa-plus"></i></a></li>
+                <li><a href="#" @click.prevent="create"><i class="fa fa-plus"></i></a></li>
             </ul>
         </div>
         <div class="body">
@@ -44,9 +44,10 @@ import { mapGetters } from 'vuex';
 
 export default {
     computed: {
-        ...mapGetters({
-            groups: 'group/items'
-        })
+        groups()
+        {
+            return this.$store.getters['group/items'].filter(group => group.id !== 'new')
+        }
     },
     mounted()
     {
@@ -59,6 +60,14 @@ export default {
             this.$store.dispatch('group/load', () => {
                 this.$progress.finish();
             });
+        },
+        create()
+        {
+            this.$router.push({ name: 'users-groups-edit', params: { id: 'new' } });
+        },
+        edit(item)
+        {
+            this.$router.push({ name: 'users-groups-edit', params: { id: item.id } });
         }
     }
 }

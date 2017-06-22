@@ -73,11 +73,13 @@ import async from 'async';
 
 export default {
     computed: {
-        ...mapGetters({
-            groups: 'group/items'
-        }),
-        user() {
+        user()
+        {
             return this.$store.getters['user/items'].find(user => user.id === this.$route.params.id)
+        },
+        groups()
+        {
+            return this.$store.getters['group/items'].filter(group => group.id !== 'new')
         }
     },
     mounted()
