@@ -45,7 +45,7 @@ class UserController extends Controller
     public function saveAction()
     {
         $data = self::request()->getParams();
-        $user = User::findByID(self::request()->getParam('id'));
+        $user = User::findByID((int) self::request()->getParam('id'));
         
         if (!($user instanceof User))
         {
@@ -76,6 +76,21 @@ class UserController extends Controller
         }
             
         return $this->json()->failure($result);
+    }
+
+    public function removeAction()
+    {
+        $user = User::findByID((int) self::request()->getParam('id'));
+
+        if ($user instanceof User)
+        {
+            $user->getRelated('sessions')->delete();
+            $user->delete();
+
+            return $this->json()->success();
+        }
+
+        return $this->json()->failure();
     }
     
     public function statusAction()

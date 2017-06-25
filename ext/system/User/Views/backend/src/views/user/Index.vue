@@ -34,7 +34,7 @@
                         <ul>
                             <li>
                                 <a href="#" @click.prevent="edit(user)"><i class="fa fa-edit"></i></a>
-                                <a href="#"><i class="fa fa-trash"></i></a>
+                                <a href="#" @click.prevent="remove(user)"><i class="fa fa-trash"></i></a>
                             </li>
                         </ul>
                     </td>
@@ -42,6 +42,11 @@
                 </tbody>
             </table>
         </div>
+        <v-question-modal v-if="removeProgress.affectedUser && removeProgress.isAsking === true"
+                          label="Delete User" text="Are you sure?"
+                          @accept="doRemove" @reject="removeProgress.affectedUser = null"></v-question-modal>
+        <v-progress-modal v-if="removeProgress.affectedUser && removeProgress.isProgressing === true"
+                          label="Deleting User" text="And its gone"></v-progress-modal>
     </div>
 </template>
 
@@ -49,7 +54,14 @@
 import { mapGetters } from 'vuex';
 import async from 'async';
 
+import VQuestionModal from '@/components/Modal/Question';
+import VProgressModal from '@/components/Modal/Progress';
+
 export default {
+    components: {
+        VQuestionModal,
+        VProgressModal
+    },
     computed: {
         ...mapGetters({
             groups: 'group/items'
@@ -62,6 +74,13 @@ export default {
     {
         this.load();
     },
+    data: () => ({
+        removeProgress: {
+            affectedUser: null,
+            isAsking: false,
+            isProgressing: false
+        }
+    }),
     methods: {
         load()
         {
@@ -81,6 +100,30 @@ export default {
         edit(user)
         {
             this.$router.push({ name: 'user-edit', params: { id: user.id } });
+        },
+        remove(user)
+        {
+            this.removeProgress.affectedUser = user;
+            this.removeProgress.isAsking     = true;
+        },
+        doRemove()
+        {
+            this.removeProgress.isAsking      = false;
+            this.removeProgress.isProgressing = true;
+
+            this.$http.post('api/user/remove', { id: this.removeProgress.affectedUser.id })
+                .then((response) => {
+                    if (response.body.success === true)
+                    {
+                        // reset remove progress data
+                        this.removeProgress.affectedUser  = null;
+                        this.removeProgress.isAsking      = false;
+                        this.removeProgress.isProgressing = false;
+
+                        // refresh data
+                        this.load();
+                    }
+                });
         },
         getGroupName(groupID)
         {
