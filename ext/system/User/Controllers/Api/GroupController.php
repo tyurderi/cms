@@ -55,5 +55,19 @@ class GroupController extends Controller
 
         return $this->json()->failure($result);
     }
+
+    public function removeAction()
+    {
+        $group = Group::findByID((int) self::request()->getParam('id'));
+
+        if ($group instanceof Group)
+        {
+            $group->delete();
+
+            return $this->json()->success();
+        }
+
+        return $this->json()->failure();
+    }
     
 }
