@@ -1,37 +1,21 @@
 <template>
     <div class="plugin-manager-modal" v-if="plugin">
-        <modal mode="fixed" width="300px" height="150px">
-            <div slot="content">
-                <div class="confirm" v-if="!confirm">
-                    <span class="label">
-                        {{plugin.label}}
-                    </span>
-                    <span class="question">
-                        {{questionText}}
-                    </span>
-                    <div class="buttons">
-                        <button class="confirm" @click.prevent="accept">Yes</button>
-                        <button class="abort" @click.prevent="reject">Abort</button>
-                    </div>
-                </div>
-                <div class="progress" v-if="confirm">
-                    <span class="label">
-                        {{plugin.label}}
-                    </span>
-                    <span class="text">
-                        {{actionText}}
-                    </span>
-                    <span class="loader-container">
-                        <span class="loader"></span>
-                    </span>
-                </div>
-            </div>
-        </modal>
+        <v-question-modal v-if="!confirm" :label="plugin.label" :text="questionText"
+                          @accept="accept" @reject="reject"></v-question-modal>
+
+        <v-progress-modal v-if="confirm" :label="plugin.label" :text="actionText"></v-progress-modal>
     </div>
 </template>
 
 <script>
+import VQuestionModal from '@/components/Modal/Question';
+import VProgressModal from '@/components/Modal/Progress';
+
 export default {
+    components: {
+        VQuestionModal,
+        VProgressModal
+    },
     props: [
         /**
          * The plugin instance from the store.
