@@ -59,7 +59,7 @@
                 {
                     if (this.$route.params.id === 'new')
                     {
-                        this.$store.commit('group/set', [
+                        this.$store.commit('group/add', [
                             {
                                 id: 'new',
                                 label: ''
@@ -86,7 +86,7 @@
                                     return;
                                 }
 
-                                this.$store.commit('group/set', [response.body.data]);
+                                this.$store.commit('group/add', [response.body.data]);
                                 done();
                             },
                             response => {

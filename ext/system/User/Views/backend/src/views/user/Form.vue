@@ -114,7 +114,7 @@ export default {
             {
                 if (this.$route.params.id === 'new')
                 {
-                    this.$store.commit('user/set', [
+                    this.$store.commit('user/add', [
                         {
                             id: 'new',
                             email: '',
@@ -145,7 +145,7 @@ export default {
                                 return;
                             }
                             
-                            this.$store.commit('user/set', [response.body.data]);
+                            this.$store.commit('user/add', [response.body.data]);
                             this.user.password = '';
                             done();
                         },

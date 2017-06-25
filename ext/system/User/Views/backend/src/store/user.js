@@ -8,7 +8,7 @@ Store.registerModule('user', {
         items: []
     },
     mutations: {
-        set(state, payload)
+        add(state, payload)
         {
             _.each(payload, (item) => {
                 let index = state.items.findIndex(comparingItem => item.id === comparingItem.id);
@@ -22,6 +22,10 @@ Store.registerModule('user', {
                     state.items[index] = item;
                 }
             });
+        },
+        set(state, payload)
+        {
+            state.items = payload;
         }
     },
     actions: {
