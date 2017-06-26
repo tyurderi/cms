@@ -34,6 +34,42 @@
                     </div>
                 </form>
             </div>
+            <div class="permission-container" v-if="group">
+                <table class="list">
+                    <thead>
+                        <tr>
+                            <th colspan="3">
+                                Permissions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template v-for="(category, key) in categories">
+                            <tr class="permission-category">
+                                <td>
+                                    {{category.label}}
+                                </td>
+                                <td colspan="2">
+                                    {{category.description}}
+                                </td>
+                            </tr>
+                            <tr v-for="(permission, key) in getPermissions(category)" :key="key"
+                                class="permission-item">
+                                <td>
+                                    <checkbox v-model="(group.permissions||{})[permission.id]"
+                                              :name="permission.name"></checkbox>
+                                </td>
+                                <td>
+                                    {{permission.label}}
+                                </td>
+                                <td>
+                                    {{permission.description}}
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
@@ -47,10 +83,16 @@ export default {
     data: () => ({
         editingGroup: {
             id: null,
-            label: ''
-        }
+            label: '',
+            permissionValues: {}
+        },
+        permissionValues: []
     }),
     computed: {
+        ...mapGetters({
+            categories: 'permission/category/items',
+            permissions: 'permission/items'
+        }),
         group()
         {
             if (this.isNew)
@@ -72,6 +114,8 @@ export default {
         this.$progress.start();
 
         async.series([
+            (done) => this.$store.dispatch('permission/category/load', done),
+            (done) => this.$store.dispatch('permission/load', done),
             (done) =>
             {
                 if (this.isNew)
@@ -104,6 +148,18 @@ export default {
                             done(true);
                         }
                     );
+            },
+            (done) =>
+            {
+                this.$http.post('api/group/getPermissions', { id: groupID })
+                    .then(response => {
+                        this.permissionValues = response.body.data;
+                        
+                        done();
+                    }, response => {
+                        this.$store.dispatch('error/push', response);
+                        done(true);
+                    })
             }
         ], (error, results) => {
             if (error)
@@ -114,6 +170,14 @@ export default {
             {
                 this.$progress.finish();
             }
+            
+            this.group.permissions = {};
+            
+            this.permissionValues.forEach(permissionValue => {
+                this.group.permissions[permissionValue.id] = permissionValue.value === '1';
+            });
+            
+            this.$forceUpdate();
         });
     },
     methods: {
@@ -142,6 +206,10 @@ export default {
                         this.$store.dispatch('error/push', response);
                     }
                 )
+        },
+        getPermissions(category)
+        {
+            return this.permissions.filter(permission => permission.categoryID === category.id);
         }
     }
 }
@@ -169,6 +237,21 @@ export default {
             select, textarea, input {
                 flex: 1;
             }
+        }
+    }
+    .permission-container {
+        background: #fff;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+        margin: 10px 0 0 0;
+        span.custom-checkbox {
+            vertical-align: middle;
+        }
+        tr.permission-category td {
+            background: rgba(0, 0, 0, 0.025);
+            padding: 5px;
+        }
+        tr.permission-item td {
+            padding: 5px;
         }
     }
 }

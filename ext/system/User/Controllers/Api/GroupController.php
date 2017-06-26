@@ -3,6 +3,7 @@
 namespace CMS\Controllers\Api;
 
 use CMS\Components\Controller;
+use CMS\Models\Permission\Value;
 use CMS\Models\User\Group;
 
 class GroupController extends Controller
@@ -29,6 +30,13 @@ class GroupController extends Controller
 
         return $this->json()->failure();
     }
+    
+    public function getPermissionsAction()
+    {
+        return $this->json()->success([
+            'data' => $this->getPermissions((int) $this->request()->getParam('id'))
+        ]);
+    }
 
     public function saveAction()
     {
@@ -49,6 +57,8 @@ class GroupController extends Controller
         if (isSuccess($result))
         {
             $group->save();
+            
+            $this->savePermissions($group->id, $data['permissions']);
 
             return $this->json()->success($group->get());
         }
@@ -68,6 +78,43 @@ class GroupController extends Controller
         }
 
         return $this->json()->failure();
+    }
+    
+    private function savePermissions($groupID, $permissions)
+    {
+        if (empty($groupID) || empty($permissions))
+        {
+            return false;
+        }
+        
+        foreach ($permissions as $permissionID => $value)
+        {
+            $permissionValue = Value::findOneBy(['groupID' => $groupID, 'permissionID' => $permissionID]);
+            
+            if (!($permissionValue instanceof Value))
+            {
+                $permissionValue = new Value();
+                $permissionValue->groupID      = $groupID;
+                $permissionValue->permissionID = $permissionID;
+            }
+    
+            $permissionValue->value = empty($value) ? '0' : '1';
+            $permissionValue->save();
+        }
+        
+        return true;
+    }
+    
+    private function getPermissions($groupID)
+    {
+        $query = $this->db()->from('permission_value v')
+            ->select(null)
+            ->select('p.id, v.value')
+            ->leftJoin('permission p ON p.id = v.permissionID')
+            ->leftJoin('user_group g ON g.id = v.groupID')
+            ->where('g.id', $groupID);
+        
+        return $query->fetchAll();
     }
     
 }
