@@ -24,7 +24,6 @@ export default {
                 created: { label: 'Created', width: 200 },
                 changed: { label: 'Changed', width: 200 }
             },
-            data: [],
             actions: [
                 {
                     name: 'edit',

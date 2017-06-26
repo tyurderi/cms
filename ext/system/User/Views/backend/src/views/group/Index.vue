@@ -21,7 +21,6 @@ export default {
                 id: { label: 'ID', width: 80 },
                 label: { label: 'Label' }
             },
-            data: [],
             actions: [
                 {
                     name: 'edit',
