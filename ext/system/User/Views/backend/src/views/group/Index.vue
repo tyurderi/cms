@@ -33,7 +33,7 @@ export default {
                         questionLabel: 'Delete Group',
                         questionText: 'Are you sure?',
                         progressLabel: 'Deleting Group',
-                        progressText: 'And its gone'
+                        progressText: ''
                     }
                 }
             ],

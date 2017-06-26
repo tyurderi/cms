@@ -25,8 +25,15 @@ Router.addRoutes([
         name: 'users-permissions',
         path: '/users/permissions',
         component: require('@User/views/permission/Index')
+    },
+    {
+        name: 'users-permissions-edit',
+        path: '/users/permissions/edit/:id',
+        component: require('@User/views/permission/Form')
     }
 ]);
 
 import '@User/store/user';
 import '@User/store/group';
+import '@User/store/permission';
+import '@User/store/permission/category';

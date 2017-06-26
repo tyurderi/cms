@@ -32,6 +32,31 @@ CREATE TABLE `user_session` (
   `expires` DATETIME
 );
 
+/** USER PERMISSION STUFF **/
+CREATE TABLE IF NOT EXISTS `permission` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `categoryID` INT(11) NOT NULL,
+  `name` VARCHAR(256) NOT NULL,
+  `label` VARCHAR(256) NOT NULL,
+  `description` TEXT,
+  PRIMARY KEY(`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `permission_value` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `groupID` INT(11) NOT NULL,
+  `permissionID` INT(11) NOT NULL,
+  `value` INT(11) NOT NULL,
+  PRIMARY KEY(`id`, `groupID`, `permissionID`)
+);
+
+CREATE TABLE IF NOT EXISTS `permission_category` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `label` VARCHAR(256) NOT NULL,
+  `description` TEXT,
+  PRIMARY KEY(`id`)
+);
+
 /** PLUGIN SYSTEM STUFF **/
 CREATE TABLE `plugin` (
   `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,

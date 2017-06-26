@@ -38,6 +38,7 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         
         $this->registerController('Api', 'User');
         $this->registerController('Api', 'Group');
+        $this->registerController('Api', 'Permission');
     }
     
     public function onVueCollectorRun(Arguments $args)

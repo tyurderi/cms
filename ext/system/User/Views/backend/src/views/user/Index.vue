@@ -36,7 +36,7 @@ export default {
                         questionLabel: 'Delete User',
                         questionText: 'Are you sure?',
                         progressLabel: 'Deleting User',
-                        progressText: 'And its gone'
+                        progressText: ''
                     }
                 }
             ],
