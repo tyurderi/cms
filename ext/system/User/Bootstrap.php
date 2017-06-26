@@ -2,6 +2,7 @@
 
 namespace User;
 
+use BackendMenu\Models\BackendMenu;
 use Favez\Mvc\Event\Arguments;
 
 class Bootstrap extends \CMS\Components\Plugin\Bootstrap
@@ -22,12 +23,36 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
             'parentID' => $menu->id,
         ]);
     
-        $this->createMenu([
+        $menu = $this->createMenu([
             'label'    => 'Permissions',
             'url'      => '/users/permissions',
             'icon'     => 'file-text',
             'parentID' => $menu->id,
         ]);
+        
+        $this->createMenu([
+            'label'    => 'Categories',
+            'url'      => '/users/permissions/categories',
+            'icon'     => 'sitemap',
+            'parentID' => $menu->id
+        ]);
+        
+        return true;
+    }
+    
+    public function update($oldVersion)
+    {
+        switch ($oldVersion)
+        {
+            case '1.0.0':
+                $this->createMenu([
+                    'label'    => 'Categories',
+                    'url'      => '/users/permissions/categories',
+                    'icon'     => 'sitemap',
+                    'parentID' => BackendMenu::findOneBy(['label' => 'Permissions'])->id
+                ]);
+            break;
+        }
         
         return true;
     }

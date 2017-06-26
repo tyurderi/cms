@@ -1,16 +1,9 @@
 <template>
-    <div class="sidebar" :style="{ width: sidebarWidth + 'px' }">
+    <div class="sidebar">
         <div class="sidebar-header">
-            <div class="header" :style="{ width: headerWidth + 'px', opacity: opacity }">
-                <span>vuex cms</span>
-            </div>
-            <div class="menu-toggle" @click="toggleMenu">
-                <i class="fa fa-arrow-left" v-if="menuOpen"></i>
-                <i class="fa fa-bars" v-else></i>
-            </div>
+           Vuex CMS
         </div>
-        
-        <div>
+        <div class="menu">
             <sidebar-menu ref="menu"></sidebar-menu>
         </div>
     </div>
@@ -99,34 +92,3 @@ export default {
     }
 }
 </script>
-
-<style lang="less" scoped>
-.sidebar-header {
-    background: darken(#c0392b, 5);
-    height: 40px;
-    display: flex;
-    flex-direction: row;
-    .header {
-        flex: 1;
-        line-height: 40px;
-        word-break: keep-all;
-        white-space: nowrap;
-        overflow: hidden;
-        span {
-            display: block;
-            padding: 0 10px;
-        }
-    }
-    .menu-toggle {
-        width: 40px;
-        height: 40px;
-        color: #fff;
-        text-align: center;
-        line-height: 40px;
-        cursor: pointer;
-        &:hover {
-            background: darken(#c0392b, 7.5)
-        }
-    }
-}
-</style>

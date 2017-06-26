@@ -1,6 +1,6 @@
 <template>
     <div class="menu">
-        <ul>
+        <ul class="main">
             <li v-for="item in items" :class="{ active: isActive(item) }">
                 <router-link :to="item.url" v-tooltip.right="item.label">
                     <span class="icon fa" :class="[ 'fa-' + (item.icon ? item.icon : 'question') ]"></span>

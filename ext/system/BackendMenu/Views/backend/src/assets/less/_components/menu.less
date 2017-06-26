@@ -6,49 +6,50 @@
 
 .menu {
   overflow: hidden;
+  > ul > li:hover > a, > ul > li.active > a {
+    background: rgba(0, 0, 0, 0.0625);
+  }
   ul {
     list-style: none;
-    margin: 10px 0 0 0;
+    margin: 0;
     padding: 0;
+    &.main {
+      border-bottom: 1px solid #c0392b;
+    }
     li {
       position: relative;
-      word-break: keep-all;
-      white-space: nowrap;
-      overflow: hidden;
-      &.active, &:hover {
-        background: @base-light;
-      }
-      span {
-        float: left;
-        color: #fff;
-        width: 40px;
-        height: 35px;
-        text-align: center;
-        line-height: 35px;
-      }
       a {
+        display: block;
+        padding: 10px;
         color: #fff;
         text-decoration: none;
-        height: 35px;
-        line-height: 35px;
-        display: block;
+        border-top: 1px solid #c0392b;
+        font-size: 14px;
+        span {
+          margin: 0 5px 0 0;
+          width: 15px;
+        }
       }
-      ul {
-        background: #fff;
-        margin: 0;
+      i.icon {
+        position: absolute;
+        top: 13px;
+        right: 13px;
+        color: darken(#c0392b, 5);
+      }
+      > ul {
         li {
-          border-bottom: 1px solid #eee;
-          &:last-child {
-            border-bottom: none;
+          &.active a, &:hover a {
+
           }
-          &:hover, &.active {
-            background: inherit;
-            span, a {
-              color: @base-darker;
+          a {
+            padding-left: 30px;
+          }
+          > ul {
+            li {
+              a {
+                padding-left: 50px;
+              }
             }
-          }
-          span, a {
-            color: #333;
           }
         }
       }
