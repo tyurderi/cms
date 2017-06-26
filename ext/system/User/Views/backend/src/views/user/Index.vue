@@ -18,9 +18,9 @@ export default {
             autoLoad: true,
             headTitle: 'Users',
             columns: {
-                id: { label: 'ID', width: 80 },
-                group: { label: 'Group', width: 200 },
-                email: { label: 'Email' },
+                id:      { label: 'ID', width: 80 },
+                group:   { label: 'Group', width: 200 },
+                email:   { label: 'Email' },
                 created: { label: 'Created', width: 200 },
                 changed: { label: 'Changed', width: 200 }
             },

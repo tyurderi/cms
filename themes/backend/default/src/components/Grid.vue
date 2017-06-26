@@ -6,7 +6,6 @@
             </div>
             <ul class="actions">
                 <li><a href="#" @click.prevent="dispatch('load')"><i class="fa fa-refresh"></i></a></li>
-                <li><a href="#"><i class="fa fa-filter"></i></a></li>
                 <li><a href="#" @click.prevent="dispatch('create')"><i class="fa fa-plus"></i></a></li>
             </ul>
         </div>
