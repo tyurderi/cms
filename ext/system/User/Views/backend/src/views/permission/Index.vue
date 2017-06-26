@@ -33,7 +33,7 @@ export default {
                         questionLabel: 'Delete Permission',
                         questionText: 'Are you sure?',
                         progressLabel: 'Deleting Permission',
-                        progressText: '&nbsp;'
+                        progressText: ''
                     }
                 }
             ],
@@ -81,7 +81,17 @@ export default {
         },
         remove(permission, done)
         {
-        
+            this.$http.post('api/permission/remove', { id: permission.id })
+                .then((response) => {
+                    if (response.body.success === true)
+                    {
+                        // reset remove progress data
+                        done();
+
+                        // refresh data
+                        this.load();
+                    }
+                });
         }
     },
     components: {

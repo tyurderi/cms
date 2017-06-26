@@ -36,9 +36,8 @@
                     
                     <td class="actions" v-if="settings.actions">
                         <ul>
-                            <li>
-                                <a v-for="(action, key) in settings.actions" :key="key"
-                                   href="#" @click.prevent="dispatchAction(action, item)">
+                            <li v-for="(action, key) in settings.actions" :key="key">
+                                <a href="#" @click.prevent="dispatchAction(action, item)">
                                     <i :class="action.iconCls"></i>
                                 </a>
                             </li>
