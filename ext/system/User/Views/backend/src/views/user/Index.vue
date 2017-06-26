@@ -52,6 +52,12 @@ export default {
 
                     return 'Unknown';
                 }
+            },
+            searchMethod(item, term)
+            {
+                return item.email.toLowerCase().indexOf(term) !== -1
+                    || item.firstname.toLowerCase().indexOf(term) !== -1
+                    || item.lastname.toLowerCase().indexOf(term) !== -1;
             }
         }
     }),

@@ -6,12 +6,15 @@
             </div>
             <ul class="actions">
                 <li><a href="#" @click.prevent="dispatch('load')"><i class="fa fa-refresh"></i></a></li>
-                <li><a href="#"><i class="fa fa-search"></i></a></li>
                 <li><a href="#"><i class="fa fa-filter"></i></a></li>
                 <li><a href="#" @click.prevent="dispatch('create')"><i class="fa fa-plus"></i></a></li>
             </ul>
         </div>
         <div class="body">
+            <div class="search-bar" v-if="typeof settings.searchMethod === 'function'">
+                <input type="text" v-model="search.term" placeholder="What are you looking for?">
+            </div>
+            
             <table class="list">
                 <thead>
                 <tr>
@@ -26,7 +29,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(item, key) in data" :key="key">
+                <tr v-for="(item, key) in filteredData" :key="key">
                     <td v-for="(col, key) in settings.columns" :key="key">
                         {{getValue(item, key)}}
                     </td>
@@ -78,8 +81,26 @@ export default {
             isAsking: false,
             isProgressing: false,
             data: null
+        },
+        search: {
+            term: ''
         }
     }),
+    computed: {
+        filteredData()
+        {
+            let term = this.search.term.toLowerCase();
+            
+            return this.data.filter(item => {
+                if (this.settings.searchMethod instanceof Function)
+                {
+                    return term.length === 0 || this.settings.searchMethod(item, term);
+                }
+                
+                return true;
+            });
+        }
+    },
     mounted()
     {
         if (this.settings.autoLoad === true)
@@ -160,6 +181,18 @@ export default {
 .grid {
     position: relative;
     height: 100%;
+    .search-bar {
+        background: #fff;
+        margin: 0 0 10px 0;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+        input {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0 none;
+            outline: 0 none;
+        }
+    }
 }
 table.list {
     background: #fff;

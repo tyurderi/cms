@@ -36,7 +36,11 @@ export default {
                         progressText: 'And its gone'
                     }
                 }
-            ]
+            ],
+            searchMethod(item, term)
+            {
+                return item.label.toLowerCase().indexOf(term) !== -1;
+            }
         }
     }),
     computed: {
