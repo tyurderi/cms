@@ -15,7 +15,7 @@
                 <input type="text" v-model="search.term" placeholder="What are you looking for?">
             </div>
             
-            <table class="list">
+            <table class="list" v-if="filteredData.length > 0">
                 <thead>
                 <tr>
                     <th v-for="(col, key) in settings.columns" :key="key"
@@ -47,6 +47,9 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="nothing-found" v-else>
+                No entries found
+            </div>
         </div>
         
         <v-question-modal v-if="progress.affectedItem && progress.isAsking === true"
@@ -192,6 +195,12 @@ export default {
             border: 0 none;
             outline: 0 none;
         }
+    }
+    .nothing-found {
+        font-size: 24px;
+        font-weight: 100;
+        text-align: center;
+        margin: 25px 0 0 0;
     }
 }
 table.list {
