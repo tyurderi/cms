@@ -50,6 +50,11 @@ export default {
                     
                     return 'Unknown';
                 }
+            },
+            searchMethod(item, term)
+            {
+                return item.name.toLowerCase().indexOf(term) !== -1
+                    || item.label.toLowerCase().indexOf(term) !== -1;
             }
         }
     }),

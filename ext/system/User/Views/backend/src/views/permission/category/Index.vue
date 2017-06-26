@@ -35,7 +35,12 @@ export default {
                         progressText: ''
                     }
                 }
-            ]
+            ],
+            searchMethod(item, term)
+            {
+                return item.label.toLowerCase().indexOf(term) !== -1
+                    || item.description.toLowerCase().indexOf(term) !== -1;
+            }
         }
     }),
     computed: {
