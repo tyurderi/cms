@@ -80,6 +80,9 @@ export default {
                         // refresh data
                         this.load();
                     }
+                }, (response) => {
+                    done();
+                    this.$store.dispatch('error/push', response);
                 });
         }
     },

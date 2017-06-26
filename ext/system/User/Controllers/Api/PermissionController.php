@@ -5,6 +5,7 @@ namespace CMS\Controllers\Api;
 use CMS\Components\Controller;
 use CMS\Models\Permission\Category;
 use CMS\Models\Permission\Permission;
+use Exception;
 
 class PermissionController extends Controller
 {
@@ -64,6 +65,7 @@ class PermissionController extends Controller
     
         if ($permission instanceof Permission)
         {
+            $permission->getRelated('values')->delete();
             $permission->delete();
         
             return $this->json()->success();
@@ -119,6 +121,11 @@ class PermissionController extends Controller
     
         if ($category instanceof Category)
         {
+            if ($category->getRelated('permissions')->count() > 0)
+            {
+                throw new Exception('Category is still associated to permissions and can not deleted yet.');
+            }
+            
             $category->delete();
         
             return $this->json()->success();
