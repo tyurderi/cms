@@ -1,65 +1,43 @@
 <template>
-    <div class="user">
-        <div class="head">
-            <div class="title">
-                {{groups.length}} Groups
-            </div>
-            <ul class="actions">
-                <li><a href="#" @click.prevent="load"><i class="fa fa-refresh"></i></a></li>
-                <li><a href="#"><i class="fa fa-search"></i></a></li>
-                <li><a href="#"><i class="fa fa-filter"></i></a></li>
-                <li><a href="#" @click.prevent="create"><i class="fa fa-plus"></i></a></li>
-            </ul>
-        </div>
-        <div class="body">
-            <table class="user-list">
-                <thead>
-                <tr>
-                    <th width="80">ID</th>
-                    <th>Name</th>
-                    <th width="100">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(item, key) in groups" :key="key">
-                    <td>{{item.id}}</td>
-                    <td>{{item.label}}</td>
-                    <td class="actions">
-                        <ul>
-                            <li>
-                                <a href="#" @click.prevent="edit(item)"><i class="fa fa-edit"></i></a>
-                                <a href="#" @click.prevent="remove(item)"><i class="fa fa-trash"></i></a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <v-question-modal v-if="removeProgress.affectedGroup && removeProgress.isAsking === true"
-                          label="Delete Group" text="Are you sure?"
-                          @accept="doRemove" @reject="removeProgress.affectedGroup = null"></v-question-modal>
-        <v-progress-modal v-if="removeProgress.affectedGroup && removeProgress.isProgressing === true"
-                          label="Deleting Group" text="And its gone"></v-progress-modal>
+    <div class="group">
+        <v-grid :settings="gridSettings" :data="groups"
+                @create="create" @edit="edit" @remove="remove" @load="load"></v-grid>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import VQuestionModal from '@/components/Modal/Question';
-import VProgressModal from '@/components/Modal/Progress';
+import VGrid from '@/components/Grid';
 
 export default {
     components: {
-        VQuestionModal,
-        VProgressModal
+        VGrid
     },
     data: () => ({
-        removeProgress: {
-            affectedGroup: null,
-            isAsking: false,
-            isProgressing: false
+        gridSettings: {
+            autoLoad: true,
+            headTitle: 'Groups',
+            columns: {
+                id: { label: 'ID', width: 80 },
+                label: { label: 'Label' }
+            },
+            data: [],
+            actions: [
+                {
+                    name: 'edit',
+                    iconCls: 'fa fa-edit'
+                },
+                {
+                    name: 'remove',
+                    iconCls: 'fa fa-trash',
+                    ask: {
+                        questionLabel: 'Delete Group',
+                        questionText: 'Are you sure?',
+                        progressLabel: 'Deleting Group',
+                        progressText: 'And its gone'
+                    }
+                }
+            ]
         }
     }),
     computed: {
@@ -88,58 +66,27 @@ export default {
         {
             this.$router.push({ name: 'users-groups-edit', params: { id: item.id } });
         },
-        remove(group)
+        remove(group, done)
         {
-            this.removeProgress.affectedGroup = group;
-            this.removeProgress.isAsking      = true;
-        },
-        doRemove()
-        {
-            this.removeProgress.isAsking      = false;
-            this.removeProgress.isProgressing = true;
-
-            this.$http.post('api/group/remove', { id: this.removeProgress.affectedGroup.id })
+            this.$http.post('api/group/remove', { id: group.id })
                 .then((response) => {
                     if (response.body.success === true)
                     {
                         // reset remove progress data
-                        this.removeProgress.affectedGroup  = null;
-                        this.removeProgress.isAsking      = false;
-                        this.removeProgress.isProgressing = false;
+                        done();
 
                         // refresh data
                         this.load();
                     }
                 });
-        },
+        }
     }
 }
 </script>
 
 <style lang="less" scoped>
-.user {
+.group {
     position: relative;
     height: 100%;
-}
-table.user-list {
-    background: #fff;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    td.actions {
-        ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            li {
-                display: inline-block;
-                margin: 0 5px 0 0;
-                a {
-                    transition: all 125ms;
-                    &:hover {
-                        color: #c0392b;
-                    }
-                }
-            }
-        }
-    }
 }
 </style>

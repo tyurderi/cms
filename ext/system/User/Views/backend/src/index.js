@@ -20,6 +20,11 @@ Router.addRoutes([
         name: 'users-groups-edit',
         path: '/users/groups/edit/:id',
         component: require('@User/views/group/Form')
+    },
+    {
+        name: 'users-permissions',
+        path: '/users/permissions',
+        component: require('@User/views/permission/Index')
     }
 ]);
 
