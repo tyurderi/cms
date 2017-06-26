@@ -45,6 +45,21 @@ Router.addRoutes([
         name: 'user-permission-edit',
         path: '/users/permissions/edit/:id',
         component: require('@User/views/permission/Form')
+    },
+    {
+        name: 'user-permission-category',
+        path: '/users/permissions/categories',
+        component: require('@User/views/permission/category/Index')
+    },
+    {
+        name: 'user-permission-category-create',
+        path: '/users/permissions/categories/create',
+        component: require('@User/views/permission/category/Form')
+    },
+    {
+        name: 'user-permission-category-edit',
+        path: '/users/permissions/categories/edit/:id',
+        component: require('@User/views/permission/category/Form')
     }
 ]);
 

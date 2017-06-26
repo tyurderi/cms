@@ -79,6 +79,13 @@ class PermissionController extends Controller
         ]);
     }
     
+    public function getCategoryAction()
+    {
+        return $this->json()->success([
+            'data' => Category::findByID((int) $this->request()->getParam('id'))
+        ]);
+    }
+    
     public function saveCategoryAction()
     {
         $data     = $this->request()->getParams();
