@@ -7,27 +7,42 @@ Router.addRoutes([
         component: require('@User/views/user/Index')
     },
     {
+        name: 'user-create',
+        path: '/users/create',
+        component: require('@User/views/user/Form')
+    },
+    {
         name: 'user-edit',
         path: '/users/edit/:id',
         component: require('@User/views/user/Form')
     },
     {
-        name: 'users-groups',
+        name: 'user-group',
         path: '/users/groups',
         component: require('@User/views/group/Index')
     },
     {
-        name: 'users-groups-edit',
+        name: 'user-group-create',
+        path: '/users/groups/create',
+        component: require('@User/views/group/Form')
+    },
+    {
+        name: 'user-group-edit',
         path: '/users/groups/edit/:id',
         component: require('@User/views/group/Form')
     },
     {
-        name: 'users-permissions',
+        name: 'user-permission',
         path: '/users/permissions',
         component: require('@User/views/permission/Index')
     },
     {
-        name: 'users-permissions-edit',
+        name: 'user-permission-create',
+        path: '/users/permissions/create',
+        component: require('@User/views/permission/Form')
+    },
+    {
+        name: 'user-permission-edit',
         path: '/users/permissions/edit/:id',
         component: require('@User/views/permission/Form')
     }

@@ -46,7 +46,7 @@ export default {
     computed: {
         groups()
         {
-            return this.$store.getters['group/items'].filter(group => group.id !== 'new')
+            return this.$store.getters['group/items']
         }
     },
     mounted()
@@ -63,11 +63,11 @@ export default {
         },
         create()
         {
-            this.$router.push({ name: 'users-groups-edit', params: { id: 'new' } });
+            this.$router.push({ name: 'user-group-create' });
         },
         edit(item)
         {
-            this.$router.push({ name: 'users-groups-edit', params: { id: item.id } });
+            this.$router.push({ name: 'user-group-edit', params: { id: item.id } });
         },
         remove(group, done)
         {

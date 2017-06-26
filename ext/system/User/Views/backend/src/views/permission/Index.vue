@@ -56,7 +56,7 @@ export default {
     computed: {
         permissions()
         {
-            return this.$store.getters['permission/items'].filter(permission => permission.id !== 'new');
+            return this.$store.getters['permission/items'];
         }
     },
     methods: {
@@ -73,11 +73,11 @@ export default {
         },
         create()
         {
-            this.$router.push({ name: 'users-permissions-edit', params: { id: 'new' } });
+            this.$router.push({ name: 'user-permission-create' });
         },
         edit(permission)
         {
-            this.$router.push({ name: 'users-permissions-edit', params: { id: permission.id } });
+            this.$router.push({ name: 'user-permission-edit', params: { id: permission.id } });
         },
         remove(permission, done)
         {

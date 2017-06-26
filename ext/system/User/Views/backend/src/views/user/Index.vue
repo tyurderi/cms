@@ -65,8 +65,9 @@ export default {
         VGrid
     },
     computed: {
-        users() {
-            return this.$store.getters['user/items'].filter(user => user.id !== 'new');
+        users()
+        {
+            return this.$store.getters['user/items'];
         }
     },
     mounted()
@@ -87,7 +88,7 @@ export default {
         },
         create()
         {
-            this.$router.push({ name: 'user-edit', params: { id: 'new' } });
+            this.$router.push({ name: 'user-create' });
         },
         edit(user)
         {

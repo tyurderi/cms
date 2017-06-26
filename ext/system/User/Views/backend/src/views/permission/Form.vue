@@ -2,7 +2,7 @@
     <div class="permission-form">
         <div class="head">
             <div class="title">
-                <span v-if="$route.params.id === 'new'">
+                <span v-if="isNew">
                     Create permission
                 </span>
                 <span v-else>
@@ -20,7 +20,7 @@
         <div class="body">
             <div class="form-container" v-if="permission">
                 <form @submit.prevent="submit" id="permission">
-                    <div class="form-item" v-if="permission.id !== 'new'">
+                    <div class="form-item" v-if="permission.id !== null">
                         <label for="id">
                             ID
                         </label>
@@ -62,111 +62,123 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
-    import async from 'async';
+import { mapGetters } from 'vuex';
+import async from 'async';
 
-    export default {
-        computed: {
-            permission()
-            {
-                return this.$store.getters['permission/items'].find(permission => permission.id === this.$route.params.id)
-            },
-            categories()
-            {
-                return this.$store.getters['permission/category/items'].filter(category => category.id !== 'new');
-            }
-        },
-        mounted()
+export default {
+    name: 'user-permission-form',
+    data: () => ({
+        editingPermission: {
+            id: null,
+            name: '',
+            label: '',
+            description: '',
+            categoryID: -1
+        }
+    }),
+    computed: {
+        permission()
         {
-            let permissionID = this.$route.params.id;
+            if (this.isNew)
+            {
+                return this.editingPermission;
+            }
+            
+            return this.$store.getters['permission/items'].find(permission => permission.id === this.$route.params.id)
+        },
+        categories()
+        {
+            return this.$store.getters['permission/category/items'];
+        },
+        isNew()
+        {
+            return this.$route.name === 'user-permission-create';
+        }
+    },
+    mounted()
+    {
+        let permissionID = this.$route.params.id;
 
+        this.$progress.start();
+
+        async.series([
+            (done) =>
+            {
+                this.$store.dispatch('permission/category/load', done);
+            },
+            (done) =>
+            {
+                if (this.isNew)
+                {
+                    done();
+                    return;
+                }
+
+                // Do not load permission when it's already assigned
+                if (this.permission && this.permission.id && permissionID === this.permission.id)
+                {
+                    done();
+                    return;
+                }
+
+                this.$http.post('api/permission/get', { id: permissionID })
+                    .then(
+                        response => {
+                            if (!response.body.success)
+                            {
+                                done(true);
+                                return;
+                            }
+
+                            this.$store.commit('permission/add', [response.body.data]);
+                            done();
+                        },
+                        response => {
+                            this.$store.dispatch('error/push', response);
+                            done(true);
+                        }
+                    );
+            }
+        ], (error, results) => {
+            if (error)
+            {
+                this.$progress.fail();
+            }
+            else
+            {
+                this.$progress.finish();
+            }
+        });
+    },
+    methods: {
+        submit()
+        {
             this.$progress.start();
 
-            async.series([
-                (done) =>
-                {
-                    this.$store.dispatch('permission/category/load', done);
-                },
-                (done) =>
-                {
-                    if (this.$route.params.id === 'new')
+            this.$http.post('api/permission/save', this.permission)
+                .then(
+                    response =>
                     {
-                        this.$store.commit('permission/add', [
-                            {
-                                id: 'new',
-                                label: ''
-                            }
-                        ]);
-
-                        done();
-                        return;
-                    }
-
-                    // Do not load permission when it's already assigned
-                    if (this.permission && this.permission.id && permissionID === this.permission.id)
-                    {
-                        done();
-                        return;
-                    }
-
-                    this.$http.post('api/permission/get', { id: permissionID })
-                        .then(
-                            response => {
-                                if (!response.body.success)
-                                {
-                                    done(true);
-                                    return;
-                                }
-
-                                this.$store.commit('permission/add', [response.body.data]);
-                                done();
-                            },
-                            response => {
-                                this.$store.dispatch('error/push', response);
-                                done(true);
-                            }
-                        );
-                }
-            ], (error, results) => {
-                if (error)
-                {
-                    this.$progress.fail();
-                }
-                else
-                {
-                    this.$progress.finish();
-                }
-            });
-        },
-        methods: {
-            submit()
-            {
-                this.$progress.start();
-
-                this.$http.post('api/permission/save', this.permission)
-                    .then(
-                        response =>
+                        if (!response.body || !response.body.success)
                         {
-                            if (!response.body || !response.body.success)
-                            {
-                                this.$store.dispatch('error/push', response);
-                                this.$progress.fail();
-                            }
-                            else
-                            {
-                                this.$router.push({ name: 'users-permissions-edit', params: { id: response.body.id } });
-                                this.$progress.finish();
-                            }
-                        },
-                        response =>
-                        {
-                            this.$progress.fail();
                             this.$store.dispatch('error/push', response);
+                            this.$progress.fail();
                         }
-                    )
-            }
+                        else
+                        {
+                            this.$router.push({ name: 'user-permission-edit', params: { id: response.body.id } });
+                            this.$progress.finish();
+                        }
+                    },
+                    response =>
+                    {
+                        this.$progress.fail();
+                        this.$store.dispatch('error/push', response);
+                    }
+                )
         }
     }
+}
 </script>
 
 <style lang="less" scoped>

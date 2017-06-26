@@ -2,7 +2,7 @@
     <div class="user-form">
         <div class="head">
             <div class="title">
-                <span v-if="$route.params.id === 'new'">
+                <span v-if="isNew">
                     Create user
                 </span>
                 <span v-else>
@@ -20,7 +20,7 @@
         <div class="body">
             <div class="form-container" v-if="user">
                 <form @submit.prevent="submit" id="user">
-                    <div class="form-item" v-if="user.id !== 'new'">
+                    <div class="form-item" v-if="user.id !== null">
                         <label for="id">
                             ID
                         </label>
@@ -72,14 +72,36 @@ import { mapGetters } from 'vuex';
 import async from 'async';
 
 export default {
+    data: () => ({
+        /**
+         * This will only be used when the form is in isNew mode
+         */
+        editingUser: {
+            id: null,
+            email: '',
+            password: '',
+            firstname: '',
+            lastname: '',
+            groupID: -1
+        }
+    }),
     computed: {
         user()
         {
-            return this.$store.getters['user/items'].find(user => user.id === this.$route.params.id)
+            if (this.isNew)
+            {
+                return this.editingUser;
+            }
+            
+            return this.$store.getters['user/items'].find(user => user.id === this.$route.params.id);
         },
         groups()
         {
-            return this.$store.getters['group/items'].filter(group => group.id !== 'new')
+            return this.$store.getters['group/items'];
+        },
+        isNew()
+        {
+            return this.$route.name === 'user-create';
         }
     },
     mounted()
@@ -112,19 +134,9 @@ export default {
             },
             (done) =>
             {
-                if (this.$route.params.id === 'new')
+                // Do not load anything in isNew mode
+                if (this.isNew === true)
                 {
-                    this.$store.commit('user/add', [
-                        {
-                            id: 'new',
-                            email: '',
-                            password: '',
-                            firstname: '',
-                            lastname: '',
-                            groupID: -1
-                        }
-                    ]);
-                    
                     done();
                     return;
                 }
