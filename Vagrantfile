@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/var/www"
 
   config.vm.provider "virtualbox" do |vb|
-     vb.memory = "4096"
+     vb.memory = "1024"
      vb.gui = false
   end
 
