@@ -139,7 +139,7 @@ class PermissionController extends Controller
         $groupID = $this->request()->getParam('groupID');
         $query   = $this->db()->from('permission_value v')
             ->select(null)
-            ->select('v.id, v.permissionID, v.value')
+            ->select('v.*')
             ->leftJoin('permission p ON p.id = v.permissionID')
             ->leftJoin('user_group g ON g.id = v.groupID')
             ->where('g.id', $groupID);
