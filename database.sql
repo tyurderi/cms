@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS `permission` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `categoryID` INT(11) NOT NULL,
   `name` VARCHAR(256) NOT NULL,
-  `label` VARCHAR(256) NOT NULL,
   `description` TEXT,
   PRIMARY KEY(`id`)
 );

@@ -16,10 +16,10 @@ export default {
             autoLoad: true,
             headTitle: 'Permissions',
             columns: {
-                id: { label: 'ID', width: 80 },
-                category: { label: 'Category', width: 200 },
-                name: { label: 'Name', width: 400 },
-                label: { label: 'Label' }
+                id:          { label: 'ID',       width: 80 },
+                category:    { label: 'Category', width: 200 },
+                name:        { label: 'Name',     width: 400 },
+                description: { label: 'Description' }
             },
             actions: [
                 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace CMS\Components\Core;
+namespace CMS\Components\Permission;
 
 use Favez\Mvc\App;
 

@@ -14,8 +14,6 @@ class Permission extends Entity
 
     public $name;
 
-    public $label;
-
     public $description;
 
     public function initialize()

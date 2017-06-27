@@ -46,24 +46,19 @@
                     <tbody>
                         <template v-for="(category, key) in categories">
                             <tr class="permission-category">
-                                <td>
+                                <td width="200">
                                     {{category.label}}
                                 </td>
-                                <td colspan="2">
+                                <td>
                                     {{category.description}}
                                 </td>
                             </tr>
                             <tr v-for="(permission, key) in getPermissions(category)" :key="key"
                                 class="permission-item">
-                                <td>
+                                <td colspan="2">
                                     <checkbox v-model="(group.permissions||{})[permission.id]"
                                               :name="permission.name"></checkbox>
-                                </td>
-                                <td>
-                                    {{permission.label}}
-                                </td>
-                                <td>
-                                    {{permission.description}}
+                                    <span>{{permission.description}}</span>
                                 </td>
                             </tr>
                         </template>

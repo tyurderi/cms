@@ -33,12 +33,6 @@
                         <input type="text" id="name" v-model="permission.name" />
                     </div>
                     <div class="form-item">
-                        <label for="label">
-                            Label
-                        </label>
-                        <input type="text" id="label" v-model="permission.label" />
-                    </div>
-                    <div class="form-item">
                         <label for="description">
                             Description
                         </label>

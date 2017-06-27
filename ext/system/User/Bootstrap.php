@@ -3,6 +3,7 @@
 namespace User;
 
 use BackendMenu\Models\BackendMenu;
+use CMS\Components\Permission\PermissionPool;
 use Favez\Mvc\Event\Arguments;
 
 class Bootstrap extends \CMS\Components\Plugin\Bootstrap
@@ -37,6 +38,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
             'parentID' => $menu->id
         ]);
         
+        $this->registerPermissions();
+        
         return true;
     }
     
@@ -51,6 +54,9 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
                     'icon'     => 'sitemap',
                     'parentID' => BackendMenu::findOneBy(['label' => 'Permissions'])->id
                 ]);
+            break;
+            case '1.0.1':
+                $this->registerPermissions();
             break;
         }
         
@@ -75,6 +81,36 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
             $this->getRelativePath() . 'Views/backend/src/',
             $this->getPath() . 'Views/backend/src'
         );
+    }
+    
+    /**
+     * This method register all required permissions within default values.
+     * Already existing permissions and categories will be overwritten.
+     */
+    protected function registerPermissions()
+    {
+        $manager = new \CMS\Components\Permission\Manager();
+        $manager->create('User', 'User related permissions', function(PermissionPool $pool) {
+            $pool->push('user.list',   'Show available users', '0');
+            $pool->push('user.create', 'Create a user',        '0');
+            $pool->push('user.edit',   'Edit a user',          '0');
+            $pool->push('user.remove', 'Remove a user',        '0');
+        });
+        
+        $manager->create('User Groups', 'User group related permissions', function(PermissionPool $pool) {
+            $pool->push('user.group.list',   'Show available user groups', '0');
+            $pool->push('user.group.create', 'Create a user group',        '0');
+            $pool->push('user.group.edit',   'Edit a user group',          '0');
+            $pool->push('user.group.remove', 'Remove a user group',        '0');
+        });
+        
+        $manager->create('Plugin', 'Plugin management related permissions', function(PermissionPool $pool) {
+            $pool->push('plugin.list',      'Show available plugins', '0');
+            $pool->push('plugin.install',   'Install plugin',         '0');
+            $pool->push('plugin.update',    'Update plugin',          '0');
+            $pool->push('plugin.uninstall', 'Uninstall plugin',       '0');
+            $pool->push('plugin.remove',    'Remove plugin',          '0');
+        });
     }
     
 }
