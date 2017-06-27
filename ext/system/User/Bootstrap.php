@@ -111,6 +111,10 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
             $pool->push('plugin.uninstall', 'Uninstall plugin',       '0');
             $pool->push('plugin.remove',    'Remove plugin',          '0');
         });
+        
+        $manager->create('Permission', 'Permission management', function(PermissionPool $pool) {
+            $pool->push('permission.management', 'Manage permissions', '0');
+        });
     }
     
 }
