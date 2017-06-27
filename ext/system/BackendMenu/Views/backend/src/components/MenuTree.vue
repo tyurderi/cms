@@ -1,7 +1,7 @@
 <template>
     <ul class="sub-menu" :class="['level-' + level]">
         <li v-for="item in parent.children" :class="{ active: isActive(item) }">
-            <router-link :to="item.url" v-tooltip.right="item.label">
+            <router-link :to="item.url">
                 <span class="icon fa" :class="[ 'fa-' + (item.icon ? item.icon : 'question') ]"></span>
                 {{item.label}}
             </router-link>
