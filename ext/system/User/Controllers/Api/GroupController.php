@@ -30,13 +30,6 @@ class GroupController extends Controller
 
         return $this->json()->failure();
     }
-    
-    public function getPermissionsAction()
-    {
-        return $this->json()->success([
-            'data' => $this->getPermissions((int) $this->request()->getParam('id'))
-        ]);
-    }
 
     public function saveAction()
     {
@@ -103,18 +96,6 @@ class GroupController extends Controller
         }
         
         return true;
-    }
-    
-    private function getPermissions($groupID)
-    {
-        $query = $this->db()->from('permission_value v')
-            ->select(null)
-            ->select('p.id, v.value')
-            ->leftJoin('permission p ON p.id = v.permissionID')
-            ->leftJoin('user_group g ON g.id = v.groupID')
-            ->where('g.id', $groupID);
-        
-        return $query->fetchAll();
     }
     
 }

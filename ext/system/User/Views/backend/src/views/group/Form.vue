@@ -84,14 +84,14 @@ export default {
         editingGroup: {
             id: null,
             label: '',
-            permissionValues: {}
-        },
-        permissionValues: []
+            permissions: {}
+        }
     }),
     computed: {
         ...mapGetters({
             categories: 'permission/category/items',
-            permissions: 'permission/items'
+            permissions: 'permission/items',
+            values: 'permission/value/items'
         }),
         group()
         {
@@ -151,15 +151,7 @@ export default {
             },
             (done) =>
             {
-                this.$http.post('api/group/getPermissions', { id: groupID })
-                    .then(response => {
-                        this.permissionValues = response.body.data;
-                        
-                        done();
-                    }, response => {
-                        this.$store.dispatch('error/push', response);
-                        done(true);
-                    })
+                this.$store.dispatch('permission/value/load', { groupID, done });
             }
         ], (error, results) => {
             if (error)
@@ -172,9 +164,8 @@ export default {
             }
             
             this.group.permissions = {};
-            
-            this.permissionValues.forEach(permissionValue => {
-                this.group.permissions[permissionValue.id] = permissionValue.value === '1';
+            this.values.forEach(value => {
+                this.group.permissions[value.permissionID] = value.value === '1';
             });
             
             this.$forceUpdate();

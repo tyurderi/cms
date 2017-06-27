@@ -67,3 +67,4 @@ import '@User/store/user';
 import '@User/store/group';
 import '@User/store/permission';
 import '@User/store/permission/category';
+import '@User/store/permission/value';
