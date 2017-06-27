@@ -61,10 +61,10 @@ app.use(require('connect-history-api-fallback')());
 app.use(devMiddleware);
 app.use(hotMiddleware);
 
-let staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
-app.use(staticPath, express.static('./themes/backend/default/static'))
+let staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
+app.use(staticPath, express.static('./themes/backend/default/static'));
 
-let uri = 'http://localhost:' + port
+let uri = 'http://localhost:' + port;
 
 devMiddleware.waitUntilValid(function () {
     console.log('> Listening at ' + uri + '\n')
