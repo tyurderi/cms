@@ -1,7 +1,7 @@
 <template>
     <div class="menu">
         <ul class="main">
-            <li v-for="item in items" :class="{ active: isActive(item) }">
+            <li v-for="item in items" :class="{ active: isActive(item) }" v-permission="item.permissions">
                 <router-link :to="item.url">
                     <span class="icon fa" :class="[ 'fa-' + (item.icon ? item.icon : 'question') ]"></span>
                     {{item.label}}

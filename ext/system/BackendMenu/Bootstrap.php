@@ -28,6 +28,12 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
                     $table->addColumn('string', 'icon', ['length' => 128]);
                 });
             break;
+            case '1.0.1':
+                $manager = new CapsuleManager();
+                $manager->schema()->table(BackendMenu::getSource(), function(Blueprint $table) {
+                    $table->addColumn('string', 'permissions', ['length' => 256]);
+                });
+            break;
         }
         
         return true;

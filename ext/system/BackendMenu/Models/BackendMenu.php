@@ -22,6 +22,8 @@ class BackendMenu extends Entity
     
     public $icon;
     
+    public $permissions;
+    
     public static function getSource()
     {
         return 'backend_menu';
@@ -36,6 +38,7 @@ class BackendMenu extends Entity
         $table->string('url')->length(255);
         $table->integer('pluginID')->nullable();
         $table->string('icon')->length(128);
+        $table->string('permissions')->length(255);
     }
     
 }

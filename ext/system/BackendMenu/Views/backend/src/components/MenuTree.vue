@@ -1,6 +1,6 @@
 <template>
     <ul class="sub-menu" :class="['level-' + level]">
-        <li v-for="item in parent.children" :class="{ active: isActive(item) }">
+        <li v-for="item in parent.children" :class="{ active: isActive(item) }" v-permission="item.permissions">
             <router-link :to="item.url">
                 <span class="icon fa" :class="[ 'fa-' + (item.icon ? item.icon : 'question') ]"></span>
                 {{item.label}}

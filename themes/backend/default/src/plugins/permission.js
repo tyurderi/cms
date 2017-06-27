@@ -10,9 +10,24 @@ class PermissionManager
     }
     has(name)
     {
-        let permission = this.permissions.find(p => p.name === name);
+        if (name.length === 0)
+        {
+            return true;
+        }
 
-        return permission && permission.value === '1';
+        let names = name.split('|'),
+            found = false;
+
+        names.forEach(name => {
+            let permission = this.permissions.find(p => p.name === name);
+
+            if (permission && permission.value === '1')
+            {
+                found = true;
+            }
+        });
+
+        return found;
     }
 }
 
