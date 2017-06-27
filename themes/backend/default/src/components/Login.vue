@@ -60,12 +60,19 @@ img {
     margin: 0 auto;
     display: block;
 }
+div.login-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 div.login {
     background: #fff;
-    padding: 10px;
-    width: 300px;
-    margin: 300px auto 0 auto;
+    padding: 15px;
     box-shadow: 0 1px 2px #c0392b;
+    width: 400px;
     input {
         width: 100%;
     }

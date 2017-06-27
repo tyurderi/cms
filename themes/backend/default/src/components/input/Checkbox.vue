@@ -24,6 +24,5 @@ span.custom-checkbox {
     display: inline-block;
     width: auto;
     height: 30px;
-    overflow-y: hidden;
 }
 </style>
