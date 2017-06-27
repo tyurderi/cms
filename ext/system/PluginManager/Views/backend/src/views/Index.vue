@@ -40,16 +40,16 @@
                     <td>{{item.changed}}</td>
                     <td class="actions">
                         <ul>
-                            <li v-if="!item.active">
+                            <li v-if="!item.active" v-permission="'plugin.install'">
                                 <a href="#" @click.prevent="install(item)"><i class="fa fa-plus"></i></a>
                             </li>
-                            <li v-if="item.active">
+                            <li v-if="item.active" v-permission="'plugin.uninstall'">
                                 <a href="#" @click.prevent="uninstall(item)"><i class="fa fa-minus"></i></a>
                             </li>
-                            <li v-if="item.active && item.needUpdate">
+                            <li v-if="item.active && item.needUpdate" v-permission="'plugin.update'">
                                 <a href="#" @click.prevent="update(item)"><i class="fa fa-refresh"></i></a>
                             </li>
-                            <li v-if="!item.active">
+                            <li v-if="!item.active" v-permission="'plugin.remove'">
                                 <a href="#" @click.prevent="remove(item)"><i class="fa fa-trash"></i></a>
                             </li>
                         </ul>

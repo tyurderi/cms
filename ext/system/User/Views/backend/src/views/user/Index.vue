@@ -58,6 +58,11 @@ export default {
                 return item.email.toLowerCase().indexOf(term) !== -1
                     || item.firstname.toLowerCase().indexOf(term) !== -1
                     || item.lastname.toLowerCase().indexOf(term) !== -1;
+            },
+            permissions: {
+                create: 'user.create',
+                edit:   'user.edit',
+                remove: 'user.remove'
             }
         }
     }),

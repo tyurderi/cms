@@ -5,8 +5,12 @@
                 {{data.length}} {{settings.headTitle}}
             </div>
             <ul class="actions">
-                <li><a href="#" @click.prevent="dispatch('load')"><i class="fa fa-refresh"></i></a></li>
-                <li><a href="#" @click.prevent="dispatch('create')"><i class="fa fa-plus"></i></a></li>
+                <li>
+                    <a href="#" @click.prevent="dispatch('load')"><i class="fa fa-refresh"></i></a>
+                </li>
+                <li v-permission="permissions.create">
+                    <a href="#" @click.prevent="dispatch('create')"><i class="fa fa-plus"></i></a>
+                </li>
             </ul>
         </div>
         <div class="body">
@@ -35,7 +39,8 @@
                     
                     <td class="actions" v-if="settings.actions">
                         <ul>
-                            <li v-for="(action, key) in settings.actions" :key="key">
+                            <li v-for="(action, key) in settings.actions" :key="key"
+                                v-permission="permissions[action.name]">
                                 <a href="#" @click.prevent="dispatchAction(action, item)">
                                     <i :class="action.iconCls"></i>
                                 </a>
@@ -100,6 +105,10 @@ export default {
                 
                 return true;
             });
+        },
+        permissions()
+        {
+            return this.settings.permissions || {};
         }
     },
     mounted()

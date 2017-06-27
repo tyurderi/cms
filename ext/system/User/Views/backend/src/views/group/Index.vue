@@ -40,6 +40,11 @@ export default {
             searchMethod(item, term)
             {
                 return item.label.toLowerCase().indexOf(term) !== -1;
+            },
+            permissions: {
+                create: 'user.group.create',
+                edit:   'user.group.edit',
+                remove: 'user.group.remove'
             }
         }
     }),
