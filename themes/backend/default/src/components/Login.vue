@@ -1,14 +1,17 @@
 <template>
     <div class="login-container">
         <div class="login">
+            <div class="title">
+                Vuex CMS
+            </div>
             <form method="post" v-on:submit.prevent="submit">
                 <div class="form-item">
                     <label for="email">email:</label>
-                    <input type="email" v-model="email" id="email" />
+                    <input type="email" v-model="email" id="email" placeholder="email" />
                 </div>
                 <div class="form-item">
                     <label for="password">password:</label>
-                    <input type="password" v-model="password" id="password" />
+                    <input type="password" v-model="password" id="password" placeholder="password" />
                 </div>
                 <div class="form-buttons">
                     <button type="submit" class="primary">login</button>
@@ -67,17 +70,30 @@ div.login-container {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-div.login {
-    background: #fff;
-    padding: 15px;
-    box-shadow: 0 1px 2px #c0392b;
-    width: 400px;
-    input {
-        width: 100%;
-    }
-    button {
-        width: 100%;
+    div.login {
+        background: #fff;
+        padding: 15px;
+        box-shadow: 0 1px 2px #c0392b;
+        width: 350px;
+        div.title {
+            padding: 10px 10px 15px 10px;
+            font-size: 24px;
+            font-weight: 100;
+            border-bottom: 1px solid #ddd;
+            margin: 0 0 15px 0;
+            text-align: center;
+        }
+        form {
+            label {
+                display: none;
+            }
+            input {
+                width: 100%;
+            }
+            button {
+                float: right;
+            }
+        }
     }
 }
 </style>
