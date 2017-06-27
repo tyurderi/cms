@@ -14,10 +14,9 @@
                     <input type="password" v-model="password" id="password" placeholder="password" />
                 </div>
                 <div class="form-buttons">
+                    <checkbox v-model="keepLogin" label="Keep login for 30 days" name="keep_login" />
                     <button type="submit" class="primary">login</button>
                 </div>
-
-                <checkbox v-model="keepLogin" label="Keep login for 30 days" name="keep_login" />
             </form>
         </div>
     </div>
@@ -90,8 +89,13 @@ div.login-container {
             input {
                 width: 100%;
             }
-            button {
-                float: right;
+            .form-buttons {
+                height: 30px;
+                button {
+                    float: right;
+                    height: 30px;
+                    line-height: 32px;
+                }
             }
         }
     }
