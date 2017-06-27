@@ -14,7 +14,7 @@
                     <input type="password" v-model="password" id="password" placeholder="password" />
                 </div>
                 <div class="form-buttons">
-                    <checkbox v-model="keepLogin" label="Keep login for 30 days" name="keep_login" />
+                    <checkbox v-model="keepLogin" label="Remember for 30 days" name="keep_login" />
                     <button type="submit" class="primary">login</button>
                 </div>
             </form>
@@ -42,14 +42,19 @@ export default {
                 password: me.password,
                 keepLogin: me.keepLogin
             }).then((response) => {
-                me.$progress.finish();
                 if (response.data.success)
                 {
+                    me.$progress.finish();
                     me.$events.emit('updateView', 'index');
+                }
+                else
+                {
+                    me.$progress.fail();
+                    this.$store.dispatch('error/push', response)
                 }
             }, (error) => {
                 me.$progress.fail();
-                console.log(error);
+                this.$store.dispatch('error/push', error)
             });
         }
     }
@@ -71,7 +76,7 @@ div.login-container {
     justify-content: center;
     div.login {
         background: #fff;
-        padding: 15px;
+        padding: 15px 15px 12px 15px;
         box-shadow: 0 1px 2px #c0392b;
         width: 350px;
         div.title {
