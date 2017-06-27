@@ -44,6 +44,8 @@ export default {
             }).then((response) => {
                 if (response.data.success)
                 {
+                    me.$permission.set(response.data.permissions);
+                    
                     me.$progress.finish();
                     me.$events.emit('updateView', 'index');
                 }

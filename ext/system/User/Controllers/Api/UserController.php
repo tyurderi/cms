@@ -97,7 +97,9 @@ class UserController extends Controller
     {
         if (self::auth()->loggedIn())
         {
-            return self::json()->success();
+            return self::json()->success([
+                'permissions' => $this->getPermissions()
+            ]);
         }
         
         return self::json()->failure();
@@ -111,7 +113,9 @@ class UserController extends Controller
         
         if (self::auth()->login($email, $password, $keepLogin))
         {
-            return self::json()->success();
+            return self::json()->success([
+                'permissions' => $this->getPermissions()
+            ]);
         }
         
         return self::json()->failure();
@@ -122,6 +126,19 @@ class UserController extends Controller
         self::auth()->clear();
         
         return self::json()->success();
+    }
+    
+    private function getPermissions()
+    {
+        $groupID = self::auth()->user()->groupID;
+        $query   = $this->db()->from('permission_value v')
+            ->select(null)
+            ->select('v.*, p.name')
+            ->leftJoin('permission p ON p.id = v.permissionID')
+            ->leftJoin('user_group g ON g.id = v.groupID')
+            ->where('g.id', $groupID);
+    
+        return $query->fetchAll();
     }
     
 }

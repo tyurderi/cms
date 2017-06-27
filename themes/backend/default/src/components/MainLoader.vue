@@ -14,6 +14,7 @@ export default {
         me.$http.post('/api/user/status').then((response) => {
             if (response.body.success === true)
             {
+                me.$permission.set(response.body.permissions);
                 me.$events.emit('updateView', 'index');
             }
             else
