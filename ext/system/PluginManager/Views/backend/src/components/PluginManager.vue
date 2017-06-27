@@ -62,6 +62,22 @@ export default {
                 default:
                     return 'Oh, I\'ve got an unknown action.';
             }
+        },
+        doneText()
+        {
+            switch (this.action)
+            {
+                case 'install':
+                    return 'The plugin were installed successfully';
+                case 'uninstall':
+                    return 'The plugin were uninstalled successfully';
+                case 'update':
+                    return 'The plugin were updated successfully';
+                case 'remove':
+                    return 'The plugin were removed successfully';
+                default:
+                    return 'The plugin were OMG WHAT THE FUCK!'
+            }
         }
     },
     methods: {
@@ -117,6 +133,14 @@ export default {
             if(!response.body.success)
             {
                 this.$store.dispatch('error/push', response);
+            }
+            else
+            {
+                this.$toast.push({
+                    text: this.doneText,
+                    type: 'success',
+                    delay: 3000
+                })
             }
 
             this.$emit('done');

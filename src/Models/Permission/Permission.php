@@ -45,10 +45,6 @@ class Permission extends Entity
             'unique_permission_name' => 'The name is already used by another permission.'
         ]);
         
-        $v->add('label', $this->label, 'required', [
-            'required' => 'The label is required.'
-        ]);
-        
         $v->add('description', $this->description, 'required', [
             'required' => 'The category should have a description.'
         ]);

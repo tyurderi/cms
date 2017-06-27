@@ -56,7 +56,7 @@ class Category extends Entity
     {
         // Check if the passed label is not already in use
         Validator::addGlobalRule('unique_category_label', function($fields, $value, $params) {
-            return Permission::findBy(['label' => $value, 'NOT id' => $this->id])->count() === 0;
+            return Category::findBy(['label' => $value, 'NOT id' => $this->id])->count() === 0;
         });
     }
 

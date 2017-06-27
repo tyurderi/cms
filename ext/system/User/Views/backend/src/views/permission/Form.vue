@@ -162,6 +162,12 @@ export default {
                         {
                             this.$router.push({ name: 'user-permission-edit', params: { id: response.body.id } });
                             this.$progress.finish();
+
+                            this.$toast.push({
+                                text: 'The permission were saved successfully',
+                                type: 'success',
+                                delay: 3000
+                            })
                         }
                     },
                     response =>

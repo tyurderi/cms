@@ -184,6 +184,12 @@ export default {
                         {
                             this.$router.push({ name: 'user-group-edit', params: { id: response.body.id } });
                             this.$progress.finish();
+                            
+                            this.$toast.push({
+                                text: 'The group were saved successfully',
+                                type: 'success',
+                                delay: 3000
+                            })
                         }
                     },
                     response =>

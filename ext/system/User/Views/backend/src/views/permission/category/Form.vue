@@ -145,6 +145,12 @@ export default {
                                 params: { id: response.body.id }
                             });
                             this.$progress.finish();
+
+                            this.$toast.push({
+                                text: 'The permission category were saved successfully',
+                                type: 'success',
+                                delay: 3000
+                            })
                         }
                     },
                     response =>

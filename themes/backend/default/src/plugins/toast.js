@@ -15,19 +15,21 @@ export default {
 
                 Store.commit('PUSH_TOAST', message);
 
-                if (item.timeout && item.timeout > 0)
+                if (item.delay && item.delay > 0)
                 {
-                    let timeout = item.timeout;
+                    let timeout = item.delay -= 500;
+
+                    message.hideProgress = (item.delay / timeout * 100);
 
                     let interval = setInterval(() => {
-                        item.timeout -= 500;
+                        item.delay -= 500;
 
-                        message.hideProgress = (item.timeout / timeout * 100);
+                        message.hideProgress = (item.delay / timeout * 100);
 
-                        if (item.timeout <= -500)
+                        if (item.delay <= -500)
                         {
                             message.hidden = true;
-                            item.timeout = 0;
+                            item.delay = 0;
 
                             clearInterval(interval);
                         }

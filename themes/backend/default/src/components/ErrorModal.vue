@@ -1,5 +1,5 @@
 <template>
-    <modal mode="fixed" width="500px" height="300px" v-if="hasError">
+    <modal mode="fixed" width="1000px" height="800px" v-if="hasError">
         <div slot="content">
             <div class="error">
                 <span class="label">Oops! Something went wrong...</span>
@@ -39,7 +39,7 @@ export default {
 
 <style lang="less" scoped>
 .error {
-    height: 300px;
+    height: 800px;
     display: flex;
     flex-direction: column;
     .label {

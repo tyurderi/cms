@@ -42,7 +42,6 @@ class PermissionController extends Controller
     
         $permission->set([
             'name'        => $data['name'],
-            'label'       => $data['label'],
             'description' => $data['description'],
             'categoryID'  => $data['categoryID']
         ]);

@@ -36,7 +36,7 @@ export default {
         padding: 10px 10px;
         margin: 10px;
         color: #fff;
-        max-width: 250px;
+        max-width: 400px;
         display: flex;
         flex-direction: row;
         &.default {  background: #3498db; }
