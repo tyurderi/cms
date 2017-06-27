@@ -7,12 +7,15 @@
         </transition>
         
         <error-modal></error-modal>
+        <v-toast></v-toast>
     </div>
 </template>
 
 <script>
 import '@/assets/less/all.less';
 import 'font-awesome/css/font-awesome.min.css';
+
+import VToast from '@/components/Toast';
 
 import MainLoader from '@/components/MainLoader';
 import Login from '@/components/Login';
@@ -26,7 +29,8 @@ export default {
     components: {
         MainLoader,
         Login,
-        Index
+        Index,
+        VToast
     },
     mounted()
     {
