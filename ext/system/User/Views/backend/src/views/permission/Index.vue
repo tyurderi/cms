@@ -95,6 +95,13 @@ export default {
 
                         // refresh data
                         this.load();
+
+                        // show toast message
+                        this.$toast.push({
+                            text: 'The permission were deleted successfully',
+                            type: 'success',
+                            delay: 3000
+                        });
                     }
                 });
         }

@@ -79,6 +79,13 @@ export default {
 
                         // refresh data
                         this.load();
+
+                        // show toast message
+                        this.$toast.push({
+                            text: 'The permission category were deleted successfully',
+                            type: 'success',
+                            delay: 3000
+                        });
                     }
                 }, (response) => {
                     done();
