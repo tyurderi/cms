@@ -140,10 +140,16 @@ input[type=checkbox] {
       left: -34px;
     }
     &:after {
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+
       position: absolute;
       width: 30px;
       height: 30px;
-      content: '✔';
+      content: "\F00C";
       top: 0;
       left: -34px;
       color: #333;
@@ -153,6 +159,7 @@ input[type=checkbox] {
       transform: scale(0);
       opacity: 0;
       transition: all 0.125s;
+      line-height: 30px;
     }
   }
 }
