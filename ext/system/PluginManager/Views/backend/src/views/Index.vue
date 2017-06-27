@@ -6,8 +6,6 @@
             </div>
             <ul class="actions">
                 <li><a href="#" @click.prevent="load"><i class="fa fa-refresh"></i></a></li>
-                <li><a href="#"><i class="fa fa-search"></i></a></li>
-                <li><a href="#"><i class="fa fa-filter"></i></a></li>
             </ul>
         </div>
         <div class="body">
