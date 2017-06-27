@@ -54,7 +54,7 @@ export default {
             searchMethod(item, term)
             {
                 return item.name.toLowerCase().indexOf(term) !== -1
-                    || item.label.toLowerCase().indexOf(term) !== -1;
+                    || item.description.toLowerCase().indexOf(term) !== -1;
             }
         }
     }),
