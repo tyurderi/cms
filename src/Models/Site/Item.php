@@ -17,6 +17,11 @@ class Item extends Entity
      */
     const TYPE_URL  = 2;
     
+    /**
+     * This item acts like a category and usually have no parent item but is associated to a site.
+     */
+    const TYPE_SECTION = 3;
+    
     public $id;
     
     public $siteID;

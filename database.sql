@@ -95,7 +95,7 @@ CREATE TABLE `site` (
 CREATE TABLE `site_item` (
   `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `siteID` INT(11) NOT NULL,
-  `parentID` INT(11) NOT NULL,
+  `parentID` INT(11),
   `label` VARCHAR(255) NOT NULL,
   `type` INT(11) NOT NULL,
   `changed` TIMESTAMP, -- DEFAULT '1970-01-01 00:00:01',
