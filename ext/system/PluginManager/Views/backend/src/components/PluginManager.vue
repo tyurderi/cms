@@ -39,6 +39,8 @@ export default {
                     return 'Are you sure to install this plugin?';
                 case 'uninstall':
                     return 'Are you sure to uninstall this plugin?';
+                case 'reinstall':
+                    return 'Are you sure to reinstall this plugin?';
                 case 'update':
                     return 'Are you sure to update this plugin?';
                 case 'remove':
@@ -71,6 +73,8 @@ export default {
                     return 'The plugin were installed successfully';
                 case 'uninstall':
                     return 'The plugin were uninstalled successfully';
+                case 'reinstall':
+                    return 'The plugin were reinstalled successfully';
                 case 'update':
                     return 'The plugin were updated successfully';
                 case 'remove':
@@ -109,6 +113,27 @@ export default {
                     response => this.done(response),
                     response => this.$store.dispatch('error/push', response)
                 );
+        },
+        reinstall()
+        {
+            this.action = 'uninstall';
+            
+            this.$http.post('api/plugin/uninstall', { name: this.plugin.name })
+                .then(
+                    response => {
+                        this.action = 'install';
+                        
+                        this.$http.post('api/plugin/install', { name: this.plugin.name })
+                            .then(
+                                response => {
+                                    this.action = 'reinstall';
+                                    this.done(response);
+                                },
+                                response => this.$store.dispatch('error/push', response)
+                            )
+                    },
+                    response => this.$store.dispatch('error/push', response)
+                )
         },
         update()
         {
