@@ -33,9 +33,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="(item, key) in filteredData" :key="key">
-                    <td v-for="(col, key) in settings.columns" :key="key">
-                        {{getValue(item, key)}}
-                    </td>
+                    <td v-for="(col, key) in settings.columns" :key="key" v-html="getValue(item, key)"></td>
                     
                     <td class="actions" v-if="settings.actions">
                         <ul>
@@ -166,15 +164,14 @@ export default {
          */
         getValue(item, key)
         {
-            if (item[key] !== undefined)
-            {
-                return item[key];
-            }
-            
             if (this.settings.renderer instanceof Object
                 && this.settings.renderer[key] instanceof Function)
             {
                 return this.settings.renderer[key](this, item);
+            }
+            else if(item[key] !== undefined)
+            {
+                return item[key];
             }
             
             return '';

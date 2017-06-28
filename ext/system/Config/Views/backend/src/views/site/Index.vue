@@ -19,6 +19,7 @@ export default {
             headTitle: 'Sites',
             columns: {
                 id:      { label: 'ID', width: 80 },
+                active:  { label: 'Active' },
                 label:   { label: 'Label' },
                 host:    { label: 'Host' },
                 created: { label: 'Created' },
@@ -40,6 +41,14 @@ export default {
                     }
                 }
             ],
+            renderer: {
+                active(grid, item)
+                {
+                    return parseInt(item.active) === 1
+                        ? '<i class="fa fa-check"></i>'
+                        : '<i class="fa fa-times"></i>';
+                }
+            },
             permissions: {
                 create: '',
                 edit:   '',
