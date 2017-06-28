@@ -121,16 +121,30 @@ export default {
             this.$http.post('api/plugin/uninstall', { name: this.plugin.name })
                 .then(
                     response => {
-                        this.action = 'install';
-                        
-                        this.$http.post('api/plugin/install', { name: this.plugin.name })
-                            .then(
-                                response => {
-                                    this.action = 'reinstall';
-                                    this.done(response);
-                                },
-                                response => this.$store.dispatch('error/push', response)
-                            )
+                        if (response.body.success === true)
+                        {
+                            this.action = 'install';
+
+                            this.$http.post('api/plugin/install', { name: this.plugin.name })
+                                .then(
+                                    response => {
+                                        if (response.body.success === true)
+                                        {
+                                            this.action = 'reinstall';
+                                            this.done(response);
+                                        }
+                                        else
+                                        {
+                                            this.$store.dispatch('error/push', response)
+                                        }
+                                    },
+                                    response => this.$store.dispatch('error/push', response)
+                                )
+                        }
+                        else
+                        {
+                            this.$store.dispatch('error/push', response);
+                        }
                     },
                     response => this.$store.dispatch('error/push', response)
                 )

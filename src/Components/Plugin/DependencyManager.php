@@ -64,12 +64,21 @@ class DependencyManager
      */
     public function getDependencies($name)
     {
-        return App::db()->from('plugin p')
+        $dependencies = App::db()->from('plugin p')
             ->select(null)->select('p.name')
             ->leftJoin('plugin_dependency pd ON pd.pluginID = p.id')
             ->where('p.active = 1')
             ->where('pd.name = ?', $name)
-            ->fetchPairs(0, 'p.name');
+            ->fetchAll();
+        
+        $result = [];
+        
+        foreach ($dependencies as $dependency)
+        {
+            $result[] = $dependency['name'];
+        }
+        
+        return $result;
     }
     
     /**
