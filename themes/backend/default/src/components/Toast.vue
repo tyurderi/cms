@@ -75,14 +75,11 @@ export default {
     }
 }
 
-.toast-enter-active {
+.toast-enter-active, .toast-leave-active {
     transition: all 0.25s;
 }
-.toast-enter, .list-leave-to {
+.toast-enter, .toast-leave-to {
     opacity: 0;
     transform: translateX(100%);
-}
-.toast-leave-active {
-    position: absolute;
 }
 </style>
