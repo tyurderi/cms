@@ -45,6 +45,7 @@ export default {
                 if (response.data.success)
                 {
                     me.$permission.set(response.data.permissions);
+                    me.$store.commit('site/set', response.data.sites);
                     
                     me.$progress.finish();
                     me.$events.emit('updateView', 'index');

@@ -4,10 +4,25 @@
   box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.125);
   position: relative;
   .sidebar-header {
-    padding: 15px;
+    position: relative;
     color: #fff;
-    font-weight: 100;
-    font-size: 18px;
+    .site-list {
+      .site {
+        cursor: pointer;
+        padding: 15px;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.25);
+        &:last-child {
+          border-bottom: 0 none;
+        }
+        .site-title {
+          font-weight: 100;
+          font-size: 18px;
+        }
+        .site-host {
+
+        }
+      }
+    }
   }
   @import "menu";
 }

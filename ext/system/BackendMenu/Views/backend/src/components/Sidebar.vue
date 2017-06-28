@@ -1,9 +1,20 @@
 <template>
     <div class="sidebar">
         <div class="sidebar-header">
-           Vuex CMS
+            <div class="site-list">
+                <div class="site" v-for="(site, key) in sites" :key="key"
+                     v-if="site.id == selectedSite || selectingSite"
+                     @click="selectSite(site)">
+                    <div class="site-title">
+                        {{site.label}}
+                    </div>
+                    <div class="site-host">
+                        {{site.host}}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="menu">
+        <div class="menu" v-if="!selectingSite">
             <sidebar-menu ref="menu"></sidebar-menu>
         </div>
     </div>
@@ -16,79 +27,32 @@ import SidebarMenu from './Menu.vue';
 
 export default {
     name: 'sidebar',
-    components: {
-        SidebarMenu
-    },
     data: () => ({
-        menuOpen: true,
-        sidebarWidth: 230,
-        opacity: 1,
-        headerWidth: 190
+        selectedSite: 1,
+        selectingSite: false
     }),
-    mounted()
-    {
-        let me = this;
-        
-        me.menuOpen   = localStorage.getItem('cms.backend_menu.menu_open') === 'true';
-        me.tweenState = {
-            visible: {
-                sidebarWidth: 230,
-                opacity: 1,
-                headerWidth: 190
-            },
-            hidden: {
-                sidebarWidth: 40,
-                opacity: 0,
-                headerWidth: 0
-            }
-        };
-        
-        me.updateTween(me.tweenState[me.menuOpen ? 'visible' : 'hidden']);
-    },
-    watch: {
-        menuOpen(value)
+    computed: {
+        sites()
         {
-            localStorage.setItem('cms.backend_menu.menu_open', value);
+            return this.$store.getters['site/items']
         }
     },
     methods: {
-        toggleMenu()
+        selectSite(site)
         {
-            let me = this;
-
-            if (this.menuOpen)
+            if (this.selectingSite === true)
             {
-                this.$tweening({
-                    start: _.clone(me.tweenState['visible']),
-                    end:   me.tweenState['hidden'],
-                    within: 125,
-                    via: this.$tweening.Easing.Linear.None,
-                    tween: me.updateTween
-                });
-                
-                this.menuOpen = false;
+                this.selectedSite  = site.id;
+                this.selectingSite = false;
             }
             else
             {
-                this.$tweening({
-                    start: _.clone(me.tweenState['hidden']),
-                    end:   me.tweenState['visible'],
-                    within: 125,
-                    via: this.$tweening.Easing.Linear.None,
-                    tween: me.updateTween
-                });
-
-                this.menuOpen = true;
+                this.selectingSite = true;
             }
-        },
-        updateTween(v)
-        {
-            let me = this;
-
-            me.sidebarWidth = v.sidebarWidth;
-            me.opacity      = v.opacity;
-            me.headerWidth  = v.headerWidth;
         }
+    },
+    components: {
+        SidebarMenu
     }
 }
 </script>

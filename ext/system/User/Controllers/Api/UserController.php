@@ -3,6 +3,7 @@
 namespace CMS\Controllers\Api;
 
 use CMS\Components\Controller;
+use CMS\Models\Site\Site;
 use CMS\Models\User\Group;
 use CMS\Models\User\User;
 use Exception;
@@ -98,7 +99,8 @@ class UserController extends Controller
         if (self::auth()->loggedIn())
         {
             return self::json()->success([
-                'permissions' => $this->getPermissions()
+                'permissions' => $this->getPermissions(),
+                'sites'       => $this->getSites()
             ]);
         }
         
@@ -114,7 +116,8 @@ class UserController extends Controller
         if (self::auth()->login($email, $password, $keepLogin))
         {
             return self::json()->success([
-                'permissions' => $this->getPermissions()
+                'permissions' => $this->getPermissions(),
+                'sites'       => $this->getSites()
             ]);
         }
         
@@ -139,6 +142,11 @@ class UserController extends Controller
             ->where('g.id', $groupID);
     
         return $query->fetchAll();
+    }
+    
+    private function getSites()
+    {
+        return $this->models()->newBuilder(Site::class)->fetchArrayResult();
     }
     
 }
