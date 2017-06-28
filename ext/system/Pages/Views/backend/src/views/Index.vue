@@ -1,8 +1,21 @@
 <template>
     <div class="page-list">
-        <v-section v-for="(section, key) in sections" :key="key" :section="section">
-        
-        </v-section>
+        <div class="head">
+            <div class="title">
+                Pages
+            </div>
+            <ul class="actions">
+                <li>
+                    <a href="#" @click.prevent="load"><i class="fa fa-refresh"></i></a>
+                </li>
+                <li>
+                    <a href="#" @click.prevent="create"><i class="fa fa-plus"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="body">
+            <v-section v-for="(section, key) in sections" :key="key" :section="section"></v-section>
+        </div>
     </div>
 </template>
 

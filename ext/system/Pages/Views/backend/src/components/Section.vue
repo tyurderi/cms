@@ -35,17 +35,16 @@ export default {
 <style lang="less" scoped>
 section {
     background: #fff;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.125);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
     div.section-header {
         display: flex;
         flex-direction: row;
         border-bottom: 1px solid #ddd;
-        background: rgba(0, 0, 0, 0.025);
         div.section-title {
             flex: 1;
             padding: 10px;
-            font-size: 18px;
-            font-weight: 100;
+            font-size: 16px;
+            font-weight: 500;
             height: 40px;
             text-transform: uppercase;
         }
