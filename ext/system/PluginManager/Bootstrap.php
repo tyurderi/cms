@@ -14,7 +14,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
             'label'       => 'PluginManager',
             'url'         => '/pluginManager',
             'icon'        => 'puzzle-piece',
-            'permissions' => 'plugin.list'
+            'permissions' => 'plugin.list',
+            'position'    => 2
         ]);
         
         return true;

@@ -15,7 +15,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
             'label'       => 'Users',
             'url'         => '/users',
             'icon'        => 'user',
-            'permissions' => 'user.list'
+            'permissions' => 'user.list',
+            'position'    => 1
         ]);
     
         $this->createMenu([

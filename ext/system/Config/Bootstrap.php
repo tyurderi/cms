@@ -12,9 +12,9 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         $menu = $this->createMenu([
             'label'       => 'Settings',
             'url'         => '/config',
-            'position'    => -1,
             'icon'        => 'cog',
-            'permissions' => ''
+            'permissions' => '',
+            'position'    => 3
         ]);
         
         $this->createMenu([
