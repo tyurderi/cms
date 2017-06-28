@@ -70,7 +70,7 @@ export default {
             top: 0;
             height: 2px;
             background: rgba(0, 0, 0, 0.5);
-            transition: all 0.25s;
+            transition: all 0.5s linear;
         }
     }
 }
