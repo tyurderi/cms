@@ -23,65 +23,20 @@ export default {
         'plugin',
         /**
          * What should this manager do?
-         * Available actions are 'install', 'uninstall', 'update' or 'remove'
+         * Available actions are 'install', 'uninstall', 'reinstall', 'update' or 'remove'
          */
         'action'
     ],
     data: () => ({
-        confirm: false
+        confirm: false,
+        questionText: '',
+        actionText: '',
+        doneText: ''
     }),
-    computed: {
-        questionText()
+    watch: {
+        plugin(plugin)
         {
-            switch (this.action)
-            {
-                case 'install':
-                    return 'Are you sure to install this plugin?';
-                case 'uninstall':
-                    return 'Are you sure to uninstall this plugin?';
-                case 'reinstall':
-                    return 'Are you sure to reinstall this plugin?';
-                case 'update':
-                    return 'Are you sure to update this plugin?';
-                case 'remove':
-                    return 'Are you sure to remove this plugin?';
-                default:
-                    return 'Oh, I\'ve got an unknown action.';
-            }
-        },
-        actionText()
-        {
-            switch (this.action)
-            {
-                case 'install':
-                    return 'Installing plugin...';
-                case 'uninstall':
-                    return 'Uninstalling plugin...';
-                case 'update':
-                    return 'Updating plugin...';
-                case 'remove':
-                    return 'Removing plugin...';
-                default:
-                    return 'Oh, I\'ve got an unknown action.';
-            }
-        },
-        doneText()
-        {
-            switch (this.action)
-            {
-                case 'install':
-                    return 'The plugin were installed successfully';
-                case 'uninstall':
-                    return 'The plugin were uninstalled successfully';
-                case 'reinstall':
-                    return 'The plugin were reinstalled successfully';
-                case 'update':
-                    return 'The plugin were updated successfully';
-                case 'remove':
-                    return 'The plugin were removed successfully';
-                default:
-                    return 'The plugin were OMG WHAT THE FUCK!'
-            }
+            this.setTexts(this.action);
         }
     },
     methods: {
@@ -116,21 +71,21 @@ export default {
         },
         reinstall()
         {
-            this.action = 'uninstall';
+            this.setTexts('uninstall');
             
             this.$http.post('api/plugin/uninstall', { name: this.plugin.name })
                 .then(
                     response => {
                         if (response.body.success === true)
                         {
-                            this.action = 'install';
+                            this.setTexts('install');
 
                             this.$http.post('api/plugin/install', { name: this.plugin.name })
                                 .then(
                                     response => {
                                         if (response.body.success === true)
                                         {
-                                            this.action = 'reinstall';
+                                            this.setTexts('reinstall');
                                             this.done(response);
                                         }
                                         else
@@ -183,6 +138,41 @@ export default {
             }
 
             this.$emit('done');
+        },
+        setTexts(action)
+        {
+            switch (action)
+            {
+                case 'install':
+                    this.questionText = 'Are you sure to install this plugin?';
+                    this.actionText   = 'Installing plugin...';
+                    this.doneText     = 'The plugin were installed successfully';
+                break;
+                case 'uninstall':
+                    this.questionText = 'Are you sure to uninstall this plugin?';
+                    this.actionText   = 'Uninstalling plugin...';
+                    this.doneText     = 'The plugin were uninstalled successfully';
+                break;
+                case 'reinstall':
+                    this.questionText = 'Are you sure to reinstall this plugin?';
+                    this.actionText   = 'Reinstalling plugin...';
+                    this.doneText     = 'The plugin were reinstalled successfully';
+                break;
+                case 'update':
+                    this.questionText = 'Are you sure to update this plugin?';
+                    this.actionText   = 'Updating plugin...';
+                    this.doneText     = 'The plugin were updated successfully';
+                break;
+                case 'remove':
+                    this.questionText = 'Are you sure to remove this plugin?';
+                    this.actionText   = 'Removing plugin...';
+                    this.doneText     = 'The plugin were removed successfully';
+                break;
+                default:
+                    this.questionText = 'Error: unknown action';
+                    this.actionText   = 'Error: unknown action';
+                    this.doneText     = 'Error: unknown action';
+            }
         }
     }
 }
