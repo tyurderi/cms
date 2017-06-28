@@ -29,6 +29,11 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
                 });
             break;
             case '1.0.1':
+                $manager = new CapsuleManager();
+                $manager->schema()->table(BackendMenu::getSource(), function(Blueprint $table) {
+                    $table->addColumn('string', 'permissions', ['length' => 255, 'nullable' => true]);
+                });
+            break;
             case '1.0.2':
                 $manager = new CapsuleManager();
                 $manager->schema()->table(BackendMenu::getSource(), function(Blueprint $table) {
