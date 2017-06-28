@@ -4,7 +4,8 @@
         "symfony/console": "^3.2",
         "illuminate/database": "^5.4",
         "illuminate/events": "^5.4",
-        "tyurderi/validator": "^1.0"
+        "tyurderi/validator": "^1.0",
+        "doctrine/dbal": "^2.5"
     },
     "autoload": {
         "psr-4": {

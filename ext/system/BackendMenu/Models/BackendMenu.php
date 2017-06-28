@@ -38,7 +38,7 @@ class BackendMenu extends Entity
         $table->string('url')->length(255);
         $table->integer('pluginID')->nullable();
         $table->string('icon')->length(128);
-        $table->string('permissions')->length(255);
+        $table->string('permissions')->length(255)->nullable();
     }
     
 }
