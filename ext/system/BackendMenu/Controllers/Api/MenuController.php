@@ -20,7 +20,7 @@ class MenuController extends Controller
     {
         $items      = [];
         $repository = BackendMenu::repository();
-        $menus      = $repository->getQuery()->where('parentID', $parentID)->orderBy('position DESC')->fetchAll();
+        $menus      = $repository->getQuery()->where('parentID', $parentID)->orderBy('position ASC')->fetchAll();
         $menus      = Collection::create(BackendMenu::class, $menus);
 
         /** @var BackendMenu $menu */
