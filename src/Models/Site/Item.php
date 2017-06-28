@@ -7,6 +7,16 @@ use Favez\Mvc\ORM\Entity;
 class Item extends Entity
 {
     
+    /**
+     * This item is used as a content-page within a custom url.
+     */
+    const TYPE_ITEM = 1;
+    
+    /**
+     * This item is just a redirect-page within a custom url.
+     */
+    const TYPE_URL  = 2;
+    
     public $id;
     
     public $siteID;
@@ -14,6 +24,8 @@ class Item extends Entity
     public $parentID;
     
     public $label;
+    
+    public $type;
     
     public $created;
     
