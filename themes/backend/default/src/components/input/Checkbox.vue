@@ -1,6 +1,6 @@
 <template>
     <span class="custom-checkbox">
-        <input type="checkbox" :checked="value" @change="update($event.target.checked)" :id="name" />
+        <input type="checkbox" :checked="checked" @change="update($event.target.checked)" :id="name" />
 
         <label :for="name">{{ label }}</label>
     </span>
@@ -10,6 +10,14 @@
 export default {
     name: 'checkbox',
     props: ['name', 'label', 'value'],
+    computed: {
+        checked()
+        {
+            return this.value === true
+                || this.value === 1
+                || this.value === '1';
+        }
+    },
     methods: {
         update(value)
         {
