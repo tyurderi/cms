@@ -129,8 +129,6 @@ export default {
                                 return;
                             }
 
-                            console.log(response.body.data.secure);
-
                             this.$store.commit('site/add', [response.body.data]);
                             done();
                         },
