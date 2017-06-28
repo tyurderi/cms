@@ -46,7 +46,7 @@
                             <li v-if="item.active" v-permission="'plugin.uninstall'">
                                 <a href="#" @click.prevent="uninstall(item)"><i class="fa fa-minus"></i></a>
                             </li>
-                            <li v-if="item.active" v-permission="'plugin.install|plugin.uninstall'">
+                            <li v-if="item.active" v-permission="'plugin.install&plugin.uninstall'">
                                 <a href="#" @click.prevent="reinstall(item)"><i class="fa fa-repeat"></i></a>
                             </li>
                             <li v-if="item.active && item.needUpdate" v-permission="'plugin.update'">

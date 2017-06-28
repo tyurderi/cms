@@ -4,30 +4,70 @@ class PermissionManager
     {
         this.permissions = [];
     }
+
+    /**
+     * Add permission to the permisson manager.
+     *
+     * @param permissions
+     */
     set(permissions)
     {
         this.permissions = permissions;
     }
-    has(name)
+
+    /**
+     * This method checks by the passed input value for valid permissions.
+     *
+     * Possible are combinations to check if two permissions are given:
+     * PermissionManager.has('permission1&permission2')
+     *
+     * Also if at least one permission is given:
+     * PermissionManager.has('permission1|permission2')
+     *
+     * Or in combination
+     * PermissionManager.has('permission1|permission2&permission3')
+     *
+     * In the last example the permission1 must be valid OR permission2 AND permission3 must be valid.
+     *
+     * @param input
+     * @returns {boolean}
+     */
+    has(input)
     {
-        if (name.length === 0)
+        if (input === '')
         {
             return true;
         }
 
-        let names = name.split('|'),
-            found = false;
+        let orFields = input.split('|');
 
-        names.forEach(name => {
-            let permission = this.permissions.find(p => p.name === name);
-
-            if (permission && permission.value === '1')
+        for (let i = 0; i < orFields.length; i++)
+        {
+            if (orFields[i] === '')
             {
-                found = true;
+                continue;
             }
-        });
 
-        return found;
+            let andFields = orFields[i].split('&'),
+                passes    = 0;
+
+            for (let k = 0; k < andFields.length; k++)
+            {
+                let permission = this.permissions.find(p => p.name === andFields[k]);
+
+                if (permission && permission.value === '1')
+                {
+                    passes++;
+                }
+            }
+
+            if (passes === andFields.length)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 
