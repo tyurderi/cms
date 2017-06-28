@@ -1,16 +1,18 @@
 <template>
     <div class="toast-container">
-        <div class="toast-message"
-             v-for="(item, key) in items" :key="key"
-             :class="item.type">
-            <div class="text" v-html="item.text"></div>
-            <div class="close" @click="item.hidden = true">
-                <i class="fa fa-times"></i>
+        <transition-group name="toast" tag="div">
+            <div class="toast-message"
+                 v-for="(item, key) in items" :key="key"
+                 :class="'is-' + item.type">
+                <div class="text" v-html="item.text"></div>
+                <div class="close" @click="item.hidden = true">
+                    <i class="fa fa-times"></i>
+                </div>
+                
+                <div class="bar" v-if="item.hideProgress !== null"
+                     :style="{ width: item.hideProgress + '%' }"></div>
             </div>
-            
-            <div class="bar" v-if="item.hideProgress !== null"
-                 :style="{ width: item.hideProgress + '%' }"></div>
-        </div>
+        </transition-group>
     </div>
 </template>
 
@@ -39,16 +41,28 @@ export default {
         max-width: 400px;
         display: flex;
         flex-direction: row;
-        &.default {  background: #3498db; }
-        &.success { background: #2ecc71; }
-        &.error   { background: #e74c3c; }
-        &.warning { background: #f1c40f; }
+        align-items: center;
+        &.is-default {  background: #3498db; }
+        &.is-success { background: #2ecc71; }
+        &.is-error   { background: #c0392b; }
+        &.is-warning { background: #f1c40f; }
         div.text {
             flex: 1;
             margin: 0 10px;
         }
         div.close {
             cursor: pointer;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 100%;
+            width: 16px;
+            height: 16px;
+            text-align: center;
+            line-height: 16px;
+            font-size: 12px;
+            opacity: 0.5;
+            &:hover {
+                opacity: 1;
+            }
         }
         div.bar {
             position: absolute;
@@ -59,5 +73,16 @@ export default {
             transition: all 0.25s;
         }
     }
+}
+
+.toast-enter-active {
+    transition: all 0.25s;
+}
+.toast-enter, .list-leave-to {
+    opacity: 0;
+    transform: translateX(100%);
+}
+.toast-leave-active {
+    position: absolute;
 }
 </style>

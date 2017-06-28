@@ -52,7 +52,11 @@ export default {
                 else
                 {
                     me.$progress.fail();
-                    this.$store.dispatch('error/push', response)
+                    me.$toast.push({
+                        text: 'The email or password you entered is wrong',
+                        type: 'error',
+                        delay: 3000
+                    });
                 }
             }, (error) => {
                 me.$progress.fail();

@@ -12,30 +12,34 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     public function install()
     {
         $menu = $this->createMenu([
-            'label' => 'Users',
-            'url'   => '/users',
-            'icon'  => 'user'
+            'label'       => 'Users',
+            'url'         => '/users',
+            'icon'        => 'user',
+            'permissions' => 'user.list'
         ]);
     
         $this->createMenu([
-            'label'    => 'Groups',
-            'url'      => '/users/groups',
-            'icon'     => 'users',
-            'parentID' => $menu->id,
+            'label'       => 'Groups',
+            'url'         => '/users/groups',
+            'icon'        => 'users',
+            'parentID'    => $menu->id,
+            'permissions' => 'user.group.list'
         ]);
     
         $menu = $this->createMenu([
-            'label'    => 'Permissions',
-            'url'      => '/users/permissions',
-            'icon'     => 'file-text',
-            'parentID' => $menu->id,
+            'label'       => 'Permissions',
+            'url'         => '/users/permissions',
+            'icon'        => 'file-text',
+            'parentID'    => $menu->id,
+            'permissions' => 'permission.management'
         ]);
         
         $this->createMenu([
-            'label'    => 'Categories',
-            'url'      => '/users/permissions/categories',
-            'icon'     => 'sitemap',
-            'parentID' => $menu->id
+            'label'       => 'Categories',
+            'url'         => '/users/permissions/categories',
+            'icon'        => 'sitemap',
+            'parentID'    => $menu->id,
+            'permissions' => 'permission.management'
         ]);
         
         $this->registerPermissions();
@@ -49,10 +53,11 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         {
             case '1.0.0':
                 $this->createMenu([
-                    'label'    => 'Categories',
-                    'url'      => '/users/permissions/categories',
-                    'icon'     => 'sitemap',
-                    'parentID' => BackendMenu::findOneBy(['label' => 'Permissions'])->id
+                    'label'       => 'Categories',
+                    'url'         => '/users/permissions/categories',
+                    'icon'        => 'sitemap',
+                    'parentID'    => BackendMenu::findOneBy(['label' => 'Permissions'])->id,
+                    'permissions' => 'permission.management'
                 ]);
             break;
             case '1.0.1':
