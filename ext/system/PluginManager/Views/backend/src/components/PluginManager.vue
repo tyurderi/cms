@@ -124,16 +124,24 @@ export default {
         {
             this.confirm = false;
             
-            if(!response.body.success)
+            if(!response.body || response.body && !response.body.hasOwnProperty('success'))
             {
                 this.$store.dispatch('error/push', response);
             }
-            else
+            else if(response.body && response.success === true)
             {
                 this.$toast.push({
                     text: this.doneText,
                     type: 'success',
                     delay: 3000
+                })
+            }
+            else
+            {
+                this.$toast.push({
+                    text: response.body.message,
+                    type: 'error',
+                    delay: 6000
                 })
             }
 
