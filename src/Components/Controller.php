@@ -2,6 +2,8 @@
 
 namespace CMS\Components;
 
+use Exception;
+
 /**
  * Class Controller
  * @package CMS\Components
