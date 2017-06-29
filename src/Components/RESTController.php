@@ -20,6 +20,16 @@ abstract class RESTController extends Controller
      */
     protected $className = '';
     
+    public function __construct()
+    {
+        parent::__construct();
+        
+        if ($this->models()->isValid($this->className) === false)
+        {
+            throw new Exception('Invalid class name.');
+        }
+    }
+    
     /**
      * This action fetched a model by id and returns a json response.
      *
