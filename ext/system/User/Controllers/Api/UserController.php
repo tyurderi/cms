@@ -71,7 +71,7 @@ class UserController extends RESTController
         {
             return self::json()->success([
                 'permissions' => $this->getPermissions(),
-                'domain'      => $this->getDomains()
+                'domains'     => $this->getDomains()
             ]);
         }
         
