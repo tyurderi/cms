@@ -2,6 +2,7 @@
 
 namespace CMS\Models\User;
 
+use CMS\Models\Permission\Value;
 use Favez\Mvc\ORM\Entity;
 use Validator\Validator;
 
@@ -20,7 +21,10 @@ class Group extends Entity
     public function initialize()
     {
         $this->hasMany(User::class, 'groupID', 'id')
-            ->setName('users');
+            ->setAlias('users');
+        
+        $this->hasMany(Value::class, 'groupID', 'id')
+            ->setAlias('permissionValues');
     }
 
     public function validate()

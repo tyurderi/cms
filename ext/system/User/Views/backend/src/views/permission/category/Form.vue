@@ -95,7 +95,7 @@ export default {
                     return;
                 }
 
-                this.$http.post('api/permission/getCategory', { id: categoryID })
+                this.$http.post('api/permissionCategory/get', { id: categoryID })
                     .then(
                         response => {
                             if (!response.body.success)
@@ -129,7 +129,7 @@ export default {
         {
             this.$progress.start();
 
-            this.$http.post('api/permission/saveCategory', this.category)
+            this.$http.post('api/permissionCategory/save', this.category)
                 .then(
                     response =>
                     {

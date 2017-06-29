@@ -70,7 +70,7 @@ export default {
         },
         remove(category, done)
         {
-            this.$http.post('api/permission/removeCategory', { id: category.id })
+            this.$http.post('api/permissionCategory/remove', { id: category.id })
                 .then((response) => {
                     if (response.body.success === true)
                     {
@@ -86,6 +86,16 @@ export default {
                             type: 'success',
                             delay: 3000
                         });
+                    }
+                    else
+                    {
+                        done();
+
+                        this.$toast.push({
+                            text: response.body.message,
+                            type: 'error',
+                            delay: 6000
+                        })
                     }
                 }, (response) => {
                     done();

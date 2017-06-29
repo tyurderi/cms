@@ -2,75 +2,41 @@
 
 namespace CMS\Controllers\Api;
 
-use CMS\Components\Controller;
+use CMS\Components\RESTController;
 use CMS\Models\Permission\Value;
 use CMS\Models\User\Group;
 
-class GroupController extends Controller
+class GroupController extends RESTController
 {
-
-    public function listAction()
+    
+    protected $className = Group::class;
+    
+    /**
+     * @param Group $group
+     * @param array $data
+     */
+    protected function beforeSave($group, $data)
     {
-        return self::json()->success([
-            'data' =>  self::models()->newBuilder(Group::class)->fetchArrayResult()
-        ]);
-    }
-
-    public function getAction()
-    {
-        $groupID = self::request()->getParam('id');
-        $group   = Group::findByID($groupID);
-
-        if ($group instanceof Group)
-        {
-            return $this->json()->success([
-                'data' => $group->get()
-            ]);
-        }
-
-        return $this->json()->failure();
-    }
-
-    public function saveAction()
-    {
-        $data  = self::request()->getParams();
-        $group = Group::findByID(self::request()->getParam('id'));
-
-        if (!($group instanceof Group))
-        {
-            $group = new Group();
-        }
-
         $group->set([
             'label' => $data['label']
         ]);
-
-        $result = $group->validate();
-
-        if (isSuccess($result))
-        {
-            $group->save();
-            
-            $this->savePermissions($group->id, $data['permissions']);
-
-            return $this->json()->success($group->get());
-        }
-
-        return $this->json()->failure($result);
     }
-
-    public function removeAction()
+    
+    /**
+     * @param Group $group
+     * @param array $data
+     */
+    protected function afterSave($group, $data)
     {
-        $group = Group::findByID((int) self::request()->getParam('id'));
-
-        if ($group instanceof Group)
-        {
-            $group->delete();
-
-            return $this->json()->success();
-        }
-
-        return $this->json()->failure();
+        $this->savePermissions($group->id, $data['permissions']);
+    }
+    
+    /**
+     * @param Group $group
+     */
+    protected function beforeRemove($group)
+    {
+        $group->getRelated('permissionValues')->delete();
     }
     
     private function savePermissions($groupID, $permissions)

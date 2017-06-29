@@ -2,61 +2,35 @@
 
 namespace CMS\Controllers\Api;
 
-use CMS\Components\Controller;
+use CMS\Components\RESTController;
 use CMS\Models\Domain\Domain;
 use CMS\Models\User\User;
-use Favez\ORM\Entity\Paginator;
 
-class UserController extends Controller
+class UserController extends RESTController
 {
     
-    public function getAction()
+    protected $className = User::class;
+    
+    /**
+     * @param User  $user
+     * @param array $data
+     */
+    protected function onCreate($user, $data)
     {
-        $userID = self::request()->getParam('id');
-        $user   = User::findByID($userID);
-        
-        if ($user instanceof User)
-        {
-            return $this->json()->success([
-                'data' => $user->get()
-            ]);
-        }
-        
-        return $this->json()->failure();
+        $user->created = date('Y-m-d H:i:s');
     }
     
-    public function listAction()
+    /**
+     * @param User $user
+     * @param array $data
+     */
+    protected function beforeSave($user, $data)
     {
-        $page      = self::request()->getParam('page', 1);
-        $limit     = self::request()->getParam('limit', 15);
-        $paginator = self::models()->newPaginator([
-            'mode'    => Paginator::MODE_ARRAY,
-            'builder' => self::models()->newBuilder(User::class),
-            'limit'   => $limit,
-            'page'    => $page
-        ]);
-        
-        self::json()->assign($paginator->paginate());
-        
-        return self::json()->success();
-    }
-    
-    public function saveAction()
-    {
-        $data = self::request()->getParams();
-        $user = User::findByID((int) self::request()->getParam('id'));
-        
-        if (!($user instanceof User))
-        {
-            $user = new User();
-            $user->created = date('Y-m-d H:i:s');
-        }
-        
         if (!empty($data['password']))
         {
             $user->passwordHash = self::auth()->hash($data['password']);
         }
-            
+    
         $user->set([
             'email'     => $data['email'],
             'firstname' => $data['firstname'],
@@ -64,32 +38,14 @@ class UserController extends Controller
             'groupID'   => $data['groupID'],
             'changed'   => date('Y-m-d H:i:s')
         ]);
-        
-        $result = $user->validate();
-        
-        if (isSuccess($result))
-        {
-            $user->save();
-            
-            return $this->json()->success($user->get());
-        }
-            
-        return $this->json()->failure($result);
     }
-
-    public function removeAction()
+    
+    /**
+     * @param User $user
+     */
+    protected function beforeRemove($user)
     {
-        $user = User::findByID((int) self::request()->getParam('id'));
-
-        if ($user instanceof User)
-        {
-            $user->getRelated('sessions')->delete();
-            $user->delete();
-
-            return $this->json()->success();
-        }
-
-        return $this->json()->failure();
+        $user->getRelated('sessions')->delete();
     }
     
     public function statusAction()

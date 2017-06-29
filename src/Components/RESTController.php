@@ -96,7 +96,7 @@ abstract class RESTController extends Controller
         {
             $item->save();
             
-            $this->afterSave($item);
+            $this->afterSave($item, $data);
         
             return $this->json()->success($item->get());
         }
@@ -165,7 +165,8 @@ abstract class RESTController extends Controller
      * Event that will be called after a model was saved.
      *
      * @param $item
+     * @param $data
      */
-    protected function afterSave($item) {}
+    protected function afterSave($item, $data) {}
     
 }

@@ -31,7 +31,7 @@ Store.registerModule('permission/category', {
     actions: {
         load(context, payload)
         {
-            Vue.http.get('api/permission/listCategories')
+            Vue.http.get('api/permissionCategory/list')
                 .then(response => {
                     context.commit('set', response.body.data);
 

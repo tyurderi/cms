@@ -33,7 +33,7 @@ Store.registerModule('permission/value', {
         {
             payload = payload || {};
 
-            Vue.http.post('api/permission/listValues', { groupID: payload.groupID })
+            Vue.http.post('api/permissionCategory/listValues', { groupID: payload.groupID })
                 .then(response => {
                     context.commit('set', response.body.data);
 
