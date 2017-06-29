@@ -1,37 +1,37 @@
 <template>
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="site" v-if="site" @click="selectingSite = true">
-                <div class="site-title">
-                    {{site.label}}
+            <div class="domain" v-if="domain" @click="selectingDomain = true">
+                <div class="domain-label">
+                    {{domain.label}}
                 </div>
-                <div class="site-host">
-                    {{site.host}}
+                <div class="domain-host">
+                    {{domain.host}}
                 </div>
             </div>
         </div>
         <div class="menu">
             <sidebar-menu ref="menu"></sidebar-menu>
         </div>
-        <modal mode="fixed" width="500px" height="300px" v-if="selectingSite">
-            <div class="site-selector" slot="content">
+        <modal mode="fixed" width="500px" height="300px" v-if="selectingDomain">
+            <div class="domain-selector" slot="content">
                 <div class="selector-header">
                     <div class="header-title">
-                         Select site
+                         Select domain
                     </div>
-                    <div class="header-close" @click="selectingSite = false">
+                    <div class="header-close" @click="selectingDomain = false">
                         <i class="fa fa-times"></i>
                     </div>
                 </div>
-                <div class="selector-sites">
-                    <div class="site" v-for="(site, key) in sites"
-                         :class="{ active: parseInt(site.id) === selectedSite }"
-                         @click="selectedSite = parseInt(site.id)">
-                        <div class="site-title">
-                            {{site.label}}
+                <div class="selector-items">
+                    <div class="item" v-for="(domain, key) in domains"
+                         :class="{ active: parseInt(domain.id) === selectedDomain }"
+                         @click="selectedDomain = parseInt(domain.id)">
+                        <div class="item-title">
+                            {{domain.label}}
                         </div>
-                        <div class="site-host">
-                            {{site.host}}
+                        <div class="item-host">
+                            {{domain.host}}
                         </div>
                     </div>
                 </div>
@@ -48,31 +48,17 @@ import SidebarMenu from './Menu.vue';
 export default {
     name: 'sidebar',
     data: () => ({
-        selectedSite: 1,
-        selectingSite: false
+        selectedDomain: 1,
+        selectingDomain: false
     }),
     computed: {
-        sites()
+        domains()
         {
-            return this.$store.getters['site/items']
+            return this.$store.getters['domain/items']
         },
-        site()
+        domain()
         {
-            return this.sites.find(site => parseInt(site.id) === this.selectedSite);
-        }
-    },
-    methods: {
-        selectSite(site)
-        {
-            if (this.selectingSite === true)
-            {
-                this.selectedSite  = site.id;
-                this.selectingSite = false;
-            }
-            else
-            {
-                this.selectingSite = true;
-            }
+            return this.domains.find(domain => parseInt(domain.id) === this.selectedDomain);
         }
     },
     components: {
@@ -82,7 +68,7 @@ export default {
 </script>
 
 <style lang="less">
-.site-selector {
+.domain-selector {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -107,14 +93,14 @@ export default {
             }
         }
     }
-    .selector-sites {
+    .selector-items {
         flex: 1;
         overflow-y: auto;
-        .site {
+        .item {
             padding: 15px;
             border-bottom: 1px dashed #ddd;
             &.active {
-                .site-title {
+                .item-title {
                     font-weight: bold;
                 }
             }
@@ -125,10 +111,10 @@ export default {
                 background: rgba(0, 0, 0, 0.05);
                 cursor: pointer;
             }
-            .site-title {
+            .item-title {
             
             }
-            .site-label {
+            .item-label {
             
             }
         }

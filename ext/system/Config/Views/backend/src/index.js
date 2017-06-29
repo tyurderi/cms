@@ -7,20 +7,20 @@ Router.addRoutes([
         component: require('@Config/views/Index')
     },
     {
-        name: 'config-sites',
-        path: '/config/sites',
-        component: require('@Config/views/site/Index')
+        name: 'config-domain',
+        path: '/config/domains',
+        component: require('@Config/views/domain/Index')
     },
     {
-        name: 'config-site-create',
-        path: '/config/sites/reate',
-        component: require('@Config/views/site/Form')
+        name: 'config-domain-create',
+        path: '/config/domains/reate',
+        component: require('@Config/views/domain/Form')
     },
     {
-        name: 'config-site-edit',
-        path: '/config/sites/edit/:id',
-        component: require('@Config/views/site/Form')
+        name: 'config-domain-edit',
+        path: '/config/domains/edit/:id',
+        component: require('@Config/views/domain/Form')
     }
 ]);
 
-import '@Config/store/site';
+import '@Config/store/domain';

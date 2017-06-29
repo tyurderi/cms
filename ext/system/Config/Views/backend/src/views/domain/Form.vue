@@ -1,60 +1,60 @@
 <template>
-    <div class="config-site-form">
+    <div class="config-domain-form">
         <div class="head">
             <div class="title">
                 <span v-if="isNew">
-                    Create site
+                    Create domain
                 </span>
                 <span v-else>
-                    Edit site
+                    Edit domain
                 </span>
             </div>
             <ul class="actions">
                 <li>
                     <a href="#">
-                        <button class="fa fa-check" form="site"></button>
+                        <button class="fa fa-check" form="domain"></button>
                     </a>
                 </li>
             </ul>
         </div>
         <div class="body">
-            <div class="form-container" v-if="site">
-                <form @submit.prevent="submit" id="site">
-                    <div class="form-item" v-if="site.id !== null">
+            <div class="form-container" v-if="domain">
+                <form @submit.prevent="submit" id="domain">
+                    <div class="form-item" v-if="domain.id !== null">
                         <label for="id">
                             ID
                         </label>
-                        <input type="text" id="id" :value="site.id" readonly />
+                        <input type="text" id="id" :value="domain.id" readonly />
                     </div>
                     <div class="form-item">
                         <label>
                             Active
                         </label>
-                        <checkbox name="active" v-model="site.active"></checkbox>
+                        <checkbox name="active" v-model="domain.active"></checkbox>
                     </div>
                     <div class="form-item">
                         <label for="label">
                             Label
                         </label>
-                        <input type="text" id="label" v-model="site.label" />
+                        <input type="text" id="label" v-model="domain.label" />
                     </div>
                     <div class="form-item">
                         <label>
                             SSL
                         </label>
-                        <checkbox name="ssl" v-model="site.secure"></checkbox>
+                        <checkbox name="ssl" v-model="domain.secure"></checkbox>
                     </div>
                     <div class="form-item">
                         <label for="host">
                             Host
                         </label>
-                        <input type="text" id="host" v-model="site.host" />
+                        <input type="text" id="host" v-model="domain.host" />
                     </div>
                     <div class="form-item">
                         <label for="hosts">
                             Hosts
                         </label>
-                        <textarea id="hosts" v-model="site.hosts"></textarea>
+                        <textarea id="hosts" v-model="domain.hosts"></textarea>
                     </div>
                 </form>
             </div>
@@ -71,7 +71,7 @@ export default {
         /**
          * This will only be used when the form is in isNew mode
          */
-        editingSite: {
+        editingDomain: {
             id: null,
             active: true,
             label: '',
@@ -83,23 +83,23 @@ export default {
         }
     }),
     computed: {
-        site()
+        domain()
         {
             if (this.isNew)
             {
-                return this.editingSite;
+                return this.editingDomain;
             }
 
-            return this.$store.getters['site/items'].find(site => site.id === this.$route.params.id);
+            return this.$store.getters['domain/items'].find(domain => domain.id === this.$route.params.id);
         },
         isNew()
         {
-            return this.$route.name === 'config-site-create';
+            return this.$route.name === 'config-domain-create';
         }
     },
     mounted()
     {
-        let siteID = this.$route.params.id;
+        let domainID = this.$route.params.id;
 
         this.$progress.start();
 
@@ -114,13 +114,13 @@ export default {
                 }
 
                 // Do not load user when it's already assigned
-                if (this.site && this.site.id && siteID === this.site.id)
+                if (this.domain && this.domain.id && domainID === this.domain.id)
                 {
                     done();
                     return;
                 }
 
-                this.$http.post('api/site/get', { id: siteID })
+                this.$http.post('api/domain/get', { id: domainID })
                     .then(
                         response => {
                             if (!response.body.success)
@@ -129,7 +129,7 @@ export default {
                                 return;
                             }
 
-                            this.$store.commit('site/add', [response.body.data]);
+                            this.$store.commit('domain/add', [response.body.data]);
                             done();
                         },
                         response => {
@@ -154,7 +154,7 @@ export default {
         {
             this.$progress.start();
 
-            this.$http.post('api/site/save', this.site)
+            this.$http.post('api/domain/save', this.domain)
                 .then(
                     response => {
                         if (!response.body || !response.body.success)
@@ -164,11 +164,11 @@ export default {
                         }
                         else
                         {
-                            this.$router.push({ name: 'config-site-edit', params: { id: response.body.id } });
+                            this.$router.push({ name: 'config-domain-edit', params: { id: response.body.id } });
                             this.$progress.finish();
 
                             this.$toast.push({
-                                text: 'The site were saved successfully',
+                                text: 'The domain were saved successfully',
                                 type: 'success',
                                 delay: 3000
                             })
@@ -185,7 +185,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.config-site-form {
+.config-domain-form {
     position: relative;
     height: 100%;
     .form-container {

@@ -1,11 +1,12 @@
 <?php
 
-namespace CMS\Models\Site;
+namespace CMS\Models\Domain;
 
+use CMS\Models\Page\Page;
 use Favez\Mvc\ORM\Entity;
 use Validator\Validator;
 
-class Site extends Entity
+class Domain extends Entity
 {
     
     public $id;
@@ -26,12 +27,12 @@ class Site extends Entity
     
     public function initialize()
     {
-        $this->hasMany(Item::class, 'siteID', 'id')->setAlias('items');
+        $this->hasMany(Page::class, 'domainID', 'id')->setAlias('pages');
     }
     
     public static function getSource()
     {
-        return 'site';
+        return 'domain';
     }
     
     public function validate()
@@ -45,9 +46,9 @@ class Site extends Entity
         $v->add('host', $this->host, 'required', [
             'required' => 'A site host is required.'
         ]);
-    
+        
         $v->validate();
-    
+        
         if (!$v->passes())
         {
             return [
@@ -55,7 +56,7 @@ class Site extends Entity
                 'messages' => $v->errors()
             ];
         }
-    
+        
         return true;
     }
     

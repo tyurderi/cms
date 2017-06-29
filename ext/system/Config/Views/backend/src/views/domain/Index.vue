@@ -1,6 +1,6 @@
 <template>
-    <div class="config-sites">
-        <v-grid :settings="gridSettings" :data="sites"
+    <div class="config-domains">
+        <v-grid :settings="gridSettings" :data="domains"
                 @create="create" @edit="edit" @remove="remove" @load="load"></v-grid>
     </div>
 </template>
@@ -16,7 +16,7 @@ export default {
     data: () => ({
         gridSettings: {
             autoLoad: true,
-            headTitle: 'Sites',
+            headTitle: 'Domains',
             columns: {
                 id:      { label: 'ID', width: 80 },
                 active:  { label: 'Active' },
@@ -34,9 +34,9 @@ export default {
                     name: 'remove',
                     iconCls: 'fa fa-trash',
                     ask: {
-                        questionLabel: 'Delete Site',
+                        questionLabel: 'Delete Domain',
                         questionText: 'Are you sure?',
-                        progressLabel: 'Deleting Site',
+                        progressLabel: 'Deleting Domain',
                         progressText: ''
                     }
                 }
@@ -60,9 +60,9 @@ export default {
         VGrid
     },
     computed: {
-        sites()
+        domains()
         {
-            return this.$store.getters['site/items'];
+            return this.$store.getters['domain/items'];
         }
     },
     mounted()
@@ -75,22 +75,22 @@ export default {
             this.$progress.start();
 
             async.series([
-                done => this.$store.dispatch('site/load', done),
+                done => this.$store.dispatch('domain/load', done),
             ], (response, error) => {
                 this.$progress.finish();
             });
         },
         create()
         {
-            this.$router.push({ name: 'config-site-create' });
+            this.$router.push({ name: 'config-domain-create' });
         },
         edit(site)
         {
-            this.$router.push({ name: 'config-site-edit', params: { id: site.id } });
+            this.$router.push({ name: 'config-domain-edit', params: { id: site.id } });
         },
         remove(site, done)
         {
-            this.$http.post('api/site/remove', { id: site.id })
+            this.$http.post('api/domain/remove', { id: site.id })
                 .then((response) => {
                     if (response.body.success === true)
                     {
@@ -114,7 +114,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.config-sites {
+.config-domains {
     position: relative;
     height: 100%;
 }

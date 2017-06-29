@@ -3,10 +3,8 @@
 namespace CMS\Controllers\Api;
 
 use CMS\Components\Controller;
-use CMS\Models\Site\Site;
-use CMS\Models\User\Group;
+use CMS\Models\Domain\Domain;
 use CMS\Models\User\User;
-use Exception;
 use Favez\ORM\Entity\Paginator;
 
 class UserController extends Controller
@@ -100,7 +98,7 @@ class UserController extends Controller
         {
             return self::json()->success([
                 'permissions' => $this->getPermissions(),
-                'sites'       => $this->getSites()
+                'domains'     => $this->getDomains()
             ]);
         }
         
@@ -117,7 +115,7 @@ class UserController extends Controller
         {
             return self::json()->success([
                 'permissions' => $this->getPermissions(),
-                'sites'       => $this->getSites()
+                'domain'      => $this->getDomains()
             ]);
         }
         
@@ -144,9 +142,9 @@ class UserController extends Controller
         return $query->fetchAll();
     }
     
-    private function getSites()
+    private function getDomains()
     {
-        return $this->models()->newBuilder(Site::class)->fetchArrayResult();
+        return $this->models()->newBuilder(Domain::class)->fetchArrayResult();
     }
     
 }

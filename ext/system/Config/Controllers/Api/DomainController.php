@@ -3,27 +3,27 @@
 namespace CMS\Controllers\Api;
 
 use CMS\Components\Controller;
-use CMS\Models\Site\Site;
+use CMS\Models\Domain\Domain;
 
-class SiteController extends Controller
+class DomainController extends Controller
 {
     
     public function listAction()
     {
         return $this->json()->success([
-            'data' => $this->models()->newBuilder(Site::class)->fetchArrayResult()
+            'data' => $this->models()->newBuilder(Domain::class)->fetchArrayResult()
         ]);
     }
     
     public function getAction()
     {
-        $siteID = $this->request()->getParam('id');
-        $site   = Site::findByID((int) $siteID);
+        $id   = (int) $this->request()->getParam('id');
+        $item = Domain::findByID($id);
         
-        if ($site instanceof Site)
+        if ($item instanceof Domain)
         {
             return $this->json()->success([
-                'data' => $site->get()
+                'data' => $item->get()
             ]);
         }
         
@@ -32,18 +32,18 @@ class SiteController extends Controller
     
     public function saveAction()
     {
-        $siteID = $this->request()->getParam('id');
-        $data   = $this->request()->getParams();
-        $site   = Site::findByID($siteID);
+        $id   = (int) $this->request()->getParam('id');
+        $data = $this->request()->getParams();
+        $item = Domain::findByID($id);
         
-        if (!($site instanceof Site))
+        if (!($item instanceof Domain))
         {
-            $site = new Site();
-            $site->created = date('Y-m-d H:i:s');
-            $site->changed = date('Y-m-d H:i:s');
+            $item = new Domain();
+            $item->created = date('Y-m-d H:i:s');
+            $item->changed = date('Y-m-d H:i:s');
         }
-        
-        $site->set([
+    
+        $item->set([
             'active' => (int) $data['active'],
             'label'  => $data['label'],
             'host'   => $data['host'],
@@ -51,13 +51,13 @@ class SiteController extends Controller
             'secure' => (int) $data['secure']
         ]);
     
-        $result = $site->validate();
+        $result = $item->validate();
     
         if (isSuccess($result))
         {
-            $site->save();
+            $item->save();
         
-            return $this->json()->success($site->get());
+            return $this->json()->success($item->get());
         }
     
         return $this->json()->failure($result);
@@ -65,12 +65,12 @@ class SiteController extends Controller
     
     public function removeAction()
     {
-        $siteID = $this->request()->getParam('id');
-        $site   = Site::findByID((int) $siteID);
+        $id   = (int) $this->request()->getParam('id');
+        $item = Domain::findByID($id);
     
-        if ($site instanceof Site)
+        if ($item instanceof Domain)
         {
-            $site->delete();
+            $item->delete();
             
             return $this->json()->success();
         }

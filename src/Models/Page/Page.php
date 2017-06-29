@@ -1,10 +1,11 @@
 <?php
 
-namespace CMS\Models\Site;
+namespace CMS\Models\Page;
 
+use CMS\Models\Domain\Domain;
 use Favez\Mvc\ORM\Entity;
 
-class Item extends Entity
+class Page extends Entity
 {
     
     /**
@@ -24,7 +25,7 @@ class Item extends Entity
     
     public $id;
     
-    public $siteID;
+    public $domainID;
     
     public $parentID;
     
@@ -38,15 +39,15 @@ class Item extends Entity
     
     public function initialize()
     {
-        $this->belongsTo('siteID', Site::class, 'id')->setAlias('site');
+        $this->belongsTo('domainID', Domain::class, 'id')->setAlias('domain');
         
-        $this->belongsTo('parentID', Item::class, 'id')->setAlias('parent');
-        $this->hasMany(Item::class, 'parentID', 'id')->setAlias('children');
+        $this->belongsTo('parentID', Page::class, 'id')->setAlias('parent');
+        $this->hasMany(Page::class, 'parentID', 'id')->setAlias('children');
     }
     
     public static function getSource()
     {
-        return 'site_item';
+        return 'page';
     }
     
 }

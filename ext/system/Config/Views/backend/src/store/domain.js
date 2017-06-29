@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Store from '@/store';
 
-Store.registerModule('site', {
+Store.registerModule('domain', {
     namespaced: true,
     state: {
         items: []
@@ -30,7 +30,7 @@ Store.registerModule('site', {
     actions: {
         load(context, payload)
         {
-            Vue.http.get('api/site/list')
+            Vue.http.get('api/domain/list')
                 .then(response => {
                     context.commit('set', response.body.data);
 

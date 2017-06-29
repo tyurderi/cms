@@ -18,8 +18,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         ]);
         
         $this->createMenu([
-            'label'       => 'Sites',
-            'url'         => '/config/sites',
+            'label'       => 'Domains',
+            'url'         => '/config/domains',
             'position'    => 0,
             'icon'        => 'files-o',
             'permissions' => '',
@@ -31,7 +31,7 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     
     public function execute()
     {
-        $this->registerController('Api', 'Site');
+        $this->registerController('Api', 'Domain');
         
         $this->subscribeEvent('vue.collector.run', [$this, 'onVueCollectorRun']);
     }
