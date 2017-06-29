@@ -1,5 +1,7 @@
 <?php
 
+use Favez\Mvc\App;
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -15,5 +17,10 @@ $console->addCommands([
     
     new \CMS\Commands\VueCollectCommand()
 ]);
+
+if ($commands = App::events()->collect('core.console_commands.collect'))
+{
+    $console->addCommands($commands);
+}
 
 $console->run();
