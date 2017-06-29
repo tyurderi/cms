@@ -59,10 +59,11 @@ export default {
         {
             let me = this;
 
+            me.$events.emit('updateView', 'login');
+
             me.$progress.start();
             me.$http.get('api/user/logout').then(() => {
                 me.$progress.finish();
-                me.$events.emit('updateView', 'login');
             });
         }
     }
