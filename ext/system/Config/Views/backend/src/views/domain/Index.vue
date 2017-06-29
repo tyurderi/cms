@@ -102,7 +102,7 @@ export default {
 
                         // show toast message
                         this.$toast.push({
-                            text: 'The site were deleted successfully',
+                            text: 'The domain were deleted successfully',
                             type: 'success',
                             delay: 3000
                         });
