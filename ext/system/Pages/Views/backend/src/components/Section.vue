@@ -13,7 +13,8 @@
             </div>
         </div>
         <div class="section-items" v-if="section.children">
-            <v-item v-for="(item, key) in section.children" :key="key" :item="item"></v-item>
+            <v-item v-for="(item, key) in section.children"
+                    :key="key" :item="item" :siblings="section.children"></v-item>
         </div>
     </section>
 </template>
@@ -28,6 +29,13 @@ export default {
     ],
     components: {
         VItem
+    },
+    mounted()
+    {
+        // sort once on load
+        this.section.children = this.section.children.sort((a, b) => {
+            return a.position - b.position;
+        })
     }
 }
 </script>

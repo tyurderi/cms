@@ -24,7 +24,8 @@ class PageController extends Controller
                             'domainID' => 1,
                             'parentID' => 1,
                             'label'    => 'Home',
-                            'type'     => Page::TYPE_ITEM
+                            'type'     => Page::TYPE_ITEM,
+                            'position' => 1
                         ],
                         [
                             'id'       => 3,
@@ -32,6 +33,7 @@ class PageController extends Controller
                             'parentID' => 1,
                             'label'    => 'Projects',
                             'type'     => Page::TYPE_ITEM,
+                            'position' => 2,
                             'children' => [
                                 [
                                     'id'       => 6,
@@ -47,14 +49,16 @@ class PageController extends Controller
                             'domainID' => 1,
                             'parentID' => 1,
                             'label'    => 'Contact',
-                            'type'     => Page::TYPE_ITEM
+                            'type'     => Page::TYPE_ITEM,
+                            'position' => 3
                         ],
                         [
                             'id'       => 5,
                             'domainID' => 1,
                             'parentID' => 1,
                             'label'    => 'Imprint',
-                            'type'     => Page::TYPE_ITEM
+                            'type'     => Page::TYPE_ITEM,
+                            'position' => 4
                         ]
                     ]
                 ]
