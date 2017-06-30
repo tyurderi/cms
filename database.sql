@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `permission` (
   `categoryID` INT(11) NOT NULL,
   `name` VARCHAR(256) NOT NULL,
   `description` TEXT,
+  `defaultValue` INT(11) DEFAULT '1',
   PRIMARY KEY(`id`)
 );
 

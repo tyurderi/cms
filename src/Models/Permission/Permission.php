@@ -15,6 +15,8 @@ class Permission extends Entity
     public $name;
 
     public $description;
+    
+    public $defaultValue;
 
     public function initialize()
     {
