@@ -120,7 +120,7 @@ export default {
                     return;
                 }
                 
-                this.$http.post('api/group/list')
+                this.$http.get('api/group/list')
                     .then(
                         response => {
                             this.$store.commit('group/set', response.body.data);
@@ -148,7 +148,7 @@ export default {
                     return;
                 }
                 
-                this.$http.post('api/user/get', { id: userID })
+                this.$http.get('api/user/get', { params: { id: userID } })
                     .then(
                         response => {
                             if (!response.body.success)

@@ -37,7 +37,7 @@ export default {
 
             me.$progress.start();
 
-            me.$http.post('/api/user/login', {
+            me.$http.post('api/user/login', {
                 email: me.email,
                 password: me.password,
                 keepLogin: me.keepLogin
