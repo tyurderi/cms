@@ -47,12 +47,6 @@ class Application
     protected function registerRoutes(App $app)
     {
         $app->any('/api/[{controller}[/{action}]]', 'api:{controller}:{action}');
-
-        $app->add(function(Request $request, Response $response, $next) {
-            $next($request, $response);
-
-            return $response->withHeader('Access-Control-Allow-Origin', '*');
-        });
     }
 
 }
