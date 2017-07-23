@@ -1,8 +1,18 @@
 <template>
     <section>
         <div class="section-header">
-            <div class="section-title">
-                {{section.label}}
+            <div class="section-title" @dblclick="startEdit">
+                <template v-if="editing">
+                    <input type="text" v-model="section.label" ref="sectionTitle"
+                        @blur="stopEdit"
+                        @keydown.enter.prevent="stopEdit"
+                        @keydown.esc.prevent="stopEdit" />
+                </template>
+                <template v-else>
+                    <span>
+                        {{section.label}}
+                    </span>
+                </template>
             </div>
             <div class="section-actions">
                 <ul>
@@ -26,6 +36,24 @@ export default {
     props: [
         'section'
     ],
+    data: () => ({
+        editing: false
+    }),
+    methods: {
+        startEdit()
+        {
+            this.editing = true;
+
+            this.$nextTick(() => {
+                this.$refs.sectionTitle.select();
+                this.$refs.sectionTitle.focus();
+            })
+        },
+        stopEdit()
+        {
+            this.editing = false;
+        }
+    },
     components: {
         VItem
     }
@@ -42,11 +70,24 @@ section {
         border-bottom: 1px solid #ddd;
         div.section-title {
             flex: 1;
-            padding: 10px;
             font-size: 16px;
             font-weight: 500;
             height: 40px;
             text-transform: uppercase;
+            span {
+                display: block;
+                padding: 10px;
+            }
+            input {
+                height: 40px;
+                border: 0 none;
+                outline: 0 none;
+                width: 100%;
+                box-shadow: none !important;
+                text-transform: uppercase;
+                font-size: 16px;
+                font-weight: 500;
+            }
         }
         div.section-actions {
             ul {

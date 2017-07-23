@@ -15,8 +15,18 @@
                     </li>
                 </ul>
             </div>
-            <div class="item-title">
-                {{item.label}}
+            <div class="item-title" @dblclick="startEdit">
+                <template v-if="editing">
+                    <input type="text" v-model="item.label" ref="itemLabel"
+                           @blur="stopEdit"
+                           @keydown.enter.prevent="stopEdit"
+                           @keydown.esc.prevent="stopEdit" />
+                </template>
+                <template v-else>
+                    <span>
+                        {{item.label}}
+                    </span>
+                </template>
             </div>
             <div class="item-actions hidden">
                 <ul>
@@ -39,8 +49,24 @@ export default {
         'item'
     ],
     data: () => ({
-        collapsed: true
-    })
+        collapsed: true,
+        editing: false
+    }),
+    methods: {
+        startEdit()
+        {
+            this.editing = true;
+
+            this.$nextTick(() => {
+                this.$refs.itemLabel.select();
+                this.$refs.itemLabel.focus();
+            })
+        },
+        stopEdit()
+        {
+            this.editing = false;
+        }
+    }
 }
 </script>
 
@@ -56,7 +82,18 @@ div.section-item {
         height: 40px;
         div.item-title {
             flex: 1;
-            padding: 10px;
+            span {
+                display: block;
+                padding: 10px;
+            }
+            input {
+                height: 40px;
+                border: 0 none;
+                outline: 0 none;
+                width: 100%;
+                box-shadow: none !important;
+                font-family: inherit;
+            }
         }
         &:hover > div.item-actions.hidden {
             display: block;
