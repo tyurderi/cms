@@ -17,19 +17,19 @@ import 'font-awesome/css/font-awesome.min.css';
 
 import VToast from '@/components/Toast';
 
-import MainLoader from '@/components/MainLoader';
-import Login from '@/components/Login';
-import Index from '@/components/Index';
+import Index from '@/views/Index';
+import Login from '@/views/Login';
+import Loader from '@/views/Loader';
 
 export default {
     name: 'app',
     data: () => ({
-        mainView: 'mainLoader'
+        mainView: 'loader'
     }),
     components: {
-        MainLoader,
-        Login,
         Index,
+        Loader,
+        Login,
         VToast
     },
     mounted()

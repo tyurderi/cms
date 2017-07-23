@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: 'main_loader',
+    name: 'loader',
     mounted()
     {
         let me = this;
@@ -16,7 +16,7 @@ export default {
             {
                 me.$permission.set(response.body.permissions);
                 me.$store.commit('domain/set', response.data.domains);
-                
+
                 me.$events.emit('updateView', 'index');
             }
             else

@@ -9,9 +9,10 @@ import store from './store';
 import Http from 'vue-resource';
 import Events from 'vue-events';
 import VueProgressBar from 'vue-progressbar';
-import CustomProgressBar from '@/components/progressbar';
 import VueTweening from 'vue-tweening'
 import VueTooltip from 'v-tooltip';
+
+import CustomProgressBar from '@/plugins/progressbar';
 import VuePermission from '@/plugins/permission';
 import VueToast from '@/plugins/toast';
 
@@ -30,7 +31,7 @@ Vue.use(VuePermission);
 Vue.use(VueToast);
 
 registerComponents([
-    require('@/components/input/Checkbox'),
+    require('@/components/Input/Checkbox'),
     require('@/components/Modal'),
     require('@/components/ErrorModal'),
     require('@/components/Note'),
