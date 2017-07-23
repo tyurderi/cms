@@ -19,8 +19,9 @@ class PageController extends Controller
     {
         $id   = $this->request()->getParam('id');
         $data = $this->request()->getParams();
-
         $page = Page::findByID((int) $id);
+
+        unset($data['id']);
 
         if (!($page instanceof Page))
         {

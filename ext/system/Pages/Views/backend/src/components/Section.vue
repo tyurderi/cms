@@ -75,6 +75,7 @@ export default {
             this.section.editing = false;
 
             let data = _.pick(this.section, [
+                'id',
                 'parentID',
                 'domainID',
                 'type',
