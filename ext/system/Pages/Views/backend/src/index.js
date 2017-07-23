@@ -1,4 +1,5 @@
 import Router from '@/router';
+import '@Pages/store/page';
 
 Router.addRoutes([
     {

@@ -2,7 +2,7 @@
     <section>
         <div class="section-header">
             <div class="section-title" @dblclick="startEdit">
-                <template v-if="editing">
+                <template v-if="section.editing">
                     <input type="text" v-model="section.label" ref="sectionTitle"
                         @blur="stopEdit"
                         @keydown.enter.prevent="stopEdit"
@@ -22,14 +22,15 @@
                 </ul>
             </div>
         </div>
-        <div class="section-items" v-if="section.children">
-            <v-item v-for="(item, key) in section.children" :key="key" :item="item"></v-item>
+        <div class="section-items" v-if="children">
+            <v-item v-for="(item, key) in children" :key="key" :item="item"></v-item>
         </div>
     </section>
 </template>
 
 <script>
 import VItem from '@Pages/components/Item';
+import _ from 'lodash';
 
 export default {
     name: 'page-section',
@@ -37,12 +38,27 @@ export default {
         'section'
     ],
     data: () => ({
-        editing: false
+
     }),
+    mounted()
+    {
+        if (this.section.editing === true)
+        {
+            this.startEdit();
+        }
+    },
+    computed: {
+        children()
+        {
+            return this.$store.getters['page/items'].filter(page => {
+                return page.parentID === this.section.id;
+            })
+        }
+    },
     methods: {
         startEdit()
         {
-            this.editing = true;
+            this.section.editing = true;
 
             this.$nextTick(() => {
                 this.$refs.sectionTitle.select();
@@ -51,7 +67,24 @@ export default {
         },
         stopEdit()
         {
-            this.editing = false;
+            if (this.section.editing === false)
+            {
+                return;
+            }
+
+            this.section.editing = false;
+
+            let data = _.pick(this.section, [
+                'parentID',
+                'domainID',
+                'type',
+                'label'
+            ]);
+
+            this.$http.post('api/page/save', data)
+                .then(response => {
+                    this.section.id = response.body.data.id;
+                })
         }
     },
     components: {
@@ -64,6 +97,10 @@ export default {
 section {
     background: #fff;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    margin: 0 0 10px 0;
+    &:last-child {
+        margin: 0;
+    }
     div.section-header {
         display: flex;
         flex-direction: row;

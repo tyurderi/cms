@@ -1,8 +1,8 @@
 <template>
     <div class="section-item">
         <div class="item-header">
-            <div class="item-actions" v-if="item.children">
-                <ul>
+            <div class="item-actions left">
+                <ul v-if="children.length > 0">
                     <li v-if="collapsed === true">
                         <a href="#" @click.prevent="collapsed = false">
                             <i class="fa fa-plus-square"></i>
@@ -36,8 +36,8 @@
                 </ul>
             </div>
         </div>
-        <div class="item-children" v-if="item.children && collapsed === false">
-            <page-item v-for="(children, key) in item.children" :key="key" :item="children"></page-item>
+        <div class="item-children" v-if="children.length > 0 && collapsed === false">
+            <page-item v-for="(children, key) in children" :key="key" :item="children"></page-item>
         </div>
     </div>
 </template>
@@ -52,6 +52,14 @@ export default {
         collapsed: true,
         editing: false
     }),
+    computed: {
+        children()
+        {
+            return this.$store.getters['page/items'].filter(page => {
+                return page.parentID === this.item.id;
+            })
+        }
+    },
     methods: {
         startEdit()
         {
@@ -101,6 +109,10 @@ div.section-item {
         div.item-actions {
             &.hidden {
                 display: none;
+            }
+            &.left {
+                width: 40px;
+                height: 40px;
             }
             ul {
                 list-style: none;

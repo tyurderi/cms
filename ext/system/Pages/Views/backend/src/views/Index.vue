@@ -24,13 +24,12 @@ import VSection from '@Pages/components/Section';
 
 export default {
     name: 'page-list',
-    data: () => ({
-        remoteSections: []
-    }),
     computed: {
         sections()
         {
-            return this.remoteSections;
+            return this.$store.getters['page/items'].filter(page => {
+                return !page.parentID && parseInt(page.type) === 3;
+            })
         }
     },
     mounted()
@@ -41,15 +40,24 @@ export default {
         load()
         {
             this.$progress.start();
-            
-            this.$http.get('api/page/list')
-                .then(
-                    response => {
-                        this.remoteSections = response.body.data;
-                        this.$progress.finish();
-                    },
-                    response => this.$store.dispatch('error/push', response)
-                );
+
+            this.$store.dispatch('page/load', () => {
+                this.$progress.finish();
+            });
+        },
+        create()
+        {
+            this.$store.commit('page/add', {
+                id: -1,
+                parentID: null,
+                domainID: 1,
+                type: 3,
+                label: 'new section',
+                created: new Date(),
+                changed: new Date(),
+
+                editing: true
+            })
         }
     },
     components: {
