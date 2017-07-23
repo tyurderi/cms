@@ -81,7 +81,7 @@ CREATE TABLE `plugin_dependency` (
 );
 
 /** SITE SYSTEM STUFF **/
-CREATE TABLE `site` (
+CREATE TABLE `domain` (
   `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `active` TINYINT(1) DEFAULT 1,
   `label` VARCHAR(255) NOT NULL,
@@ -92,9 +92,9 @@ CREATE TABLE `site` (
   `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `site_item` (
+CREATE TABLE `page` (
   `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `siteID` INT(11) NOT NULL,
+  `domainID` INT(11) NOT NULL,
   `parentID` INT(11),
   `label` VARCHAR(255) NOT NULL,
   `type` INT(11) NOT NULL,

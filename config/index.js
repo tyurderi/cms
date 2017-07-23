@@ -20,7 +20,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api': {
-                target: 'http://localhost/',
+                target: 'http://vue.dev/',
                 changeOrigin: true
             }
         },

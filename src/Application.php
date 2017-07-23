@@ -5,6 +5,8 @@ namespace CMS;
 use CMS\Components\Plugin\Manager;
 use Favez\Mvc\App;
 use Favez\Mvc\DI\Container;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class Application
 {
@@ -45,6 +47,12 @@ class Application
     protected function registerRoutes(App $app)
     {
         $app->any('/api/[{controller}[/{action}]]', 'api:{controller}:{action}');
+
+        $app->add(function(Request $request, Response $response, $next) {
+            $next($request, $response);
+
+            return $response->withHeader('Access-Control-Allow-Origin', '*');
+        });
     }
 
 }

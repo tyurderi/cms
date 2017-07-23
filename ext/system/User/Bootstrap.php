@@ -5,6 +5,7 @@ namespace User;
 use BackendMenu\Models\BackendMenu;
 use CMS\Components\Permission\PermissionPool;
 use Favez\Mvc\Event\Arguments;
+use User\Commands\PermissionPopulateCommand;
 
 class Bootstrap extends \CMS\Components\Plugin\Bootstrap
 {
@@ -77,6 +78,8 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
         $this->registerController('Api', 'Group');
         $this->registerController('Api', 'Permission');
         $this->registerController('Api', 'PermissionCategory');
+
+        $this->subscribeEvent('core.console_commands.collect', [$this, 'getCommands']);
     }
     
     public function onVueCollectorRun(Arguments $args)
@@ -88,6 +91,13 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
             $this->getRelativePath() . 'Views/backend/src/',
             $this->getPath() . 'Views/backend/src'
         );
+    }
+
+    public function getCommands()
+    {
+        return [
+            new PermissionPopulateCommand()
+        ];
     }
     
     /**
