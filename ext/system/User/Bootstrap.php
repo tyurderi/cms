@@ -108,29 +108,29 @@ class Bootstrap extends \CMS\Components\Plugin\Bootstrap
     {
         $manager = new \CMS\Components\Permission\Manager();
         $manager->create('User', 'User related permissions', function(PermissionPool $pool) {
-            $pool->push('user.list',   'Show available users', '0');
-            $pool->push('user.create', 'Create a user',        '0');
-            $pool->push('user.edit',   'Edit a user',          '0');
-            $pool->push('user.remove', 'Remove a user',        '0');
+            $pool->push('user.list',   'Show available users', '1');
+            $pool->push('user.create', 'Create a user',        '1');
+            $pool->push('user.edit',   'Edit a user',          '1');
+            $pool->push('user.remove', 'Remove a user',        '1');
         });
         
         $manager->create('User Groups', 'User group related permissions', function(PermissionPool $pool) {
-            $pool->push('user.group.list',   'Show available user groups', '0');
-            $pool->push('user.group.create', 'Create a user group',        '0');
-            $pool->push('user.group.edit',   'Edit a user group',          '0');
-            $pool->push('user.group.remove', 'Remove a user group',        '0');
+            $pool->push('user.group.list',   'Show available user groups', '1');
+            $pool->push('user.group.create', 'Create a user group',        '1');
+            $pool->push('user.group.edit',   'Edit a user group',          '1');
+            $pool->push('user.group.remove', 'Remove a user group',        '1');
         });
         
         $manager->create('Plugin', 'Plugin management related permissions', function(PermissionPool $pool) {
-            $pool->push('plugin.list',      'Show available plugins', '0');
-            $pool->push('plugin.install',   'Install plugin',         '0');
-            $pool->push('plugin.update',    'Update plugin',          '0');
-            $pool->push('plugin.uninstall', 'Uninstall plugin',       '0');
-            $pool->push('plugin.remove',    'Remove plugin',          '0');
+            $pool->push('plugin.list',      'Show available plugins', '1');
+            $pool->push('plugin.install',   'Install plugin',         '1');
+            $pool->push('plugin.update',    'Update plugin',          '1');
+            $pool->push('plugin.uninstall', 'Uninstall plugin',       '1');
+            $pool->push('plugin.remove',    'Remove plugin',          '1');
         });
         
         $manager->create('Permission', 'Permission management', function(PermissionPool $pool) {
-            $pool->push('permission.management', 'Manage permissions', '0');
+            $pool->push('permission.management', 'Manage permissions', '1');
         });
     }
     

@@ -30,7 +30,7 @@ class PermissionPool
      * @param string $description
      * @param string $defaultValue
      */
-    public function push($name, $description, $defaultValue = '0')
+    public function push($name, $description, $defaultValue = '1')
     {
         $permission = \CMS\Models\Permission\Permission::findOneBy(['name' => $name]);
         
@@ -41,7 +41,8 @@ class PermissionPool
             $permission->categoryID = $this->category->id;
         }
     
-        $permission->description = $description;
+        $permission->description  = $description;
+        $permission->defaultValue = $defaultValue;
         
         $this->permissions[$name] = [
             'model'        => $permission,

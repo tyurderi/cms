@@ -128,7 +128,7 @@ export default {
             {
                 this.$store.dispatch('error/push', response);
             }
-            else if(response.body && response.success === true)
+            else if(response.body && response.body.success === true)
             {
                 this.$toast.push({
                     text: this.doneText,
