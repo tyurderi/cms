@@ -16,9 +16,9 @@
             </div>
             <div class="section-actions">
                 <ul>
-                    <li><a href="#"><i class="fa fa-plus"></i></a></li>
+                    <li @click.prevent="create"><a href="#"><i class="fa fa-plus"></i></a></li>
                     <li><a href="#"><i class="fa fa-pencil-square-o"></i></a></li>
-                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
+                    <li @click.prevent="remove"><a href="#"><i class="fa fa-trash"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -73,19 +73,28 @@ export default {
             }
 
             this.section.editing = false;
-
-            let data = _.pick(this.section, [
-                'id',
-                'parentID',
-                'domainID',
-                'type',
-                'label'
-            ]);
-
-            this.$http.post('api/page/save', data)
+            this.$store.dispatch('page/save', this.section)
                 .then(response => {
                     this.section.id = response.body.data.id;
-                })
+                });
+        },
+        create()
+        {
+            this.$store.commit('page/add', {
+                id: -1,
+                parentID: this.section.id,
+                domainID: 1,
+                type: 1,
+                label: 'new page',
+                created: new Date(),
+                changed: new Date(),
+
+                editing: true
+            })
+        },
+        remove()
+        {
+            this.$store.dispatch('page/remove', this.section);
         }
     },
     components: {

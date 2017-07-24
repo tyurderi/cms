@@ -16,7 +16,7 @@
                 </ul>
             </div>
             <div class="item-title" @dblclick="startEdit">
-                <template v-if="editing">
+                <template v-if="item.editing">
                     <input type="text" v-model="item.label" ref="itemLabel"
                            @blur="stopEdit"
                            @keydown.enter.prevent="stopEdit"
@@ -30,9 +30,9 @@
             </div>
             <div class="item-actions hidden">
                 <ul>
-                    <li><a href="#"><i class="fa fa-plus"></i></a></li>
+                    <li @click.prevent="create"><a href="#"><i class="fa fa-plus"></i></a></li>
                     <li><a href="#"><i class="fa fa-pencil-square-o"></i></a></li>
-                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
+                    <li @click.prevent="remove"><a href="#"><i class="fa fa-trash"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -49,9 +49,15 @@ export default {
         'item'
     ],
     data: () => ({
-        collapsed: true,
-        editing: false
+        collapsed: true
     }),
+    mounted()
+    {
+        if (this.item.editing === true)
+        {
+            this.startEdit();
+        }
+    },
     computed: {
         children()
         {
@@ -63,7 +69,7 @@ export default {
     methods: {
         startEdit()
         {
-            this.editing = true;
+            this.item.editing = true;
 
             this.$nextTick(() => {
                 this.$refs.itemLabel.select();
@@ -72,13 +78,51 @@ export default {
         },
         stopEdit()
         {
-            this.editing = false;
+            if (this.item.editing === false)
+            {
+                return;
+            }
+
+            this.item.editing = false;
+            this.$store.dispatch('page/save', this.item)
+                .then(response => {
+                    this.item.id = response.body.data.id;
+                });
+        },
+        create()
+        {
+            this.collapsed = false;
+
+            this.$store.commit('page/add', {
+                id: -1,
+                parentID: this.item.id,
+                domainID: 1,
+                type: 1,
+                label: 'new page',
+                created: new Date(),
+                changed: new Date(),
+
+                editing: true
+            })
+        },
+        remove()
+        {
+            this.$store.dispatch('page/remove', this.item);
         }
     }
 }
 </script>
 
 <style lang="less" scoped>
+.indent-ul(@n, @size, @i: 1) when(@i =< @n) {
+    div.item-children {
+        div.item-header {
+            padding-left: @size * @i;
+        }
+        .indent-ul(@n, @size, @i + 1);
+    }
+}
+
 div.section-item {
     border-bottom: 1px dashed #ddd;
     &:last-child {
@@ -140,10 +184,10 @@ div.section-item {
         }
     }
     div.item-children {
-        margin: 0 0 0 40px;
-        div.section-item {
+        div.section-item:first-child {
             border-top: 1px dashed #ddd;
         }
     }
+    .indent-ul(10, 40px);
 }
 </style>

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Store from '@/store';
+import _ from 'lodash';
 
 Store.registerModule('page', {
     namespaced: true,
@@ -27,6 +28,10 @@ Store.registerModule('page', {
             {
                 state.items.push(payload);
             }
+        },
+        remove(state, payload)
+        {
+            state.items.splice(state.items.indexOf(payload), 1);
         }
     },
     actions: {
@@ -38,6 +43,28 @@ Store.registerModule('page', {
 
                     (payload || function() {})();
                 });
+        },
+        save(context, payload)
+        {
+            let data = _.pick(payload, [
+                'id',
+                'parentID',
+                'domainID',
+                'type',
+                'label'
+            ]);
+
+            return new Promise((accept, reject) => {
+                Vue.http.post('api/page/save', data).then(accept, reject);
+            })
+        },
+        remove(context, payload)
+        {
+            context.commit('remove', payload);
+
+            return new Promise((accept, reject) => {
+                Vue.http.post('api/page/remove', _.pick(payload, ['id'])).then(accept, reject);
+            })
         }
     },
     getters: {

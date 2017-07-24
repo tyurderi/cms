@@ -38,5 +38,38 @@ class PageController extends Controller
             'data' => $page->get()
         ]);
     }
-    
+
+    public function removeAction()
+    {
+        $id   = $this->request()->getParam('id');
+        $page = Page::findByID($id);
+
+        if ($page instanceof Page)
+        {
+            $this->removeRecursive($page);
+
+            return $this->json()->success();
+        }
+
+        return $this->json()->failure();
+    }
+
+    /**
+     * Deletes a page and its children recursive.
+     *
+     * @param Page $page
+     */
+    private function removeRecursive(Page $page)
+    {
+        if ($page->getRelated('children')->count())
+        {
+            foreach ($page->getRelated('children') as $children)
+            {
+                $this->removeRecursive($children);
+            }
+        }
+
+        $page->delete();
+    }
+
 }
