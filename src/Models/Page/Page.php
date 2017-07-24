@@ -36,6 +36,8 @@ class Page extends Entity
     public $created;
     
     public $changed;
+
+    public $position;
     
     public function initialize()
     {

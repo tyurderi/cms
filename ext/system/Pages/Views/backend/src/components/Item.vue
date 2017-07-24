@@ -1,5 +1,5 @@
 <template>
-    <div class="section-item">
+    <div class="section-item" :class="{ dragging: item.dragging }" :data-id="item.id">
         <div class="item-header">
             <div class="item-actions left">
                 <ul v-if="children.length > 0">
@@ -49,7 +49,8 @@ export default {
         'item'
     ],
     data: () => ({
-        collapsed: true
+        collapsed: true,
+        dragging: false
     }),
     mounted()
     {
@@ -61,9 +62,13 @@ export default {
     computed: {
         children()
         {
-            return this.$store.getters['page/items'].filter(page => {
-                return page.parentID === this.item.id;
-            })
+            return this.$store.getters['page/items']
+                .filter(page => {
+                    return page.parentID === this.item.id;
+                })
+                .sort((a, b) => {
+                    return a.position - b.position;
+                })
         }
     },
     methods: {
@@ -125,6 +130,19 @@ export default {
 
 div.section-item {
     border-bottom: 1px dashed #ddd;
+    &.dragging {
+        div.item-header {
+            span {
+                color: #ccc;
+            }
+            div.item-actions.hidden {
+                display: none;
+            }
+        }
+        div.item-children {
+            display: none;
+        }
+    }
     &:last-child {
         border-bottom: none;
     }

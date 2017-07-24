@@ -50,9 +50,13 @@ export default {
     computed: {
         children()
         {
-            return this.$store.getters['page/items'].filter(page => {
-                return page.parentID === this.section.id;
-            })
+            return this.$store.getters['page/items']
+                .filter(page => {
+                    return page.parentID === this.section.id;
+                })
+                .sort((a, b) => {
+                    return a.position - b.position;
+                })
         }
     },
     methods: {

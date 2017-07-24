@@ -11,7 +11,8 @@ Store.registerModule('page', {
         set(state, payload)
         {
             payload.forEach(item => {
-                item.editing = false;
+                item.editing  = false;
+                item.dragging = false;
             });
 
             state.items = payload;
@@ -32,6 +33,10 @@ Store.registerModule('page', {
         remove(state, payload)
         {
             state.items.splice(state.items.indexOf(payload), 1);
+        },
+        setAt(state, payload)
+        {
+            state.items[payload.index] = payload.item;
         }
     },
     actions: {
