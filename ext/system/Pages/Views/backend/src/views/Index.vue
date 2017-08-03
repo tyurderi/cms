@@ -24,6 +24,9 @@ import VSection from '@Pages/components/Section';
 
 export default {
     name: 'page-list',
+    data: () => ({
+
+    }),
     computed: {
         sections()
         {
@@ -44,15 +47,15 @@ export default {
     {
         this.load();
 
-        document.addEventListener('mousedown', this.dragStart);
-        document.addEventListener('mousemove', this.dragMove);
-        document.addEventListener('mouseup', this.dragEnd);
+        document.addEventListener('mousedown', this.dragStart.bind(this));
+        document.addEventListener('mousemove', this.dragMove.bind(this));
+        document.addEventListener('mouseup', this.dragEnd.bind(this));
     },
     beforeDestroy()
     {
-        document.removeEventListener('mousedown', this.dragStart);
-        document.removeEventListener('mousemove', this.dragMove);
-        document.removeEventListener('mouseup', this.dragEnd);
+        document.removeEventListener('mousedown', this.dragStart.bind(this));
+        document.removeEventListener('mousemove', this.dragMove.bind(this));
+        document.removeEventListener('mouseup', this.dragEnd.bind(this));
     },
     methods: {
         load()
@@ -79,25 +82,31 @@ export default {
         },
         dragStart(e)
         {
-            let target = this.getTarget(e);
+            let target = this.getTarget(e, 'section-item');
 
             if (!target) return;
 
-            let id     = target.getAttribute('data-id');
+            clearTimeout(this.dragStartTimeout);
 
-            if (!id) return;
+            this.dragStartTimeout = setTimeout(() => {
 
-            id = parseInt(id);
+                let id     = target.getAttribute('data-id');
 
-            let index  = this.$store.getters['page/items'].findIndex(item => parseInt(item.id) === id),
-                item   = this.$store.getters['page/items'][index];
+                if (!id) return;
 
-            item.dragging = true;
+                id = parseInt(id);
 
-            this.$store.commit('page/setAt', {
-                index,
-                item
-            });
+                let index  = this.$store.getters['page/items'].findIndex(item => parseInt(item.id) === id),
+                    item   = this.$store.getters['page/items'][index];
+
+                item.dragging = true;
+
+                this.$store.commit('page/setAt', {
+                    index,
+                    item
+                });
+
+            }, 150);
 
             e.preventDefault();
         },
@@ -105,7 +114,7 @@ export default {
         {
             if (!this.draggingItem) return;
 
-            let target = this.getTarget(e);
+            let target = this.getTarget(e, 'section-item');
 
             if (!target) return;
 
@@ -135,17 +144,19 @@ export default {
                     item: this.draggingItem
                 })
             }
+
+            clearTimeout(this.dragStartTimeout);
         },
-        getTarget(e)
+        getTarget(e, className)
         {
-            if (e.target.classList && e.target.classList.contains('section-item'))
+            if (e.target.classList && e.target.classList.contains(className))
             {
                 return e.target;
             }
 
             for (let i = 0; i < e.path.length; i++)
             {
-                if (e.path[i].classList && e.path[i].classList.contains('section-item'))
+                if (e.path[i].classList && e.path[i].classList.contains(className))
                 {
                     return e.path[i];
                 }
