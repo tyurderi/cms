@@ -56,7 +56,7 @@ class Information
         $this->website     = $data['website'];
         $this->email       = $data['email'];
         $this->version     = $data['version'];
-        $this->requires    = $data['requires'];
+        $this->requires    = $data['requires'] ?? [];
     }
 
     public function getLabel()

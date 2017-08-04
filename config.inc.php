@@ -9,6 +9,13 @@ return [
                     'class_suffix'  => 'Controller',
                     'method_suffix' => 'Action'
                 ]
+            ],
+            'frontend' => [
+                'controller' => [
+                    'namespace'     => 'CMS\\Controllers\\Frontend\\',
+                    'class_suffix'  => 'Controller',
+                    'method_suffix' => 'Action'
+                ]
             ]
         ],
         'view' => [

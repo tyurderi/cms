@@ -47,6 +47,7 @@ class Application
     protected function registerRoutes(App $app)
     {
         $app->any('/api/[{controller}[/{action}]]', 'api:{controller}:{action}');
+        $app->any('/[{controller}[/{action}]]', 'frontend:{controller}:{action}');
     }
 
 }
