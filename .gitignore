@@ -10,3 +10,4 @@ vendor/
 ubuntu-xenial-16.04-cloudimg-console.log
 /themes/backend/default/src/plugins.js
 /themes/backend/default/src/plugins.json
+/.gitignore
