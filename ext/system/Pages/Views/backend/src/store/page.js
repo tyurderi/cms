@@ -56,7 +56,8 @@ Store.registerModule('page', {
                 'parentID',
                 'domainID',
                 'type',
-                'label'
+                'label',
+                'position'
             ]);
 
             return new Promise((accept, reject) => {

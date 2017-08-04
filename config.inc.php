@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array_replace_recursive([
     'config' => [
         'modules' => [
             'api' => [
@@ -40,4 +40,4 @@ return [
     'settings' => [
         'displayErrorDetails' => true
     ]
-];
+], ($f = __DIR__ . '/config.user.php') && is_file($f) ? require_once $f : []);
