@@ -106,13 +106,28 @@ export default {
                 label: 'new page',
                 created: new Date(),
                 changed: new Date(),
+                position: this.getPosition(),
 
-                editing: true
+                editing: true,
+                dragging: false
             })
         },
         remove()
         {
             this.$store.dispatch('page/remove', this.item);
+        },
+        getPosition()
+        {
+            let position = 0;
+        
+            this.children.forEach((child) => {
+                if (child.position > position)
+                {
+                    position = child.position;
+                }
+            });
+        
+            return ++position;
         }
     }
 }

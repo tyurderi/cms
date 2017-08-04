@@ -14,6 +14,9 @@
             </ul>
         </div>
         <div class="body">
+            <div class="separator-container" ref="separatorContainer" v-if="draggingItem">
+                <div class="separator" ref="separator"></div>
+            </div>
             <v-section v-for="(section, key) in sections" :key="key" :section="section"></v-section>
         </div>
     </div>
@@ -73,9 +76,24 @@ export default {
                 label: 'new section',
                 created: new Date(),
                 changed: new Date(),
+                position: this.getPosition(),
 
-                editing: true
+                editing: true,
+                dragging: false
             })
+        },
+        getPosition()
+        {
+            let position = 0;
+            
+            this.sections.forEach((section) => {
+                if (section.position > position)
+                {
+                    position = section.position;
+                }
+            });
+            
+            return ++position;
         },
         dragStart(e)
         {
@@ -98,6 +116,8 @@ export default {
                 index,
                 item
             });
+            
+            this.$nextTick(() => this.moveSeparator(e, target));
 
             e.preventDefault();
         },
@@ -111,9 +131,12 @@ export default {
 
             let id = target.getAttribute('data-id');
 
-            if (id === null || id === this.draggingItem.id) return;
+            if (!id) return;
+            
+            let direction = this.moveSeparator(e, target);
+            let result    = this.getTargetByHover(id, direction);
 
-            let items     = this.$store.getters['page/items'],
+            /*let items     = this.$store.getters['page/items'],
                 fromIndex = items.findIndex(item => item.id === this.draggingItem.id),
                 toIndex   = items.findIndex(item => item.id === id);
 
@@ -123,11 +146,12 @@ export default {
             items[toIndex].position   = pos;
 
             this.$store.commit('page/setAt', { index: fromIndex, item: items[fromIndex] });
-            this.$store.commit('page/setAt', { index: toIndex,   item: items[toIndex]   });
+            this.$store.commit('page/setAt', { index: toIndex,   item: items[toIndex]   });*/
         },
         dragEnd()
         {
-            if (this.draggingItem) {
+            if (this.draggingItem)
+            {
                 this.draggingItem.dragging = false;
 
                 this.$store.commit('page/setAt', {
@@ -152,6 +176,63 @@ export default {
             }
 
             return null;
+        },
+        moveSeparator(e, target)
+        {
+            let direction = e.offsetY >= target.offsetHeight / 2 ? 'bottom' : 'top',
+                offsetTop = target.offsetTop - this.$refs.separatorContainer.offsetTop;
+    
+            if (direction === 'bottom')
+            {
+                offsetTop += target.offsetHeight;
+            }
+    
+            this.$refs.separator.style.top = (offsetTop-1) + 'px';
+            
+            return direction;
+        },
+        getTargetByHover(id, direction)
+        {
+            let items = this.$store.getters['page/items'],
+                item  = items.find(n => n.id === id);
+            
+            if (!item) {
+                console.log('hovering item not found');
+                return null;
+            }
+            
+            if (item.id === this.draggingItem.id) {
+                console.log('this drop is useless');
+                return;
+            }
+            
+            let siblings = items.filter(n => n.parentID === item.parentID);
+            
+            siblings.forEach((s, i) => {
+                if (s.id !== id) return;
+                if (direction === 'bottom' && siblings[i+1] && siblings[i+1].id === this.draggingItem.id
+                    || direction === 'top' && siblings[i-1] && siblings[i-1].id === this.draggingItem.id) {
+                    console.log('this drop is useless (2)');
+                    return;
+                }
+                
+                if (direction === 'top' && siblings[i-1] && siblings[i-1].id !== this.draggingItem.id) {
+                    console.log('this drop looks great');
+                    return;
+                }
+                if (direction === 'bottom' && siblings[i+1] && siblings[i+1].id !== this.draggingItem.id) {
+                    console.log('this drop looks great (2)');
+                    return;
+                }
+                if (direction === 'bottom' && !siblings[i+1]) {
+                    console.log('this drop looks great (3)');
+                    return;
+                }
+                if (direction === 'top' && !siblings[i-1]) {
+                    console.log('this drop looks great (4)');
+                    return;
+                }
+            });
         }
     },
     components: {
@@ -163,5 +244,16 @@ export default {
 <style lang="less" scoped>
 .page-list {
     position: relative;
+    .separator-container {
+        position: relative;
+        .separator {
+            position: absolute;
+            height: 0;
+            border-bottom: 1px dashed #e74c3c;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+    }
 }
 </style>
