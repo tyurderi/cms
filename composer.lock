@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fff2870b0ebe23beec1850f98c62be3e",
+    "content-hash": "8903002042162df8e9c52782e5df77aa",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -321,16 +321,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.6.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "498760e55195ccaf08076cb9100a2972ba74c001"
+                "reference": "1a086f853425b1f5349775ce57e45a772d2d2ba5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/498760e55195ccaf08076cb9100a2972ba74c001",
-                "reference": "498760e55195ccaf08076cb9100a2972ba74c001",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/1a086f853425b1f5349775ce57e45a772d2d2ba5",
+                "reference": "1a086f853425b1f5349775ce57e45a772d2d2ba5",
                 "shasum": ""
             },
             "require": {
@@ -390,7 +390,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-07-23T01:02:22+00:00"
+            "time": "2017-07-28T10:40:18+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -515,16 +515,16 @@
         },
         {
             "name": "favez/favez",
-            "version": "1.21",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/favez/favez.git",
-                "reference": "eb7cd8c406dfa1fc8e18def349aa4fe060d05781"
+                "reference": "04314e26676e388f497312636b040546c2adf1f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/favez/favez/zipball/eb7cd8c406dfa1fc8e18def349aa4fe060d05781",
-                "reference": "eb7cd8c406dfa1fc8e18def349aa4fe060d05781",
+                "url": "https://api.github.com/repos/favez/favez/zipball/04314e26676e388f497312636b040546c2adf1f1",
+                "reference": "04314e26676e388f497312636b040546c2adf1f1",
                 "shasum": ""
             },
             "require": {
@@ -534,7 +534,8 @@
                 "twig/twig": "^1.24"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.6"
+                "phpunit/phpunit": "^5.6",
+                "squizlabs/php_codesniffer": "^3.0"
             },
             "type": "library",
             "autoload": {
@@ -556,20 +557,20 @@
                 }
             ],
             "description": "Favez PHP Framework",
-            "time": "2017-07-23T13:20:28+00:00"
+            "time": "2017-08-03T13:10:45+00:00"
         },
         {
             "name": "favez/orm",
-            "version": "1.0.9",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/favez/orm.git",
-                "reference": "10df06f97d558c92a694ea631d997b43d16fd45d"
+                "reference": "cffb92cdeee5fda035177ea348f41a62d5478829"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/favez/orm/zipball/10df06f97d558c92a694ea631d997b43d16fd45d",
-                "reference": "10df06f97d558c92a694ea631d997b43d16fd45d",
+                "url": "https://api.github.com/repos/favez/orm/zipball/cffb92cdeee5fda035177ea348f41a62d5478829",
+                "reference": "cffb92cdeee5fda035177ea348f41a62d5478829",
                 "shasum": ""
             },
             "require": {
@@ -593,7 +594,7 @@
                 }
             ],
             "description": "Favez ORM Package",
-            "time": "2017-04-13T06:28:01+00:00"
+            "time": "2017-08-03T08:50:56+00:00"
         },
         {
             "name": "illuminate/container",
@@ -1341,16 +1342,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.3.5",
+            "version": "v3.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "a97e45d98c59510f085fa05225a1acb74dfe0546"
+                "reference": "b0878233cb5c4391347e5495089c7af11b8e6201"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/a97e45d98c59510f085fa05225a1acb74dfe0546",
-                "reference": "a97e45d98c59510f085fa05225a1acb74dfe0546",
+                "url": "https://api.github.com/repos/symfony/console/zipball/b0878233cb5c4391347e5495089c7af11b8e6201",
+                "reference": "b0878233cb5c4391347e5495089c7af11b8e6201",
                 "shasum": ""
             },
             "require": {
@@ -1406,20 +1407,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-07-03T13:19:36+00:00"
+            "time": "2017-07-29T21:27:59+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.3.5",
+            "version": "v3.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "63b85a968486d95ff9542228dc2e4247f16f9743"
+                "reference": "7c13ae8ce1e2adbbd574fc39de7be498e1284e13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/63b85a968486d95ff9542228dc2e4247f16f9743",
-                "reference": "63b85a968486d95ff9542228dc2e4247f16f9743",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/7c13ae8ce1e2adbbd574fc39de7be498e1284e13",
+                "reference": "7c13ae8ce1e2adbbd574fc39de7be498e1284e13",
                 "shasum": ""
             },
             "require": {
@@ -1462,7 +1463,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-07-05T13:02:37+00:00"
+            "time": "2017-07-28T15:27:31+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1525,7 +1526,7 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v3.3.5",
+            "version": "v3.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",

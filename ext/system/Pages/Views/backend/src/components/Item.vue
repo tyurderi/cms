@@ -1,15 +1,15 @@
 <template>
-    <div class="section-item" :class="{ dragging: item.dragging }" :data-id="item.id">
+    <div class="section-item" :class="{ item.dragging }" :data-id="item.id">
         <div class="item-header">
             <div class="item-actions left">
                 <ul v-if="children.length > 0">
-                    <li v-if="collapsed === true">
-                        <a href="#" @click.prevent="collapsed = false">
+                    <li v-if="item.collapsed === true">
+                        <a href="#" @click.prevent="item.collapsed = false">
                             <i class="fa fa-plus-square"></i>
                         </a>
                     </li>
-                    <li v-if="collapsed === false">
-                        <a href="#" @click.prevent="collapsed = true">
+                    <li v-if="item.collapsed === false">
+                        <a href="#" @click.prevent="item.collapsed = true">
                             <i class="fa fa-minus-square"></i>
                         </a>
                     </li>
@@ -23,7 +23,7 @@
                            @keydown.esc.prevent="stopEdit" />
                 </template>
                 <template v-else>
-                    <span>
+                    <span class="item-label">
                         {{item.label}}
                     </span>
                 </template>
@@ -36,7 +36,7 @@
                 </ul>
             </div>
         </div>
-        <div class="item-children" v-if="children.length > 0 && collapsed === false">
+        <div class="item-children" v-if="children.length > 0 && item.collapsed === false">
             <page-item v-for="(children, key) in children" :key="key" :item="children"></page-item>
         </div>
     </div>
@@ -48,10 +48,6 @@ export default {
     props: [
         'item'
     ],
-    data: () => ({
-        collapsed: true,
-        dragging: false
-    }),
     mounted()
     {
         if (this.item.editing === true)
@@ -96,7 +92,7 @@ export default {
         },
         create()
         {
-            this.collapsed = false;
+            this.item.collapsed = false;
 
             this.$store.commit('page/add', {
                 id: -1,
@@ -107,9 +103,10 @@ export default {
                 created: new Date(),
                 changed: new Date(),
                 position: this.getPosition(),
-
+                // pseudo data which will not be saved
                 editing: true,
-                dragging: false
+                dragging: false,
+                collapsed: true
             })
         },
         remove()

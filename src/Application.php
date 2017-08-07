@@ -5,8 +5,7 @@ namespace CMS;
 use CMS\Components\Plugin\Manager;
 use Favez\Mvc\App;
 use Favez\Mvc\DI\Container;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Favez\Mvc\Middleware\JsonResponseMiddleware;
 
 class Application
 {
@@ -46,6 +45,8 @@ class Application
 
     protected function registerRoutes(App $app)
     {
+        $this->app->add(new JsonResponseMiddleware());
+
         $app->any('/api/[{controller}[/{action}]]', 'api:{controller}:{action}');
         $app->any('/[{controller}[/{action}]]', 'frontend:{controller}:{action}');
     }

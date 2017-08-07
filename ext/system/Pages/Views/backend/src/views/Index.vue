@@ -14,9 +14,11 @@
             </ul>
         </div>
         <div class="body">
-            <div class="separator-container" ref="separatorContainer" v-if="draggingItem">
-                <div class="separator" ref="separator"></div>
+            <div class="dragging-item" v-if="draggingItem"
+                 :style="{ (pos.y+16)+'px', left: (pos.x+16)+'px' }">
+                {{ draggingItem.id }}#{{ draggingItem.label }}
             </div>
+
             <v-section v-for="(section, key) in sections" :key="key" :section="section"></v-section>
         </div>
     </div>
@@ -27,20 +29,28 @@ import VSection from '@Pages/components/Section';
 
 export default {
     name: 'page-list',
+    data: () => ({
+        pos: { x: 0, y: 0 },
+        icon: null
+    }),
     computed: {
         sections()
         {
-            return this.$store.getters['page/items'].filter(page => {
+            return this.items.filter(page => {
                 return !page.parentID && parseInt(page.type) === 3;
             })
         },
         draggingItem()
         {
-            return this.$store.getters['page/items'][this.draggingIndex]
+            return this.items.get(this.draggingIndex);
         },
         draggingIndex()
         {
-            return this.$store.getters['page/items'].findIndex(item => item.dragging === true);
+            return this.items.findIndex(item => item.dragging === true);
+        },
+        items()
+        {
+            return this.$store.getters['page/items'];
         }
     },
     mounted()
@@ -79,7 +89,8 @@ export default {
                 position: this.getPosition(),
 
                 editing: true,
-                dragging: false
+                dragging: false,
+                collapsed: true
             })
         },
         getPosition()
@@ -105,14 +116,17 @@ export default {
 
             this.dragStartTimeout = setTimeout(() => {
 
+                this.pos.x = e.clientX;
+                this.pos.y = e.clientY;
+
                 let id     = target.getAttribute('data-id');
 
                 if (!id) return;
 
                 id = parseInt(id);
 
-                let index  = this.$store.getters['page/items'].findIndex(item => parseInt(item.id) === id),
-                    item   = this.$store.getters['page/items'][index];
+                let index  = this.items.findIndex(item => parseInt(item.id) === id),
+                    item   = this.items.get(index);
 
                 item.dragging = true;
 
@@ -120,8 +134,6 @@ export default {
                     index,
                     item
                 });
-
-                this.$nextTick(() => this.moveSeparator(e, target));
             }, 150);
 
             e.preventDefault();
@@ -130,28 +142,69 @@ export default {
         {
             if (!this.draggingItem) return;
 
+            this.pos.x = e.clientX;
+            this.pos.y = e.clientY;
+
             let target = this.getTarget(e, 'section-item');
 
-            if (!target) return;
+            if (!target) {
+                this.icon = 'none';
+                return;
+            }
 
             let id = target.getAttribute('data-id');
 
             if (!id) return;
 
-            let direction = this.moveSeparator(e, target);
-            let result    = this.getTargetByHover(id, direction);
+            if (id === this.draggingItem.id)
+            {
+                if (this.needIndent(e, id))
+                {
+                    let sibling  = this.draggingItem.prev(),
+                        position = this.getSiblingPosition(sibling);
 
-            /*let items     = this.$store.getters['page/items'],
-                fromIndex = items.findIndex(item => item.id === this.draggingItem.id),
-                toIndex   = items.findIndex(item => item.id === id);
+                    if (sibling)
+                    {
+                        let fromIndex = this.items.findIndex(item => item.id === this.draggingItem.id),
+                            toIndex   = this.items.findIndex(item => item.id === sibling.id),
+                            fromItem  = this.items.get(fromIndex),
+                            toItem    = this.items.get(toIndex);
 
-            let pos = items[fromIndex].position;
+                        fromItem.position = position;
+                        fromItem.parentID = sibling.id;
+                        toItem.collapsed  = false;
 
-            items[fromIndex].position = items[toIndex].position;
-            items[toIndex].position   = pos;
+                        this.$store.commit('page/setAt', { index: fromIndex, item: fromItem });
+                        this.$store.commit('page/setAt', { index: toIndex,   item: toItem   });
+                    }
+                }
+                else if(this.needOutdent(e))
+                {
+                    let hoveringItem = this.items.find(n => n.id === id);
 
-            this.$store.commit('page/setAt', { index: fromIndex, item: items[fromIndex] });
-            this.$store.commit('page/setAt', { index: toIndex,   item: items[toIndex]   });*/
+                    console.log(hoveringItem.id);
+                }
+            }
+            else
+            {
+                let fromIndex = this.items.findIndex(item => item.id === this.draggingItem.id),
+                    toIndex   = this.items.findIndex(item => item.id === id),
+                    fromItem  = this.items.get(fromIndex),
+                    toItem    = this.items.get(toIndex);
+
+                if (toItem.id === this.draggingItem.parentID) {
+                    return;
+                }
+
+                let pos = fromItem.position;
+
+                fromItem.position = toItem.position;
+                toItem.position   = pos;
+                fromItem.parentID = toItem.parentID;
+
+                this.$store.commit('page/setAt', { index: fromIndex, item: fromItem });
+                this.$store.commit('page/setAt', { index: toIndex,   item: toItem   });
+            }
         },
         dragEnd()
         {
@@ -184,62 +237,49 @@ export default {
 
             return null;
         },
-        moveSeparator(e, target)
+        needIndent(e)
         {
-            let direction = e.offsetY >= target.offsetHeight / 2 ? 'bottom' : 'top',
-                offsetTop = target.offsetTop - this.$refs.separatorContainer.offsetTop;
+            let span = this.getTarget(e, 'item-label');
 
-            if (direction === 'bottom')
+            if (span)
             {
-                offsetTop += target.offsetHeight;
+                let rect = span.getBoundingClientRect();
+                if (this.pos.x - rect.left > 50)
+                {
+                    return true;
+                }
             }
 
-            this.$refs.separator.style.top = (offsetTop-1) + 'px';
-
-            return direction;
+            return false;
         },
-        getTargetByHover(id, direction)
+        needOutdent(e)
         {
-            let items = this.$store.getters['page/items'],
-                item  = items.find(n => n.id === id);
+            let span = this.getTarget(e, 'item-label');
 
-            if (!item) {
-                console.log('hovering item not found');
-                return null;
+            if (span)
+            {
+                let rect = span.getBoundingClientRect();
+                console.log(this.pos.x - rect.left);
+                if (this.pos.x - rect.left <= 50)
+                {
+                    return true;
+                }
             }
 
-            if (item.id === this.draggingItem.id) {
-                console.log('this drop is useless');
-                return;
-            }
-
-            let siblings = items.filter(n => n.parentID === item.parentID);
-
-            siblings.forEach((s, i) => {
-                if (s.id !== id) return;
-                if (direction === 'bottom' && siblings[i+1] && siblings[i+1].id === this.draggingItem.id
-                    || direction === 'top' && siblings[i-1] && siblings[i-1].id === this.draggingItem.id) {
-                    console.log('this drop is useless (2)');
-                    return;
-                }
-
-                if (direction === 'top' && siblings[i-1] && siblings[i-1].id !== this.draggingItem.id) {
-                    console.log('this drop looks great');
-                    return;
-                }
-                if (direction === 'bottom' && siblings[i+1] && siblings[i+1].id !== this.draggingItem.id) {
-                    console.log('this drop looks great (2)');
-                    return;
-                }
-                if (direction === 'bottom' && !siblings[i+1]) {
-                    console.log('this drop looks great (3)');
-                    return;
-                }
-                if (direction === 'top' && !siblings[i-1]) {
-                    console.log('this drop looks great (4)');
-                    return;
-                }
-            });
+            return false;
+        },
+        getSiblingPosition(sibling)
+        {
+            if (!sibling) return -1;
+            let position = 0;
+            this.$store.getters['page/items']
+                .filter(n => n.parentID === sibling.id)
+                .forEach(n => {
+                    if (n.position > position) {
+                        position = n.position;
+                    }
+                });
+            return position + 1;
         }
     },
     components: {
@@ -251,16 +291,11 @@ export default {
 <style lang="less" scoped>
 .page-list {
     position: relative;
-    .separator-container {
-        position: relative;
-        .separator {
-            position: absolute;
-            height: 0;
-            border-bottom: 1px dashed #e74c3c;
-            top: 0;
-            left: 0;
-            width: 100%;
-        }
+    .dragging-item {
+        position: fixed;
+        padding: 10px 15px;
+        background: #fff;
+        border: 1px solid #ccc;
     }
 }
 </style>

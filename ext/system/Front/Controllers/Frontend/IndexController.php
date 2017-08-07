@@ -4,7 +4,6 @@ namespace CMS\Controllers\Frontend;
 
 use CMS\Components\Controller;
 use CMS\Models\Domain\Domain;
-use Slim\Http\Response;
 
 class IndexController extends Controller
 {
@@ -16,10 +15,6 @@ class IndexController extends Controller
         if ($domain instanceof Domain)
         {
             return $domain->id;
-        }
-        else if($domain instanceof Response)
-        {
-            return $domain;
         }
         else
         {

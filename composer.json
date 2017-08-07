@@ -1,6 +1,6 @@
 {
     "require": {
-        "favez/favez": "^1.12",
+        "favez/favez": "2.0.0",
         "symfony/console": "^3.2",
         "illuminate/database": "^5.4",
         "illuminate/events": "^5.4",

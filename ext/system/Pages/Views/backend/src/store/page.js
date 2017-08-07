@@ -1,21 +1,23 @@
 import Vue from 'vue';
 import Store from '@/store';
 import _ from 'lodash';
+import List from '@/list';
 
 Store.registerModule('page', {
     namespaced: true,
     state: {
-        items: []
+        items: new List([])
     },
     mutations: {
         set(state, payload)
         {
             payload.forEach(item => {
-                item.editing  = false;
-                item.dragging = false;
+                item.editing   = false;
+                item.dragging  = false;
+                item.collapsed = true;
             });
 
-            state.items = payload;
+            state.items.replace(payload);
         },
         add(state, payload)
         {
@@ -23,7 +25,7 @@ Store.registerModule('page', {
 
             if (index !== -1)
             {
-                state.items[index] = payload;
+                state.items.set(index, payload);
             }
             else
             {
@@ -36,7 +38,7 @@ Store.registerModule('page', {
         },
         setAt(state, payload)
         {
-            state.items[payload.index] = payload.item;
+            state.items.set(payload.index, payload.item);
         }
     },
     actions: {
