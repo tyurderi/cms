@@ -14,11 +14,6 @@
             </ul>
         </div>
         <div class="body">
-            <div class="dragging-item" v-if="draggingItem"
-                 :style="{ (pos.y+16)+'px', left: (pos.x+16)+'px' }">
-                {{ draggingItem.id }}#{{ draggingItem.label }}
-            </div>
-
             <v-section v-for="(section, key) in sections" :key="key" :section="section"></v-section>
         </div>
     </div>
@@ -26,6 +21,7 @@
 
 <script>
 import VSection from '@Pages/components/Section';
+import dom from '@Pages/util/dom';
 
 export default {
     name: 'page-list',
@@ -108,9 +104,11 @@ export default {
         },
         dragStart(e)
         {
-            let target = this.getTarget(e, 'section-item');
+            let target = this.getTarget(e, 'item-drag');
 
             if (!target) return;
+            
+            target = dom.up(target, 'section-item');
 
             clearTimeout(this.dragStartTimeout);
 
@@ -144,67 +142,53 @@ export default {
 
             this.pos.x = e.clientX;
             this.pos.y = e.clientY;
+            
+            let itemEl = this.getTarget(e, 'section-item');
 
-            let target = this.getTarget(e, 'section-item');
-
-            if (!target) {
-                this.icon = 'none';
-                return;
-            }
-
-            let id = target.getAttribute('data-id');
+            if (!itemEl) return;
+            
+            let id = itemEl.getAttribute('data-id');
 
             if (!id) return;
-
-            if (id === this.draggingItem.id)
+            
+            let workingIndex = this.getItemIndex(this.draggingItem.id),
+                currentIndex = this.getItemIndex(id),
+                workingItem  = this.items.get(workingIndex),
+                currentItem  = this.items.get(currentIndex);
+            
+            if (workingItem.id !== currentItem.id)
             {
-                if (this.needIndent(e, id))
-                {
-                    let sibling  = this.draggingItem.prev(),
-                        position = this.getSiblingPosition(sibling);
-
-                    if (sibling)
-                    {
-                        let fromIndex = this.items.findIndex(item => item.id === this.draggingItem.id),
-                            toIndex   = this.items.findIndex(item => item.id === sibling.id),
-                            fromItem  = this.items.get(fromIndex),
-                            toItem    = this.items.get(toIndex);
-
-                        fromItem.position = position;
-                        fromItem.parentID = sibling.id;
-                        toItem.collapsed  = false;
-
-                        this.$store.commit('page/setAt', { index: fromIndex, item: fromItem });
-                        this.$store.commit('page/setAt', { index: toIndex,   item: toItem   });
-                    }
-                }
-                else if(this.needOutdent(e))
-                {
-                    let hoveringItem = this.items.find(n => n.id === id);
-
-                    console.log(hoveringItem.id);
-                }
+                let currentPosition = workingItem.position;
+                
+                workingItem.position = currentItem.position;
+                currentItem.position = currentPosition;
             }
-            else
-            {
-                let fromIndex = this.items.findIndex(item => item.id === this.draggingItem.id),
-                    toIndex   = this.items.findIndex(item => item.id === id),
-                    fromItem  = this.items.get(fromIndex),
-                    toItem    = this.items.get(toIndex);
-
-                if (toItem.id === this.draggingItem.parentID) {
-                    return;
+            
+            if (this.needIndent(itemEl)) {
+                let prevItem = this.getPrevSibling(workingItem),
+                    position = this.getSiblingPosition(prevItem);
+    
+                if (prevItem) {
+                    console.log(prevItem.label);
+                    let siblingIndex = this.getItemIndex(prevItem.id),
+                        siblingItem  = this.items.get(siblingIndex);
+                    
+                    workingItem.position = position;
+                    workingItem.parentID = prevItem.id;
+                    prevItem.collapsed   = false;
+                    
+                    this.$store.commit('page/setAt', { index: siblingIndex, item: siblingItem });
                 }
-
-                let pos = fromItem.position;
-
-                fromItem.position = toItem.position;
-                toItem.position   = pos;
-                fromItem.parentID = toItem.parentID;
-
-                this.$store.commit('page/setAt', { index: fromIndex, item: fromItem });
-                this.$store.commit('page/setAt', { index: toIndex,   item: toItem   });
+            } else if (this.needOutdent(itemEl)) {
+                let parentIndex = this.getItemIndex(workingItem.parentID),
+                    parentItem  = this.items.get(parentIndex);
+                
+                workingItem.parentID = parentItem.parentID;
+                workingItem.position = parentItem.position + 1; // TODO: Not working when parent item has next siblings
             }
+
+            this.$store.commit('page/setAt', { index: workingIndex, item: workingItem });
+            this.$store.commit('page/setAt', { index: currentIndex, item: currentItem });
         },
         dragEnd()
         {
@@ -219,6 +203,10 @@ export default {
             }
 
             clearTimeout(this.dragStartTimeout);
+        },
+        getItemIndex(id)
+        {
+            return this.items.findIndex(item => item.id === id);
         },
         getTarget(e, className)
         {
@@ -237,14 +225,14 @@ export default {
 
             return null;
         },
-        needIndent(e)
+        needIndent(itemEl)
         {
-            let span = this.getTarget(e, 'item-label');
-
-            if (span)
+            let span = dom.down(itemEl, 'item-label');
+            
+            if (span.length > 0 && (span = span[0]) !== null)
             {
                 let rect = span.getBoundingClientRect();
-                if (this.pos.x - rect.left > 50)
+                if (this.pos.x - rect.left > 40)
                 {
                     return true;
                 }
@@ -252,20 +240,19 @@ export default {
 
             return false;
         },
-        needOutdent(e)
+        needOutdent(itemEl)
         {
-            let span = this.getTarget(e, 'item-label');
-
-            if (span)
+            let span = dom.down(itemEl, 'item-label');
+    
+            if (span.length > 0 && (span = span[0]) !== null)
             {
                 let rect = span.getBoundingClientRect();
-                console.log(this.pos.x - rect.left);
-                if (this.pos.x - rect.left <= 50)
+                if (this.pos.x - rect.left <= -40)
                 {
                     return true;
                 }
             }
-
+    
             return false;
         },
         getSiblingPosition(sibling)
@@ -280,6 +267,13 @@ export default {
                     }
                 });
             return position + 1;
+        },
+        getPrevSibling(item) {
+            return this.items
+                .filter(n => n.parentID === item.parentID)
+                .find((n, i, a) => {
+                    return a[i+1]&&a[i+1].id===item.id;
+                });
         }
     },
     components: {
@@ -291,11 +285,5 @@ export default {
 <style lang="less" scoped>
 .page-list {
     position: relative;
-    .dragging-item {
-        position: fixed;
-        padding: 10px 15px;
-        background: #fff;
-        border: 1px solid #ccc;
-    }
 }
 </style>

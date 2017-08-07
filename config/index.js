@@ -14,13 +14,13 @@ module.exports = {
     },
     dev: {
         env: require('./dev.env'),
-        port: 8080,
+        port: 8303,
         autoOpenBrowser: false,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: {
             '/api': {
-                target: 'http://vue.dev/',
+                target: 'http://vuex_cms.dev/',
                 changeOrigin: true
             }
         },

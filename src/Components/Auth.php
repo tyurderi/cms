@@ -109,7 +109,7 @@ class Auth
             Session::repository()->findBy(['userID' => $this->userID()])->delete();
 
             self::cookies()->reset(self::COOKIE_KEY);
-            self::session()->reset(self::SESSION_KEY);
+            self::session()->delete(self::SESSION_KEY);
 
             return true;
         }

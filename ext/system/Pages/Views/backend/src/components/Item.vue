@@ -1,21 +1,27 @@
 <template>
-    <div class="section-item" :class="{ item.dragging }" :data-id="item.id">
+    <div class="section-item" :class="{ dragging: item.dragging }" :data-id="item.id">
         <div class="item-header">
-            <div class="item-actions left">
-                <ul v-if="children.length > 0">
-                    <li v-if="item.collapsed === true">
-                        <a href="#" @click.prevent="item.collapsed = false">
-                            <i class="fa fa-plus-square"></i>
-                        </a>
-                    </li>
-                    <li v-if="item.collapsed === false">
-                        <a href="#" @click.prevent="item.collapsed = true">
-                            <i class="fa fa-minus-square"></i>
-                        </a>
+            <div class="item-actions left relative item-drag">
+                <ul v-if="children.length > 0 || item.dragging">
+                    <template v-if="item.dragging === false">
+                        <li v-if="item.collapsed === true">
+                            <a href="#" @click.prevent="item.collapsed = false">
+                                <i class="fa fa-plus-square"></i>
+                            </a>
+                        </li>
+                        <li v-if="item.collapsed === false">
+                            <a href="#" @click.prevent="item.collapsed = true">
+                                <i class="fa fa-minus-square"></i>
+                            </a>
+                        </li>
+                    </template>
+                    <li v-else>
+                        <a href="#"><i class="fa fa-arrows"></i></a>
                     </li>
                 </ul>
+                <div class="absolute item-actions"></div>
             </div>
-            <div class="item-title" @dblclick="startEdit">
+            <div class="item-title relative" @dblclick="startEdit">
                 <template v-if="item.editing">
                     <input type="text" v-model="item.label" ref="itemLabel"
                            @blur="stopEdit"
@@ -27,13 +33,15 @@
                         {{item.label}}
                     </span>
                 </template>
+                <div class="item-title absolute"></div>
             </div>
-            <div class="item-actions hidden">
+            <div class="item-actions hidden relative">
                 <ul>
                     <li @click.prevent="create"><a href="#"><i class="fa fa-plus"></i></a></li>
                     <li><a href="#"><i class="fa fa-pencil-square-o"></i></a></li>
                     <li @click.prevent="remove"><a href="#"><i class="fa fa-trash"></i></a></li>
                 </ul>
+                <div class="item-actions absolute"></div>
             </div>
         </div>
         <div class="item-children" v-if="children.length > 0 && item.collapsed === false">
@@ -140,6 +148,9 @@ export default {
     }
 }
 
+.relative { position: relative; }
+.absolute { position: absolute; pointer-events: none; }
+
 div.section-item {
     border-bottom: 1px dashed #ddd;
     &.dragging {
@@ -164,6 +175,13 @@ div.section-item {
         height: 40px;
         div.item-title {
             flex: 1;
+            &.absolute {
+                top: 0;
+                left: 0;
+                background: rgba(52, 152, 219, 0.5);
+                height: 40px;
+                width: 100%;
+            }
             span {
                 display: block;
                 padding: 10px;
@@ -181,6 +199,13 @@ div.section-item {
             display: block;
         }
         div.item-actions {
+            &.absolute {
+                top: 0;
+                left: 0;
+                background: rgba(155, 89, 182, 0.5);
+                width: 100%;
+                height: 40px;
+            }
             &.hidden {
                 display: none;
             }

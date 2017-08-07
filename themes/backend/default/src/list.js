@@ -56,4 +56,5 @@ export default class List
     findIndex(cb) { return this.items.findIndex(cb) }
     filter(cb)    { return this.items.filter(cb) }
     splice(start, index) { return this.items.splice(start, index); }
+    indexOf(item) { return this.items.indexOf(item); }
 }
