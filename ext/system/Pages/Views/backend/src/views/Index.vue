@@ -183,6 +183,10 @@ export default {
                 let parentIndex = this.getItemIndex(workingItem.parentID),
                     parentItem  = this.items.get(parentIndex);
                 
+                if (parentItem && parentItem.parentID === null) {
+                    return;
+                }
+    
                 workingItem.parentID = parentItem.parentID;
                 workingItem.position = parentItem.position + 1; // TODO: Not working when parent item has next siblings
             }
