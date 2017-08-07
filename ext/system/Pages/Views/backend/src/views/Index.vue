@@ -177,7 +177,7 @@ export default {
                     workingItem.parentID = prevItem.id;
                     prevItem.collapsed   = false;
                     
-                    this.$store.commit('page/setAt', { index: siblingIndex, item: siblingItem });
+                    this.refreshItem(siblingIndex, siblingItem);
                 }
             } else if (this.needOutdent(itemEl)) {
                 let parentIndex = this.getItemIndex(workingItem.parentID),
@@ -189,10 +189,12 @@ export default {
     
                 workingItem.parentID = parentItem.parentID;
                 workingItem.position = parentItem.position + 1; // TODO: Not working when parent item has next siblings
+                
+                this.refreshPosition(workingItem);
             }
 
-            this.$store.commit('page/setAt', { index: workingIndex, item: workingItem });
-            this.$store.commit('page/setAt', { index: currentIndex, item: currentItem });
+            this.refreshItem(workingIndex, workingItem);
+            this.refreshItem(currentIndex, currentItem);
         },
         dragEnd()
         {
@@ -278,6 +280,21 @@ export default {
                 .find((n, i, a) => {
                     return a[i+1]&&a[i+1].id===item.id;
                 });
+        },
+        refreshPosition(item)
+        {
+            this.items
+                .filter(n => n.parentID === item.parentID)
+                .forEach((n, i, a) => {
+                    let position = a[i-1] ? a[i-1].position + 1 : 1,
+                        index    = this.items.indexOf(n);
+                    n.position = position;
+                    this.refreshItem(index, n);
+                })
+        },
+        refreshItem(index, item)
+        {
+            this.$store.commit('page/setAt', { index, item });
         }
     },
     components: {
