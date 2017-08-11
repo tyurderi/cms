@@ -1,0 +1,12 @@
+{
+  "label": "Themes",
+  "description": "Themes management",
+  "version": "1.0.0",
+  "author": "tyurderi",
+  "website": "http://yurderi.de",
+  "email": "tyurderi@yahoo.de",
+  "requires": {
+    "BackendMenu": "1.0.0",
+    "Config": "1.0.0"
+  }
+}
