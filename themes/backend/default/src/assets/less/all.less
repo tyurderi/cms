@@ -6,6 +6,21 @@
 @import "components/tooltip";
 @import "components/form";
 
+/* Very tiny grid system using flex box */
+.row { display: flex; flex-direction: row; }
+.column { display: flex; flex-direction: column;}
+.center { display: flex; align-items: center; justify-content: center; }
+.center-x { display: flex; justify-items: center; }
+.center-y { display: flex; align-items: center; }
+.align-center { text-align: center; }
+.flex { flex: 1; }
+.hidden { display: none; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.full-width { width: 100%; }
+.full-height { height: 100%; }
+.full-size { left: 0; right: 0; bottom: 0; top: 0; }
+
 * {
   box-sizing: border-box;
 }

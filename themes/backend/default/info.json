@@ -1,0 +1,4 @@
+{
+  "label": "Default",
+  "description": "This theme have to be compiled once plugins which extends the backend were installed or uninstalled."
+}

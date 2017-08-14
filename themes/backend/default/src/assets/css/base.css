@@ -442,7 +442,7 @@ input:-ms-input-placeholder {
 .clear:after {
   clear: both; }
 
-.row:before, .row:after {
+/*.row:before, .row:after {
   content: "";
   display: table; }
 
@@ -452,7 +452,7 @@ input:-ms-input-placeholder {
 .row {
   position: relative;
   margin-left: -15px;
-  margin-right: -15px; }
+  margin-right: -15px; }*/
 
 @media only screen and (min-width: 740px) {
   .row-m {
