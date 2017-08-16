@@ -63,6 +63,7 @@ export default {
         {
             e.setBusy();
             e.prepare();
+            e.text = '';
             
             this.$http.get('api/theme/getStatistics', { params: { id }})
                 .then((response) => {
@@ -82,6 +83,24 @@ export default {
                             .then(() => {
                                 e.delay();
                             });
+                        
+                        // countdown
+                        let interval,
+                            seconds = Math.ceil(response.body.duration.avg),
+                            showSeconds;
+    
+                        (showSeconds = function() {
+                            e.text = Math.ceil(e.progress) + '%';
+                            seconds--;
+                        })();
+                        
+                        interval = setInterval(() => {
+                            if (promise.done === true) {
+                                clearInterval(interval);
+                                return;
+                            }
+                            showSeconds();
+                        }, 100);
                     }
                 });
         },
@@ -93,6 +112,19 @@ export default {
                         accept(response.body);
                     });
             })
+        },
+        formatSeconds(seconds)
+        {
+            let isNegative = seconds < 0;
+            if (isNegative) seconds *= -1;
+            let minutes = Math.floor(seconds / 60);
+            seconds = seconds % 60;
+            return (
+                (isNegative ? '-' : '') +
+                (minutes < 10 ? '0' : '') + minutes.toString() +
+                ':' +
+                (seconds < 10 ? '0' : '') + seconds.toString()
+            );
         }
     },
     components: {

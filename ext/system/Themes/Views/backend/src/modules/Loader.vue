@@ -2,7 +2,7 @@
     <div class="theme-loader">
         <div class="loader">
             <svg viewBox="-25 -25 50 50" style="transform: rotate(-90deg)">
-                <circle r="20" stroke-width="4" stroke="#ccc" fill="transparent" stroke-linecap="round"
+                <circle r="20" stroke-width="4" stroke="transparent" fill="transparent" stroke-linecap="round"
                         ref="baseCircle"></circle>
                 
                 <transition name="fade">
@@ -16,6 +16,7 @@
             </svg>
             <div class="loader-content">
                 <i class="fa fa-play-circle-o fa-2x" @click="start" v-if="!busy"></i>
+                <span v-if="busy&&text" v-html="text"></span>
             </div>
         </div>
     </div>
@@ -29,7 +30,8 @@ export default {
     data: () => ({
         loading: false,
         progress: null,
-        busy: false
+        busy: false,
+        text: null
     }),
     methods: {
         /**
@@ -45,19 +47,6 @@ export default {
             
             el.style.strokeDasharray = circumFerence;
             el.style.strokeDashoffset = dashOffset;
-        },
-        formatSeconds(seconds)
-        {
-            let isNegative = seconds < 0;
-            if (isNegative) seconds *= -1;
-            let minutes = Math.floor(seconds / 60);
-            seconds = seconds % 60;
-            return (
-                (isNegative ? '-' : '') +
-                (minutes < 10 ? '0' : '') + minutes.toString() +
-                ':' +
-                (seconds < 10 ? '0' : '') + seconds.toString()
-            );
         },
         start()
         {
@@ -152,7 +141,7 @@ export default {
                 color: #333;
             }
             span {
-                font-size: 24px;
+                font-size: 20px;
                 font-family: 'Consolas', monospace;
             }
         }
