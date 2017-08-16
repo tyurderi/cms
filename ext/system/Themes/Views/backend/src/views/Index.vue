@@ -30,9 +30,10 @@
                     </div>
                 </div>
                 <div class="theme-actions">
-                    <button @click="compile(item)">
+                    <!--<button @click="compile(item)">
                         <i class="fa fa-arrow-circle-right"></i>
-                    </button>
+                    </button>-->
+                    <v-loader @click="compile($event, item)"></v-loader>
                 </div>
             </div>
         </div>
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+import VLoader from '@Themes/modules/Loader';
 export default {
     name: 'themes',
     data: () => ({
@@ -57,13 +59,44 @@ export default {
                     this.items = response.body.data;
                 })
         },
-        compile({ module, name })
+        compile(e, { id, module, name })
         {
-            this.$http.get('api/theme/compile', { params: { module, name } })
+            e.setBusy();
+            e.prepare();
+            
+            this.$http.get('api/theme/getStatistics', { params: { id }})
                 .then((response) => {
-                    console.log(response);
+                    let promise = this.executeCompile({ module, name })
+                        .then(() => {
+                            promise.done = true;
+                            e.finish();
+                        });
+                    
+                    if (response.body.compiles === 0)
+                    {
+                        e.delay();
+                    }
+                    else
+                    {
+                        e.compile(response.body.duration.avg)
+                            .then(() => {
+                                e.delay();
+                            });
+                    }
                 });
+        },
+        executeCompile({ module, name })
+        {
+            return new Promise((accept, reject) => {
+                this.$http.get('api/theme/compile', { params: { module, name } })
+                    .then((response) => {
+                        accept(response.body);
+                    });
+            })
         }
+    },
+    components: {
+        VLoader
     }
 }
 </script>

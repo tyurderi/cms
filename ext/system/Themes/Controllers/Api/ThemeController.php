@@ -16,12 +16,36 @@ class ThemeController extends Controller
         $themeService->synchronize();
         
         return self::json()->success([
-            'data' => Theme::repository()->getQuery()->fetchAll()
+            'data' => Theme::repository()->getQuery()->fetchAll(),
+        ]);
+    }
+    
+    public function getStatisticsAction()
+    {
+        $themeID  = $this->request()->getParam('id');
+        $compiles = Compile::findBy(['themeID' => $themeID]);
+        
+        // calculate time
+        $totalTime = 0;
+        /** @var Compile $compile */
+        foreach ($compiles as $compile)
+        {
+            $totalTime += $compile->duration;
+        }
+        
+        return self::json()->success([
+            'compiles' => $compiles->count(),
+            'duration' => [
+                'total' => $totalTime,
+                'avg'   => ($compiles->count() ? $totalTime / $compiles->count() : 0)
+            ]
         ]);
     }
     
     public function compileAction()
     {
+        set_time_limit(0);
+        
         $module = $this->request()->getParam('module');
         $name   = $this->request()->getParam('name');
         
