@@ -21,7 +21,7 @@ if (!function_exists('path'))
         }
         
         $paths = array_map(function ($p) {
-            return trim($p, "/\\");
+            return rtrim($p, "/\\");
         }, $paths);
         
         $paths = array_filter($paths);
