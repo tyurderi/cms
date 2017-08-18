@@ -2,7 +2,7 @@
     <div class="theme-loader">
         <div class="loader">
             <svg viewBox="-25 -25 50 50" style="transform: rotate(-90deg)">
-                <circle r="20" stroke-width="4" stroke="transparent" fill="transparent" stroke-linecap="round"
+                <circle r="20" stroke-width="4" stroke="#ccc" fill="transparent" stroke-linecap="round"
                         ref="baseCircle"></circle>
                 
                 <transition name="fade">
